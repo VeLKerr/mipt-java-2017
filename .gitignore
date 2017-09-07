@@ -1,0 +1,14 @@
+/.idea
+*.iml
+*.ipr
+
+*.class
+out/
+target/
+*~
+temp/
+tmp/
+build/
+jar/
+
+*.DS_Store
