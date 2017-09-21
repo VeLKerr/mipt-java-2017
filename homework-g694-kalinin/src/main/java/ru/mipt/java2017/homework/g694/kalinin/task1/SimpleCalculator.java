@@ -22,7 +22,7 @@ public class SimpleCalculator implements Calculator {
         if (!checkSpacing(inputExpression)) {
             throw new ParsingException("Unexpected space between number digits/decimal");
         }
-        if (!inputExpression.matches("[0-9\\.()+\\-*/\\s]*")) {
+        if (!inputExpression.matches("[0-9.()+\\-*/\\s]*")) {
             throw new ParsingException("Incorrect character");
         }
         this.expression = inputExpression.replaceAll("\\s", "");
