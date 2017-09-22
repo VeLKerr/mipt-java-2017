@@ -20,7 +20,8 @@ public class App {
             System.out.print("Result: ");
             System.out.println(result);
         } catch (ParsingException e) {
-            System.out.println("Invalid expression");
+            System.err.println(e.getMessage());
+            System.exit(1);
         }
     }
 }
