@@ -12,7 +12,7 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
 public class SimpleCalculator implements Calculator {
     private int currentPosition;
     private String expression;
-    static final String allowedCharactersRegex = "[0-9.()+\\-*/\\s]*";
+    private static final String ALLOWED_CHARACTERS_REGEX = "[0-9.()+\\-*/\\s]*";
 
     /**
      * @param inputExpression arithmetic expression to calculate
@@ -27,7 +27,7 @@ public class SimpleCalculator implements Calculator {
         if (!checkSpacing(inputExpression)) {
             throw new ParsingException("Unexpected space between number digits/decimal");
         }
-        if (!inputExpression.matches(allowedCharactersRegex)) {
+        if (!inputExpression.matches(ALLOWED_CHARACTERS_REGEX)) {
             throw new ParsingException("Incorrect character");
         }
         this.expression = inputExpression.replaceAll("\\s", "");
@@ -41,6 +41,7 @@ public class SimpleCalculator implements Calculator {
 
     /**
      * Checks whether expression contains space-divided numbers or not
+     *
      * @param inputExpression expression to check
      * @return true if expression doesn't contain bad numbers, false otherwise
      */
@@ -60,6 +61,7 @@ public class SimpleCalculator implements Calculator {
 
     /**
      * Checks whether character is digit or decimal
+     *
      * @param symbol character to check
      * @return true if symbol is number character, false otherwise
      */
@@ -70,6 +72,7 @@ public class SimpleCalculator implements Calculator {
     /**
      * Parses expression assuming that currentPosition is the beginning of correct expression
      * Expression should not contain any space-characters or invalid characters
+     *
      * @return value of parsed expression
      * @throws ParsingException invalid expression
      */
@@ -86,6 +89,7 @@ public class SimpleCalculator implements Calculator {
 
     /**
      * Parses sum of terms (may be with minuses) starting from currentPosition
+     *
      * @return resulting sum
      * @throws ParsingException invalid expression
      */
@@ -112,6 +116,7 @@ public class SimpleCalculator implements Calculator {
 
     /**
      * Parses product of tokens (may be with divisions) starting from currentPosition
+     *
      * @return resulting product
      * @throws ParsingException invalid expression
      */
@@ -139,6 +144,7 @@ public class SimpleCalculator implements Calculator {
     /**
      * Parses single token starting at currentPosition
      * Token is number or bracketed expression, possibly with single preceding minus
+     *
      * @return value of token
      * @throws ParsingException invalid expression
      */
@@ -171,6 +177,7 @@ public class SimpleCalculator implements Calculator {
 
     /**
      * Parses decimal number starting from current position
+     *
      * @return parsed number
      * @throws ParsingException incorrect number format
      */
