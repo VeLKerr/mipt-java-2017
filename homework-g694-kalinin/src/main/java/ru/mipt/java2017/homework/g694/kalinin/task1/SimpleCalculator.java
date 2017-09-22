@@ -3,17 +3,22 @@ package ru.mipt.java2017.homework.g694.kalinin.task1;
 import ru.mipt.java2017.homework.base.task1.Calculator;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
+/**
+ * One-pass recursive parser calculator realization
+ *
+ * @author Stepan A. Kalinin
+ * @since 21.09.17
+ */
 public class SimpleCalculator implements Calculator {
     private int currentPosition;
     private String expression;
+    static final String allowedCharactersRegex = "[0-9.()+\\-*/\\s]*";
 
-    public void main(String[] args) throws ParsingException, IllegalArgumentException {
-        if (args.length == 0) {
-            throw new IllegalArgumentException("Missing argument");
-        }
-        System.out.println(this.calculate(args[0]));
-    }
-
+    /**
+     * @param inputExpression arithmetic expression to calculate
+     * @return value of expression if valid
+     * @throws ParsingException exception with error message thrown in case of invalid expression
+     */
     @Override
     public double calculate(String inputExpression) throws ParsingException {
         if (inputExpression == null) {
@@ -22,19 +27,24 @@ public class SimpleCalculator implements Calculator {
         if (!checkSpacing(inputExpression)) {
             throw new ParsingException("Unexpected space between number digits/decimal");
         }
-        if (!inputExpression.matches("[0-9.()+\\-*/\\s]*")) {
+        if (!inputExpression.matches(allowedCharactersRegex)) {
             throw new ParsingException("Incorrect character");
         }
         this.expression = inputExpression.replaceAll("\\s", "");
         this.currentPosition = 0;
-        double ans = parseExpression();
+        double result = parseExpression();
         if (currentPosition != expression.length()) {
             throw new ParsingException("Incorrect expression");
         }
-        return ans;
+        return result;
     }
 
-    private boolean checkSpacing(String inputExpression) throws ParsingException {
+    /**
+     * Checks whether expression contains space-divided numbers or not
+     * @param inputExpression expression to check
+     * @return true if expression doesn't contain bad numbers, false otherwise
+     */
+    private boolean checkSpacing(String inputExpression) {
         String[] pieces = inputExpression.split("\\s+");
         for (int i = 0; i < pieces.length - 1; ++i) {
             if (pieces[i].isEmpty() || pieces[i + 1].isEmpty()) {
@@ -48,10 +58,21 @@ public class SimpleCalculator implements Calculator {
         return true;
     }
 
+    /**
+     * Checks whether character is digit or decimal
+     * @param symbol character to check
+     * @return true if symbol is number character, false otherwise
+     */
     private boolean isNumberCharacter(char symbol) {
         return Character.isDigit(symbol) || symbol == '.';
     }
 
+    /**
+     * Parses expression assuming that currentPosition is the beginning of correct expression
+     * Expression should not contain any space-characters or invalid characters
+     * @return value of parsed expression
+     * @throws ParsingException invalid expression
+     */
     private double parseExpression() throws ParsingException {
         if (currentPosition >= expression.length()) {
             throw new ParsingException("Unexpected end of expression while parsing expression");
@@ -63,6 +84,11 @@ public class SimpleCalculator implements Calculator {
         return ans;
     }
 
+    /**
+     * Parses sum of terms (may be with minuses) starting from currentPosition
+     * @return resulting sum
+     * @throws ParsingException invalid expression
+     */
     private double parseSum() throws ParsingException {
         if (currentPosition >= expression.length()) {
             throw new ParsingException("Unexpected end of expression while parsing sum");
@@ -84,6 +110,11 @@ public class SimpleCalculator implements Calculator {
         return ans;
     }
 
+    /**
+     * Parses product of tokens (may be with divisions) starting from currentPosition
+     * @return resulting product
+     * @throws ParsingException invalid expression
+     */
     private double parseProduct() throws ParsingException {
         if (currentPosition >= expression.length()) {
             throw new ParsingException("Unexpected end of expression while parsing product");
@@ -105,6 +136,12 @@ public class SimpleCalculator implements Calculator {
         return ans;
     }
 
+    /**
+     * Parses single token starting at currentPosition
+     * Token is number or bracketed expression, possibly with single preceding minus
+     * @return value of token
+     * @throws ParsingException invalid expression
+     */
     private double parseToken() throws ParsingException {
         if (currentPosition >= expression.length()) {
             throw new ParsingException("Unexpected end of expression while parsing token");
@@ -132,6 +169,11 @@ public class SimpleCalculator implements Calculator {
         return ans;
     }
 
+    /**
+     * Parses decimal number starting from current position
+     * @return parsed number
+     * @throws ParsingException incorrect number format
+     */
     private double parseNumber() throws ParsingException {
         if (currentPosition >= expression.length() || !Character.isDigit(expression.charAt(currentPosition))) {
             throw new ParsingException("Error while parsing number");
