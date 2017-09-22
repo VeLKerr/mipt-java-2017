@@ -80,11 +80,11 @@ public class SimpleCalculator implements Calculator {
         if (currentPosition >= expression.length()) {
             throw new ParsingException("Unexpected end of expression while parsing expression");
         }
-        double ans = parseSum();
+        double result = parseSum();
         if (currentPosition != expression.length() && expression.charAt(currentPosition) != ')') {
             throw new ParsingException("Incorrect expression");
         }
-        return ans;
+        return result;
     }
 
     /**
@@ -97,8 +97,8 @@ public class SimpleCalculator implements Calculator {
         if (currentPosition >= expression.length()) {
             throw new ParsingException("Unexpected end of expression while parsing sum");
         }
-        double ans;
-        ans = parseProduct();
+        double result;
+        result = parseProduct();
         while (currentPosition < expression.length() &&
                 (expression.charAt(currentPosition) == '+' ||
                         expression.charAt(currentPosition) == '-')) {
@@ -106,12 +106,12 @@ public class SimpleCalculator implements Calculator {
             ++currentPosition;
             double product = parseProduct();
             if (extract) {
-                ans -= product;
+                result -= product;
             } else {
-                ans += product;
+                result += product;
             }
         }
-        return ans;
+        return result;
     }
 
     /**
@@ -124,8 +124,8 @@ public class SimpleCalculator implements Calculator {
         if (currentPosition >= expression.length()) {
             throw new ParsingException("Unexpected end of expression while parsing product");
         }
-        double ans;
-        ans = parseToken();
+        double result;
+        result = parseToken();
         while (currentPosition < expression.length() &&
                 (expression.charAt(currentPosition) == '*' ||
                         expression.charAt(currentPosition) == '/')) {
@@ -133,12 +133,12 @@ public class SimpleCalculator implements Calculator {
             ++currentPosition;
             double token = parseToken();
             if (divide) {
-                ans /= token;
+                result /= token;
             } else {
-                ans *= token;
+                result *= token;
             }
         }
-        return ans;
+        return result;
     }
 
     /**
@@ -152,15 +152,15 @@ public class SimpleCalculator implements Calculator {
         if (currentPosition >= expression.length()) {
             throw new ParsingException("Unexpected end of expression while parsing token");
         }
-        double ans;
+        double result;
         if (expression.charAt(currentPosition) == '(') {
             ++currentPosition;
-            ans = parseExpression();
+            result = parseExpression();
             if (currentPosition >= expression.length() || expression.charAt(currentPosition) != ')') {
                 throw new ParsingException("Unexpected end of expression while parsing token: unclosed brace");
             }
             ++currentPosition;
-            return ans;
+            return result;
         }
         if (expression.charAt(currentPosition) == '-') {
             ++currentPosition;
@@ -168,11 +168,11 @@ public class SimpleCalculator implements Calculator {
                     !Character.isDigit(expression.charAt(currentPosition))) {
                 throw new ParsingException("Unary minus incorrect usage");
             }
-            ans = parseToken();
-            return -ans;
+            result = parseToken();
+            return -result;
         }
-        ans = parseNumber();
-        return ans;
+        result = parseNumber();
+        return result;
     }
 
     /**
@@ -185,13 +185,13 @@ public class SimpleCalculator implements Calculator {
         if (currentPosition >= expression.length() || !Character.isDigit(expression.charAt(currentPosition))) {
             throw new ParsingException("Error while parsing number");
         }
-        int pos = currentPosition;
-        while (pos < expression.length() && isNumberCharacter(expression.charAt(pos))) {
-            ++pos;
+        int position = currentPosition;
+        while (position < expression.length() && isNumberCharacter(expression.charAt(position))) {
+            ++position;
         }
         try {
-            double ans = Double.parseDouble(expression.substring(currentPosition, pos));
-            currentPosition = pos;
+            double ans = Double.parseDouble(expression.substring(currentPosition, position));
+            currentPosition = position;
             return ans;
         } catch (NumberFormatException e) {
             throw new ParsingException("Error while parsing number", e.getCause());
