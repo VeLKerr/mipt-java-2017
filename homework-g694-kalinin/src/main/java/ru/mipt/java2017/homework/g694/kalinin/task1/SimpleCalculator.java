@@ -181,6 +181,7 @@ public class SimpleCalculator implements Calculator {
             return -result;
         }
         if (expression.charAt(currentPosition) == '+') {
+            ++currentPosition;
             result = parseToken(false);
             return result;
         }
