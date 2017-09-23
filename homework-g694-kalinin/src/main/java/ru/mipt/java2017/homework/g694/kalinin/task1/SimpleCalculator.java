@@ -98,13 +98,13 @@ public class SimpleCalculator implements Calculator {
             throw new ParsingException("Unexpected end of expression while parsing sum");
         }
         double result;
-        result = parseProduct();
+        result = parseProduct(true);
         while (currentPosition < expression.length() &&
                 (expression.charAt(currentPosition) == '+' ||
                         expression.charAt(currentPosition) == '-')) {
             boolean extract = expression.charAt(currentPosition) == '-';
             ++currentPosition;
-            double product = parseProduct();
+            double product = parseProduct(false);
             if (extract) {
                 result -= product;
             } else {
@@ -117,21 +117,22 @@ public class SimpleCalculator implements Calculator {
     /**
      * Parses product of tokens (may be with divisions) starting from currentPosition
      *
+     * @param unaryOperationAllowed true if unary plus/minus is allowed as first symbol
      * @return resulting product
      * @throws ParsingException invalid expression
      */
-    private double parseProduct() throws ParsingException {
+    private double parseProduct(boolean unaryOperationAllowed) throws ParsingException {
         if (currentPosition >= expression.length()) {
             throw new ParsingException("Unexpected end of expression while parsing product");
         }
         double result;
-        result = parseToken();
+        result = parseToken(unaryOperationAllowed);
         while (currentPosition < expression.length() &&
                 (expression.charAt(currentPosition) == '*' ||
                         expression.charAt(currentPosition) == '/')) {
             boolean divide = expression.charAt(currentPosition) == '/';
             ++currentPosition;
-            double token = parseToken();
+            double token = parseToken(true);
             if (divide) {
                 result /= token;
             } else {
@@ -145,10 +146,11 @@ public class SimpleCalculator implements Calculator {
      * Parses single token starting at currentPosition
      * Token is number or bracketed expression, possibly with single preceding minus
      *
+     * @param unaryOperationAllowed true if unary plus/minus is allowed as first symbol
      * @return value of token
      * @throws ParsingException invalid expression
      */
-    private double parseToken() throws ParsingException {
+    private double parseToken(boolean unaryOperationAllowed) throws ParsingException {
         if (currentPosition >= expression.length()) {
             throw new ParsingException("Unexpected end of expression while parsing token");
         }
@@ -162,14 +164,25 @@ public class SimpleCalculator implements Calculator {
             ++currentPosition;
             return result;
         }
+        if (!unaryOperationAllowed &&
+                (expression.charAt(currentPosition) == '-' || expression.charAt(currentPosition) == '+')) {
+            throw new ParsingException("Unexpected unary plus/minus");
+        }
+        if (expression.charAt(currentPosition) == '+' || expression.charAt(currentPosition) == '-') {
+            if (currentPosition + 1 >= expression.length() ||
+                    (expression.charAt(currentPosition + 1) != '(' &&
+                            !Character.isDigit(expression.charAt(currentPosition + 1)))) {
+                throw new ParsingException("Unary operation incorrect usage");
+            }
+        }
         if (expression.charAt(currentPosition) == '-') {
             ++currentPosition;
-            if (currentPosition >= expression.length() || expression.charAt(currentPosition) != '(' &&
-                    !Character.isDigit(expression.charAt(currentPosition))) {
-                throw new ParsingException("Unary minus incorrect usage");
-            }
-            result = parseToken();
+            result = parseToken(false);
             return -result;
+        }
+        if (expression.charAt(currentPosition) == '+') {
+            result = parseToken(false);
+            return result;
         }
         result = parseNumber();
         return result;
