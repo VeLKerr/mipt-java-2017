@@ -1,7 +1,7 @@
 # homework-g696-feofanova
 *Homework-1 for java-2017: calculator.*
 
-This calculator used [shunting-yard](https://en.wikipedia.org/wiki/Shunting-yard_algorithm) algorithm.
+This calculator uses [shunting-yard](https://en.wikipedia.org/wiki/Shunting-yard_algorithm) algorithm.
 
 #### The structure:
 * **AbstractTokenCalculator** implements interface *Calculator* from base.
