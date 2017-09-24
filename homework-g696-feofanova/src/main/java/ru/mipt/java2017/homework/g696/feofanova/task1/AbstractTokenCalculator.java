@@ -36,7 +36,8 @@ public abstract class AbstractTokenCalculator implements Calculator {
                 // each token is a number or operator.
                 // if it's possible to convert in double - it's a number.
                 // we push it to handler.
-                if ((number = toDouble(token)) != -1) {
+                number = toDouble(token);
+                if (number != -1) {
                     handler.pushNumber(number);
                 } else if (token.length() == 1) {
                     // else it's an operator that should be pushed in our handler.
