@@ -18,9 +18,17 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-<<<<<<< HEAD
-hs_err_pid*
-=======
-hs_err_pid*
->>>>>>> 5962645a883b9724baf57d783aaff88e11368d49
+# From mipt-java-2017/.gitignore
+/.idea
+*.iml
+*.ipr
+
+out/
+target/
+*~
+temp/
+tmp/
+build/
+jar/
+
+*.DS_Store
