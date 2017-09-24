@@ -42,7 +42,7 @@ public abstract class AbstractTokenCalculator implements Calculator {
         } else if (token.length() == 1) {
           //else it's an operator that should be pushed in our handler.
           char operator = token.charAt(0);
-          handler.pushOperand(operator);
+          handler.pushOperator(operator);
         } else {
           //else there is some unknown symbol.
           throw new ParsingException("Unknown symbol");
