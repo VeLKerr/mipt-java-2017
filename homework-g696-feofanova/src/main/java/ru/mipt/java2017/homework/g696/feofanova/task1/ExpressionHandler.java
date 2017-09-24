@@ -11,7 +11,7 @@ public interface ExpressionHandler {
   //func that handles number
   void pushNumber(double number) throws ParsingException;
   //func that handles operator
-  void pushOperand(char operator) throws  ParsingException;
+  void pushOperator(char operator) throws  ParsingException;
 
   //gives the answer
   double getAnswer() throws ParsingException;

@@ -26,29 +26,29 @@ public class ShuntingYardHandler implements ExpressionHandler {
     isPrevNumber = true;
   }
 
-  //same for operands, but sometimes we should calculate intermediate expressions.
-  public void pushOperand(char operand) throws ParsingException {
+  //same for operators, but sometimes we should calculate intermediate expressions.
+  public void pushOperator(char operator) throws ParsingException {
     //firstly, to make our task more simple, we convert unary + and - operations to binary.
     //it's only possible if the last token was brace or it was operator with less priority.
-    if ((operand == '+' || operand == '-') && !isPrevNumber) {
+    if ((operator == '+' || operator == '-') && !isPrevNumber) {
       switch (functionsStack.peek()) {
         case '(':
           numbersStack.push(0.0);
           break;
         case '/': case '*':
           //if it's a minus, it's enough to multiply the previous number by -1.
-          if (operand == '-') {
+          if (operator == '-') {
             numbersStack.push(-numbersStack.pop());
           }
           return;
         default:
           //other situations are not allowed.
-          throw new ParsingException("Redundant operand");
+          throw new ParsingException("Redundant operator");
       }
     }
 
     //if it's a close brace, we should calculate all expressions in stack until we meet the open brace.
-    if (operand == ')') {
+    if (operator == ')') {
       while (!functionsStack.empty() && functionsStack.peek() != '(') {
         operate(numbersStack, functionsStack);
       }
@@ -60,11 +60,11 @@ public class ShuntingYardHandler implements ExpressionHandler {
 
       //we skip spaces and other unimportant symbols,
       //and calculate expression if it's an operator and we can do this (see canPop)
-    } else if (operand != ' ' && operand != '\t' && operand != '\n') {
-      while (functionsStack.size() != 0 && canPop(functionsStack.peek(), operand)) {
+    } else if (operator != ' ' && operator != '\t' && operator != '\n') {
+      while (functionsStack.size() != 0 && canPop(functionsStack.peek(), operator)) {
         operate(numbersStack, functionsStack);
       }
-      functionsStack.push(operand);
+      functionsStack.push(operator);
       isPrevNumber = false;
     }
   }
@@ -79,8 +79,8 @@ public class ShuntingYardHandler implements ExpressionHandler {
   }
 
   //returns priority for operator.
-  private int getPriority(char operand) throws ParsingException {
-    switch (operand) {
+  private int getPriority(char operator) throws ParsingException {
+    switch (operator) {
       //the highest priority is for + and -, 'cause they are last to calculate.
       case '+': case '-':
         return 2;
@@ -92,21 +92,21 @@ public class ShuntingYardHandler implements ExpressionHandler {
         return 0;
       //other symbols are unknown.
       default:
-        throw new ParsingException("Unknown operand");
+        throw new ParsingException("Unknown operator");
     }
   }
 
   //says if it possible to pop the previous operator.
   //Its priority should be less, and it cannot be the open brace.
-  private boolean canPop(char firstOperand, char secondOperand) throws ParsingException {
-    int firstPriority = getPriority(firstOperand);
-    int secondPriority = getPriority(secondOperand);
+  private boolean canPop(char firstOperator, char secondOperator) throws ParsingException {
+    int firstPriority = getPriority(firstOperator);
+    int secondPriority = getPriority(secondOperator);
     return firstPriority > 0 && secondPriority > 0 && firstPriority <= secondPriority;
   }
 
   //do an action with last 2 numbers and operator.
   private void operate(Stack<Double> numbersStack, Stack<Character> functionsStack) throws ParsingException {
-    char operand = functionsStack.pop();
+    char operator = functionsStack.pop();
 
     //there must be at least 2 numbers.
     if (numbersStack.size() < 2) {
@@ -115,7 +115,7 @@ public class ShuntingYardHandler implements ExpressionHandler {
 
     double secondNumber = numbersStack.pop();
     double firstNumber = numbersStack.pop();
-    switch (operand) {
+    switch (operator) {
       case '+':
         numbersStack.push(firstNumber + secondNumber);
         break;
@@ -129,7 +129,7 @@ public class ShuntingYardHandler implements ExpressionHandler {
         numbersStack.push(firstNumber / secondNumber);
         break;
       default:
-        throw new ParsingException("Unknown operand");
+        throw new ParsingException("Unknown operator");
     }
   }
 
