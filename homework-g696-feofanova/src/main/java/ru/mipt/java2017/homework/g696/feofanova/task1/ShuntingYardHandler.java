@@ -104,29 +104,29 @@ public class ShuntingYardHandler implements ExpressionHandler {
     }
 
     // do an action with last 2 numbers and operator.
-    private void operate(Stack<Double> numbersStack, Stack<Character> functionsStack)
+    private void operate(Stack<Double> numbers, Stack<Character> functions)
         throws ParsingException {
-        char operator = functionsStack.pop();
+        char operator = functions.pop();
 
         // there must be at least 2 numbers.
-        if (numbersStack.size() < 2) {
+        if (numbers.size() < 2) {
             throw new ParsingException("Invalid expression");
         }
 
-        double secondNumber = numbersStack.pop();
-        double firstNumber = numbersStack.pop();
+        double secondNumber = numbers.pop();
+        double firstNumber = numbers.pop();
         switch (operator) {
             case '+':
-                numbersStack.push(firstNumber + secondNumber);
+                numbers.push(firstNumber + secondNumber);
                 break;
             case '-':
-                numbersStack.push(firstNumber - secondNumber);
+                numbers.push(firstNumber - secondNumber);
                 break;
             case '*':
-                numbersStack.push(firstNumber * secondNumber);
+                numbers.push(firstNumber * secondNumber);
                 break;
             case '/':
-                numbersStack.push(firstNumber / secondNumber);
+                numbers.push(firstNumber / secondNumber);
                 break;
             default:
                 throw new ParsingException("Unknown operator");

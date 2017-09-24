@@ -9,6 +9,7 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
 public interface ExpressionHandler {
     // func that handles number
     void pushNumber(double number) throws ParsingException;
+
     // func that handles operator
     void pushOperator(char operator) throws ParsingException;
 
