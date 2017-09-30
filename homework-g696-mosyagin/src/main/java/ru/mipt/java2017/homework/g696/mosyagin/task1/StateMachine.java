@@ -7,6 +7,13 @@ import java.util.Stack;
 
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
+/**
+ * State machine that converts a mathematical expressions to Polish notation
+ * and finds its value.
+ *
+ * @author Mosyagin Mikhail
+ * @since 24.09.17
+ */
 public class StateMachine implements Serializable {
     StateMachine() {
         state = StateTag.BEGIN;

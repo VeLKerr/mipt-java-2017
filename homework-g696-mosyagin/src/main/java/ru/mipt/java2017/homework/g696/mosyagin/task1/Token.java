@@ -4,7 +4,13 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
 
 import java.io.Serializable;
 
-public class Token implements Serializable {
+/**
+ * Class that stores information about a single token of Polish notation;
+ *
+ * @author Mosyagin Mikhail
+ * @since 24.09.17
+ */
+public class Token {
     Token() {
         type = null;
     }
