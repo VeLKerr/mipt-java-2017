@@ -4,10 +4,16 @@ import ru.mipt.java2017.homework.base.task1.Calculator;
 import ru.mipt.java2017.homework.tests.task1.AbstractCalculatorTest;
 
 /**
+ * Tests for {@code StateMachineCalculator}.
+ *
  * @author Mikhail Mosyagin
- * @since 24.09.17
  */
 public class StateMachineCalculatorTest extends AbstractCalculatorTest {
+    /**
+     * Factory method that creates a {@code StateMachineCalculator}.
+     *
+     * @return a {@code StateMachineCalculator} to be tested
+     */
     @Override
     protected Calculator calc() {
         return new StateMachineCalculator();

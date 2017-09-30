@@ -3,19 +3,35 @@ package ru.mipt.java2017.homework.g696.mosyagin.task1;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
 /**
- * State machine that converts a mathematical expressions to Polish notation
- * and finds its value.
+ * A state machine that builds a {@code PolishNotation} object from an 
+ * infix expression represented as a sequence of characters.
  *
  * @author Mosyagin Mikhail
- * @since 24.09.17
+ * @see PolishNotation
  */
-public class StateMachine {
-    StateMachine() {
+public class ParsingMachine {
+    /**
+     * Initializes the state machine.
+     */
+    ParsingMachine() {
         state = StateTag.BEGIN;
         lastNumber = "";
+        result = new PolishNotation();
         subautomata = null;
     }
 
+    /**
+     * Changes state of the machine depending on the character.
+     * The characters should be passed in the same order as they
+     * appear in the infix expression.
+     * <p>
+     * This method cannot be called after the parsing process
+     * is finished.
+     *
+     * @param character the character of the expression string
+     * @throws ParsingException if the expression becomes invalid
+     * or the parsing process was finished before the call
+     */
     public void transit(char character) throws ParsingException {
         if (!isAcceptable(character)) {
             throw new ParsingException("Unacceptable character: " + character);
@@ -38,10 +54,25 @@ public class StateMachine {
         }
     }
 
+    /**
+     * Checks if the parsing process is finished.
+     *
+     * @return {@code true} if the process is finished and {@code false} otherwise
+     */
     public boolean hasFinished() {
         return state == StateTag.END;
     }
 
+    /**
+     * Get the result {@code PolishNotation} object.
+     * <p>
+     * Cannot be called before the parsing process is finished.
+     *
+     * @return {@code PolishNotation} object representing the
+     * postfix equivalent of the parsed expression
+     * @throws ParsingException if called before the parsing
+     * process is finished
+     */
     public PolishNotation getResult() throws ParsingException {
         if (!hasFinished()) {
             throw new ParsingException("Cannot return result before finished");
@@ -53,7 +84,7 @@ public class StateMachine {
     private void handleSubautomata(char character) throws ParsingException {
         subautomata.transit(character);
         if (subautomata.hasFinished()) {
-            polishNotation.add(new Token(subautomata.evaluateExpression()));
+            result.pushToken(new Token(subautomata.getResult().evaluateExpression()));
             subautomata = null;
             state = StateTag.NUMBER_END;
         }
@@ -64,7 +95,7 @@ public class StateMachine {
             throw new ParsingException("Cannot parse '(' following a number");
         }
         state = StateTag.SUBAUTOMATA;
-        subautomata = new StateMachine();
+        subautomata = new ParsingMachine();
     }
 
     private void handleClosingBracket() throws ParsingException {
@@ -74,7 +105,6 @@ public class StateMachine {
             throw new ParsingException("Cannot parse ')' not following a number");
         }
         pushNumber();
-        pushOperation(';');
         state = StateTag.END;
     }
 
@@ -142,7 +172,7 @@ public class StateMachine {
             || isOperation(character);
     }
 
-    enum StateTag {
+    private enum StateTag {
         BEGIN,
         BINARY_OPEARTION,
         UNARY_OPERATION,
@@ -155,5 +185,5 @@ public class StateMachine {
     private StateTag state;
     private String lastNumber;
     private PolishNotation result;
-    private StateMachine subautomata;
+    private ParsingMachine subautomata;
 }
