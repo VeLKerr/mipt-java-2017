@@ -16,16 +16,16 @@ public class StateMachineCalculator implements Calculator {
             throw new ParsingException("Cannot parse null string");
         }
 
-        StateMachine evaluator = new StateMachine();
+        StateMachine parser = new StateMachine();
         for (int index = 0; index < expression.length(); index++) {
-            evaluator.transit(expression.charAt(index));
+            parser.transit(expression.charAt(index));
         }
-        evaluator.transit(')');
+        parser.transit(')');
 
-        if (!evaluator.hasFinished()) {
+        if (!parser.hasFinished()) {
             throw new ParsingException("Cannot find the end of the expression");
         }
 
-        return evaluator.evaluateExpression();
+        return parser.getResult().evaluateExpression();
     }
 }

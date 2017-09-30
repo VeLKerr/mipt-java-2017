@@ -1,10 +1,5 @@
 package ru.mipt.java2017.homework.g696.mosyagin.task1;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.EmptyStackException;
-import java.util.Stack;
-
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
 /**
@@ -14,12 +9,10 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
  * @author Mosyagin Mikhail
  * @since 24.09.17
  */
-public class StateMachine implements Serializable {
+public class StateMachine {
     StateMachine() {
         state = StateTag.BEGIN;
         lastNumber = "";
-        polishNotation = new ArrayList<Token>();
-        operations = new Stack<Token>();
         subautomata = null;
     }
 
@@ -45,44 +38,16 @@ public class StateMachine implements Serializable {
         }
     }
 
-    public double evaluateExpression() throws ParsingException {
-        Stack<Double> results = new Stack<Double>();
+    public boolean hasFinished() {
+        return state == StateTag.END;
+    }
 
-        for (Token token : polishNotation) {
-            try {
-                switch (token.getType()) {
-                    case UNARY_PLUS:
-                        break;
-                    case UNARY_MINUS:
-                        results.push(-results.pop());
-                        break;
-                    case BINARY_PLUS:
-                        results.push(results.pop() + results.pop());
-                        break;
-                    case BINARY_MINUS:
-                        results.push(-results.pop() + results.pop());
-                        break;
-                    case MULTIPLICATION:
-                        results.push(results.pop() * results.pop());
-                        break;
-                    case DIVISION:
-                        results.push(1 / results.pop() * results.pop());
-                        break;
-                    case NUMBER:
-                        results.push(token.getValue());
-                        break;
-                    default:
-                        throw new ParsingException("Unexpected token in Polish notation");
-                }
-            } catch (EmptyStackException exception) {
-                throw new ParsingException("Not enough operands for operation");
-            }
+    public PolishNotation getResult() throws ParsingException {
+        if (!hasFinished()) {
+            throw new ParsingException("Cannot return result before finished");
         }
 
-        if (results.size() != 1) {
-            throw new ParsingException("Failed to evaluate expression");
-        }
-        return results.pop();
+        return result;
     }
 
     private void handleSubautomata(char character) throws ParsingException {
@@ -147,7 +112,7 @@ public class StateMachine implements Serializable {
         }
 
         try {
-            polishNotation.add(new Token(Double.parseDouble(lastNumber)));
+            result.pushToken(new Token(Double.parseDouble(lastNumber)));
         } catch (NumberFormatException exception) {
             throw new ParsingException("Cannot parse number " + lastNumber);
         }
@@ -156,30 +121,7 @@ public class StateMachine implements Serializable {
     }
 
     private void pushOperation(char operationSymbol) throws ParsingException {
-        Token operation = new Token(operationSymbol);
-        while (!operations.empty()
-            && getOperationPriority(operations.peek()) >= getOperationPriority(operation)) {
-            polishNotation.add(operations.pop());
-        }
-        operations.push(operation);
-    }
-
-    private int getOperationPriority(Token operation) throws ParsingException {
-        switch (operation.getType()) {
-            case END_OF_EXPRESSION:
-                return Integer.MIN_VALUE;
-            case BINARY_MINUS:
-            case BINARY_PLUS:
-                return 0;
-            case DIVISION:
-            case MULTIPLICATION:
-                return 1;
-            case UNARY_MINUS:
-            case UNARY_PLUS:
-                return 2;
-            default:
-                throw new ParsingException("Unknown operation " + operation);
-        }
+        result.pushToken(new Token(operationSymbol));
     }
 
     private char makeUnary(char operation) throws ParsingException {
@@ -200,10 +142,6 @@ public class StateMachine implements Serializable {
             || isOperation(character);
     }
 
-    public boolean hasFinished() {
-        return state == StateTag.END;
-    }
-
     enum StateTag {
         BEGIN,
         BINARY_OPEARTION,
@@ -216,7 +154,6 @@ public class StateMachine implements Serializable {
 
     private StateTag state;
     private String lastNumber;
-    private ArrayList<Token> polishNotation;
-    private Stack<Token> operations;
+    private PolishNotation result;
     private StateMachine subautomata;
 }
