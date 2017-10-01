@@ -19,7 +19,7 @@
 *.rar
 
 # From mipt-java-2017/.gitignore
-/.idea
+.idea/
 *.iml
 *.ipr
 
