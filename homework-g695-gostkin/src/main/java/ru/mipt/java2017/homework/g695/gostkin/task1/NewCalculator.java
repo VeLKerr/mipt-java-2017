@@ -135,7 +135,7 @@ public class NewCalculator implements Calculator {
   }
 
   private int parseDigit(String expression, Stack<Double> stack,
-    int index) throws ParsingException {
+      int index) throws ParsingException {
     StringBuilder operand = new StringBuilder();
     String result;
     boolean hasPoint = false;
@@ -157,7 +157,7 @@ public class NewCalculator implements Calculator {
   }
 
   private boolean parseOperator(String expression, Stack<Double> stack, Stack<Operator> operators,
-    Operator operator, boolean wasUnary, int index) throws ParsingException {
+      Operator operator, boolean wasUnary, int index) throws ParsingException {
     if (index + 1 == expression.length()) {
       throw new ParsingException("Invalid operators order.");
     }
@@ -172,9 +172,9 @@ public class NewCalculator implements Calculator {
     boolean unary = false;
 
     if (prevOperator == Operator.Null ||
-      prevOperator == Operator.Plus || prevOperator == Operator.Minus ||
-      prevOperator == Operator.Multiply || prevOperator == Operator.Divide ||
-      prevOperator == Operator.LeftBrace) {
+        prevOperator == Operator.Plus || prevOperator == Operator.Minus ||
+        prevOperator == Operator.Multiply || prevOperator == Operator.Divide ||
+        prevOperator == Operator.LeftBrace) {
       if (isPreUnary(operator)) {
         if (operator == Operator.Plus) {
           operator = Operator.UnaryPlus;
