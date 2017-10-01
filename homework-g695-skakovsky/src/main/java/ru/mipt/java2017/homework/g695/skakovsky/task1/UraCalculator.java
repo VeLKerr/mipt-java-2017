@@ -84,7 +84,7 @@ public class UraCalculator implements Calculator {
       case '/':
         return firstArgument / secondArgument;
       default:
-        return new ParsingException("Unknown operator.");
+        throw new ParsingException("Unknown operator.");
     }
     return 0;
   }
