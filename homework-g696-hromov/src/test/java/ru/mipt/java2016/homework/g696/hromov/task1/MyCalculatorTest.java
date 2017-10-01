@@ -7,8 +7,9 @@ import ru.mipt.java2017.homework.tests.task1.AbstractCalculatorTest;
  * Created by igorhromov on 10.10.16.
  */
 public class MyCalculatorTest extends AbstractCalculatorTest {
-    @Override
-    protected Calculator calc() {
-        return new MyCalculator();
-    }
+
+  @Override
+  protected Calculator calc() {
+    return new MyCalculator();
+  }
 }
