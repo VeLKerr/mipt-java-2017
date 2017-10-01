@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @since 01.10.17
  */
 public class UraCalculator implements Calculator {
-  private static double EPS = 1e-9;
+  private static final double EPS = 1e-9;
 
   @Override
   public double calculate(String expression) throws ParsingException {
@@ -74,7 +74,7 @@ public class UraCalculator implements Calculator {
     }
   }
 
-  private double operate(double firstArgument, double secondArgument, char operator) {
+  private double operate(double firstArgument, double secondArgument, char operator) throws ParsingException {
     switch (operator) {
       case '+':
         return firstArgument + secondArgument;
@@ -84,6 +84,8 @@ public class UraCalculator implements Calculator {
         return firstArgument * secondArgument;
       case '/':
         return firstArgument / secondArgument;
+      default:
+        return new ParsingException("Unknown operator.");
     }
     return 0;
   }
