@@ -13,20 +13,21 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
  * @since 28.09.16
  */
 public class JEvalCalculator implements Calculator {
-    protected Evaluator buildEvaluator() {
-        return new Evaluator(EvaluationConstants.SINGLE_QUOTE, false, false, false, false);
-    }
 
-    public double calculate(String expression) throws ParsingException {
-        if (expression == null) {
-            throw new ParsingException("Null expression");
-        }
-        try {
-            Evaluator evaluator = buildEvaluator();
-            String result = evaluator.evaluate(expression);
-            return Double.parseDouble(result);
-        } catch (EvaluationException e) {
-            throw new ParsingException("Invalid expression", e.getCause());
-        }
+  protected Evaluator buildEvaluator() {
+    return new Evaluator(EvaluationConstants.SINGLE_QUOTE, false, false, false, false);
+  }
+
+  public double calculate(String expression) throws ParsingException {
+    if (expression == null) {
+      throw new ParsingException("Null expression");
     }
+    try {
+      Evaluator evaluator = buildEvaluator();
+      String result = evaluator.evaluate(expression);
+      return Double.parseDouble(result);
+    } catch (EvaluationException e) {
+      throw new ParsingException("Invalid expression", e.getCause());
+    }
+  }
 }
