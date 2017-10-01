@@ -10,33 +10,32 @@ import java.util.ArrayList;
  * @author Uriy
  * @since 01.10.17
  */
-public
-class UraCalculator implements Calculator {
-  private static final double EPS = 1e-9;
+public class UraCalculator implements Calculator {
+  private static double EPS = 1e-9;
 
   @Override
   public double calculate(String expression) throws ParsingException {
     return calculate(parseToTokens(expression));
   }
 
-  private final boolean isOperator(char argument) {
+  private boolean isOperator(char argument) {
     return argument == '+' || argument == '-' || argument == '*' ||
            argument == '/';
   }
 
-  private final boolean isMathematicalSymbol(char argument) {
+  private boolean isMathematicalSymbol(char argument) {
     return isOperator(argument) || argument == '(' || argument == ')';
   }
 
-  private final boolean isSymbolOfDecimalNotation(char arg) {
+  private boolean isSymbolOfDecimalNotation(char arg) {
     return arg >= '0' && arg <= '9' || arg == '.';
   }
 
-  private final boolean isDecimalNumber(final String expression) {
+  private boolean isDecimalNumber(final String expression) {
     return expression.matches("[-+]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)");
   }
 
-  private final boolean isCorrectBracketSequence(final String expression) {
+  private boolean isCorrectBracketSequence(String expression) {
     int currentBalance = 0;
     for (int i = 0; i < expression.length(); ++i) {
       if (expression.charAt(i) == '(' || expression.charAt(i) == '{') {
@@ -52,7 +51,7 @@ class UraCalculator implements Calculator {
     return currentBalance == 0;
   }
 
-  private final int operatorPriority(char argument) throws ParsingException {
+  private int operatorPriority(char argument) throws ParsingException {
     switch (argument) {
       case '+':
         return 0;
@@ -75,8 +74,7 @@ class UraCalculator implements Calculator {
     }
   }
 
-  private final double operate(final double firstArgument, final double secondArgument,
-                       final Character operator) {
+  private double operate(double firstArgument, double secondArgument, char operator) {
     switch (operator) {
       case '+':
         return firstArgument + secondArgument;
@@ -90,7 +88,7 @@ class UraCalculator implements Calculator {
     return 0;
   }
 
-  private final ArrayList<String> parseToTokens(String expression) throws
+  private ArrayList<String> parseToTokens(String expression) throws
       ParsingException {
     if (expression == "" || expression == null) {
       throw new ParsingException("Expression is empty.");
@@ -160,7 +158,7 @@ class UraCalculator implements Calculator {
     return tokens;
   }
 
-  private final double calculate(ArrayList<String> tokens) throws ParsingException {
+  private double calculate(ArrayList<String> tokens) throws ParsingException {
     ArrayList<Character> operators = new ArrayList<Character>();
     ArrayList<Double> arguments = new ArrayList<Double>();
     for (int i = 0; i < tokens.size(); ++i) {
