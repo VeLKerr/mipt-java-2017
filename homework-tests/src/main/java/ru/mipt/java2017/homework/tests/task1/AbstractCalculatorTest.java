@@ -112,7 +112,6 @@ public abstract class AbstractCalculatorTest {
     tryFail("foo");
   }
 
-
   @Test(expected = ParsingException.class)
   public void testEmptyBraces() throws ParsingException {
     tryFail("()");
@@ -123,18 +122,15 @@ public abstract class AbstractCalculatorTest {
     tryFail("");
   }
 
-
   @Test(expected = ParsingException.class)
   public void testNull() throws ParsingException {
     tryFail(null);
   }
-  
 
   @Test(expected = ParsingException.class)
   public void testSpacesString() throws ParsingException {
     tryFail("  ");
   }
-  
 
   @Test(expected = ParsingException.class)
   public void testTooMuchBraces() throws ParsingException {
@@ -160,5 +156,4 @@ public abstract class AbstractCalculatorTest {
   public void testBadNumber() throws ParsingException {
     tryFail("1.2.3");
   }
-  
 }
