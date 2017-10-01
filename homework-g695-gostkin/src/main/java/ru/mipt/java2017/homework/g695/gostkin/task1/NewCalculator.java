@@ -108,7 +108,7 @@ public class NewCalculator implements Calculator {
           break;
         default:
           throw new ParsingException(String.format("Operator \"%s\" is not unary.",
-              operator.toString()));
+            operator.toString()));
       }
     } else {
       double right = stack.pop();
@@ -129,9 +129,85 @@ public class NewCalculator implements Calculator {
           break;
         default:
           throw new ParsingException(String.format("Operator \"%s\" is not recognized.",
-              operator.toString()));
+            operator.toString()));
       }
     }
+  }
+
+  private int parseDigit(String expression, Stack<Double> stack,
+    int index) throws ParsingException {
+    StringBuilder operand = new StringBuilder();
+    String result;
+    boolean hasPoint = false;
+    while (index < expression.length() && (Character.isDigit(expression.charAt(index)) ||
+      expression.charAt(index) == '.')) {
+      if (expression.charAt(index) == '.') {
+        if (!hasPoint) {
+          hasPoint = true;
+        } else {
+          throw new ParsingException("Too many points in one number.");
+        }
+      }
+      operand.append(expression.charAt(index++));
+    }
+    --index;
+    result = operand.toString();
+    stack.push(Double.parseDouble(result));
+    return index;
+  }
+
+  private boolean parseOperator(String expression, Stack<Double> stack, Stack<Operator> operators,
+    Operator operator, boolean wasUnary, int index) throws ParsingException {
+    if (index + 1 == expression.length()) {
+      throw new ParsingException("Invalid operators order.");
+    }
+
+    Operator prevOperator;
+    if (index == 0) {
+      prevOperator = Operator.Null;
+    } else {
+      prevOperator = makeOperator(expression.charAt(index - 1));
+    }
+
+    boolean unary = false;
+
+    if (prevOperator == Operator.Null ||
+      prevOperator == Operator.Plus || prevOperator == Operator.Minus ||
+      prevOperator == Operator.Multiply || prevOperator == Operator.Divide ||
+      prevOperator == Operator.LeftBrace) {
+      if (isPreUnary(operator)) {
+        if (operator == Operator.Plus) {
+          operator = Operator.UnaryPlus;
+        } else if (operator == Operator.Minus) {
+          operator = Operator.UnaryMinus;
+        } else {
+          throw new ParsingException(String.format("Operator \"%s\" is not unary.",
+            operator.toString()));
+        }
+
+        unary = true;
+
+        if (wasUnary) {
+          throw new ParsingException("Two unary operators are applied to one number.");
+        }
+
+        wasUnary = true;
+      } else {
+        throw new ParsingException("Non-unary operator is used like unary.");
+      }
+    }
+
+    while (!operators.empty() &&
+      (!unary && getOperatorPriority(operators.lastElement()) >=
+        getOperatorPriority(operator) || unary &&
+        getOperatorPriority(operators.lastElement()) >
+          getOperatorPriority(operator))) {
+      processOperator(stack, operators.pop());
+    }
+
+    operators.push(operator);
+
+    return wasUnary;
   }
 
   /**
@@ -153,7 +229,7 @@ public class NewCalculator implements Calculator {
 
     boolean wasUnary = false;
 
-    expression = expression.replaceAll("[ \t\n]", "");
+    expression = expression.replaceAll("[\\s]", "");
 
     Stack<Double> stack = new Stack<Double>();
     Stack<Operator> operators = new Stack<Operator>();
@@ -177,72 +253,9 @@ public class NewCalculator implements Calculator {
           operators.pop();
           wasUnary = false;
         } else if (operator != Operator.Digit) {
-          if (i + 1 == expression.length()) {
-            throw new ParsingException("Invalid operators order.");
-          }
-
-          Operator prevOperator;
-          if (i == 0) {
-            prevOperator = Operator.Null;
-          } else {
-            prevOperator = makeOperator(expression.charAt(i - 1));
-          }
-
-          boolean unary = false;
-
-          if (prevOperator == Operator.Null ||
-              prevOperator == Operator.Plus || prevOperator == Operator.Minus ||
-              prevOperator == Operator.Multiply || prevOperator == Operator.Divide ||
-              prevOperator == Operator.LeftBrace) {
-            if (isPreUnary(operator)) {
-              if (operator == Operator.Plus) {
-                operator = Operator.UnaryPlus;
-              } else if (operator == Operator.Minus) {
-                operator = Operator.UnaryMinus;
-              } else {
-                throw new ParsingException(String.format("Operator \"%s\" is not unary.",
-                    operator.toString()));
-              }
-
-              unary = true;
-
-              if (wasUnary) {
-                throw new ParsingException("Two unary operators are applied to one number.");
-              }
-
-              wasUnary = true;
-            } else {
-              throw new ParsingException("Non-unary operator is used like unary.");
-            }
-          }
-
-          while (!operators.empty() &&
-              (!unary && getOperatorPriority(operators.lastElement()) >=
-                  getOperatorPriority(operator) || unary &&
-                  getOperatorPriority(operators.lastElement()) >
-                      getOperatorPriority(operator))) {
-            processOperator(stack, operators.pop());
-          }
-
-          operators.push(operator);
+          wasUnary = parseOperator(expression, stack, operators, operator, wasUnary, i);
         } else {
-          StringBuilder operand = new StringBuilder();
-          String result;
-          boolean hasPoint = false;
-          while (i < expression.length() && (Character.isDigit(expression.charAt(i)) ||
-              expression.charAt(i) == '.')) {
-            if (expression.charAt(i) == '.') {
-              if (!hasPoint) {
-                hasPoint = true;
-              } else {
-                throw new ParsingException("Too many points in one number.");
-              }
-            }
-            operand.append(expression.charAt(i++));
-          }
-          --i;
-          result = operand.toString();
-          stack.push(Double.parseDouble(result));
+          i = parseDigit(expression, stack, i);
           wasUnary = false;
         }
       }

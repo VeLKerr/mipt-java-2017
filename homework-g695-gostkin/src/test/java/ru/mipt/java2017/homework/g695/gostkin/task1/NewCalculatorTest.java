@@ -19,7 +19,7 @@ public class NewCalculatorTest extends AbstractCalculatorTest {
 
   protected void test(String expression, double expected) throws ParsingException {
     String errorMessage = String
-        .format("Bad result for expression '%s', %.2f expected", expression, expected);
+      .format("Bad result for expression '%s', %.2f expected", expression, expected);
     double actual = calc().calculate(expression);
     Assert.assertEquals(errorMessage, expected, actual, 1e-6);
   }
