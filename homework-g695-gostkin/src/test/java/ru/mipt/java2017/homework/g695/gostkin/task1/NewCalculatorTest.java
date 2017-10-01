@@ -29,18 +29,46 @@ public class NewCalculatorTest extends AbstractCalculatorTest {
   }
 
   @Test
-  public void numberTests() throws ParsingException {
+  public void numberTestMiddle() throws ParsingException {
     test("(((3 + 2) / (1 + 1) + 3) -  2.5 * 2)", 0.5);
+  }
+
+  @Test
+  public void numberTestZeroDivision() throws ParsingException {
     test("1 / (1 - 1)", Double.POSITIVE_INFINITY);
+  }
+
+  @Test
+  public void numberTestUnary() throws ParsingException {
     test("(1) + (1) + (-(1))", 1);
   }
 
   @Test(expected = ParsingException.class)
-  public void exceptionTests() throws ParsingException {
+  public void exceptionTestLetters() throws ParsingException {
     tryFail("Hola!");
     tryFail(".45");
     tryFail("((()(())))()");
     tryFail("5 + (2 + 3");
     tryFail("2-+3");
+  }
+
+  @Test(expected = ParsingException.class)
+  public void exceptionTestDotNumber() throws ParsingException {
+    tryFail(".45");
+  }
+
+  @Test(expected = ParsingException.class)
+  public void exceptionTestBraces() throws ParsingException {
+    tryFail("((()(())))()");
+  }
+
+  @Test(expected = ParsingException.class)
+  public void exceptionTestInvalidBrace() throws ParsingException {
+    tryFail("5 + (2 + 3");
+  }
+
+  @Test(expected = ParsingException.class)
+  public void exceptionTestUnary() throws ParsingException {
+    tryFail("2+++3");
   }
 }
