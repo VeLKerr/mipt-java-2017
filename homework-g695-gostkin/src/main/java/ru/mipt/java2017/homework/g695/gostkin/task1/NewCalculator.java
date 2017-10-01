@@ -153,9 +153,7 @@ public class NewCalculator implements Calculator {
 
     boolean wasUnary = false;
 
-    expression = expression.replaceAll(" ", "");
-    expression = expression.replaceAll("\t", "");
-    expression = expression.replaceAll("\n", "");
+    expression = expression.replaceAll("[ \t\n]", "");
 
     Stack<Double> stack = new Stack<Double>();
     Stack<Operator> operators = new Stack<Operator>();
