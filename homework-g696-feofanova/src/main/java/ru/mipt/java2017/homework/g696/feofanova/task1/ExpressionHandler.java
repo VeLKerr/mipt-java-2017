@@ -9,27 +9,27 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
  * @since 25.09.17
  */
 public interface ExpressionHandler {
-    /**
-     * Func that handles number
-     *
-     * @param number is a value to be pushed
-     * @throws ParsingException if input expression was invalid
-     */
-    void pushNumber(double number) throws ParsingException;
+  /**
+   * Func that handles number
+   *
+   * @param number is a value to be pushed
+   * @throws ParsingException if input expression was invalid
+   */
+  void pushNumber(double number) throws ParsingException;
 
-    /**
-     * Func that handles operation
-     *
-     * @param operator is an operator to be pushed
-     * @throws ParsingException if input expression was invalid
-     */
-    void pushOperator(char operator) throws ParsingException;
+  /**
+   * Func that handles operation
+   *
+   * @param operator is an operator to be pushed
+   * @throws ParsingException if input expression was invalid
+   */
+  void pushOperator(char operator) throws ParsingException;
 
-    /**
-     * Gives the answer
-     *
-     * @return correct answer
-     * @throws ParsingException if input expression was invalid
-     */
-    double getAnswer() throws ParsingException;
+  /**
+   * Gives the answer
+   *
+   * @return correct answer
+   * @throws ParsingException if input expression was invalid
+   */
+  double getAnswer() throws ParsingException;
 }
