@@ -86,7 +86,6 @@ public class UraCalculator implements Calculator {
       default:
         throw new ParsingException("Unknown operator.");
     }
-    return 0;
   }
 
   private ArrayList<String> parseToTokens(String expression) throws
