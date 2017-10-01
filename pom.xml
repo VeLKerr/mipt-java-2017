@@ -16,7 +16,9 @@
         <module>homework-tests</module>
         <module>homework-g000-lavrentyev</module>
         <module>homework-g696-feofanova</module>
+        <module>homework-g697-IvaninVitaly</module>
         <module>homework-g694-kalinin</module>
+        <module>homework-g695-gazizullin</module>
     </modules>
 
     <build>
