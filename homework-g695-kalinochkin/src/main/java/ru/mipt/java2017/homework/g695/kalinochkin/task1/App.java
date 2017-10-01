@@ -20,6 +20,7 @@ public class App {
             System.out.print("Result: ");
             System.out.println(result);
         } catch (ParsingException e) {
+            // We don't want to see ugly stack traces if an exception is thrown
             System.err.println(e.getMessage());
             System.exit(1);
         }

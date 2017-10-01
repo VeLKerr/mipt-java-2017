@@ -66,16 +66,6 @@ class MyCalculator implements Calculator {
     }
 
     /**
-     * Checks whether the operation is right-asociative.
-     *
-     * @param t token with the operation
-     * @return true if the operation is right-associative, false otherwise
-     */
-    protected boolean isRightAssoc(Token t) {
-        return t.getType() == TokenType.UNARY_OP;
-    }
-
-    /**
      * Evaluates the unary operation.
      *
      * @param op operation to evaluate
@@ -116,6 +106,41 @@ class MyCalculator implements Calculator {
         return 0;
     }
 
+
+    /**
+     * Creates a token by the operation symbol
+     *
+     * @param c    operation symbol
+     * @param last type of the previous token
+     * @return operation token
+     * @throws ParsingException if the operation is not allowed in this context
+     */
+    protected Token createOperation(char c, TokenType last) throws ParsingException {
+        if (last == TokenType.LEFTPAR || last == TokenType.BINARY_OP) {
+            if (c != '+' && c != '-') {
+                throw new ParsingException("Invalid unary operation: " + c);
+            }
+            return new Token(TokenType.UNARY_OP, "" + c);
+        } else if (last == TokenType.UNARY_OP) {
+            throw new ParsingException("Multiple unary operations are not allowed");
+        } else {
+            return new Token(TokenType.BINARY_OP, "" + c);
+        }
+    }
+
+    /**
+     * Ensures that the condition is false. Works like assert but throws {@code ParsingException}
+     *
+     * @param condition a condition to check
+     * @param message   exception message
+     * @throws ParsingException if the condition is true
+     */
+    private void ensureFalse(boolean condition, String message) throws ParsingException {
+        if (condition) {
+            throw new ParsingException(message);
+        }
+    }
+
     /**
      * Converts the expression into a list of tokens.
      *
@@ -123,70 +148,44 @@ class MyCalculator implements Calculator {
      * @return list of tokens
      * @throws ParsingException if the expression could not be tokenized
      */
-    protected ArrayList<Token> tokenize(String expression) throws ParsingException {
+    private ArrayList<Token> tokenize(String expression) throws ParsingException {
         ArrayList<Token> tokens = new ArrayList<>();
         String number = ""; // accumulates current numeric literal
         TokenType last = TokenType.LEFTPAR; // the previous token
         int pars = 0; // number of unclosed parentheses
         for (char c : (expression + ' ').toCharArray()) {
             if (Character.isDigit(c) || c == '.') {
-                if (last == TokenType.NUMBER) {
-                    throw new ParsingException("Operation expected, number found");
-                }
+                ensureFalse(last == TokenType.NUMBER, "Operation expected, number found");
                 number += c;
-            } else if (c == '+' || c == '-' || c == '*' || c == '/') {
-                if (!number.isEmpty()) {
-                    tokens.add(new Token(TokenType.NUMBER, number));
-                    last = TokenType.NUMBER;
-                    number = "";
-                }
-                if (last == TokenType.LEFTPAR || last == TokenType.BINARY_OP) {
-                    if (c != '+' && c != '-') {
-                        throw new ParsingException("Invalid unary operation: " + c);
-                    }
-                    tokens.add(new Token(TokenType.UNARY_OP, "" + c));
-                    last = TokenType.UNARY_OP;
-                } else if (last == TokenType.UNARY_OP) {
-                    throw new ParsingException("Multiple unary operations are not allowed");
-                } else {
-                    tokens.add(new Token(TokenType.BINARY_OP, "" + c));
-                    last = TokenType.BINARY_OP;
-                }
-            } else if (Character.isWhitespace(c)) {
-                if (!number.isEmpty()) {
-                    tokens.add(new Token(TokenType.NUMBER, number));
-                    last = TokenType.NUMBER;
-                    number = "";
-                }
-            } else if (c == '(') {
-                if (!number.isEmpty() || last == TokenType.NUMBER || last == TokenType.RIGHTPAR) {
-                    throw new ParsingException("Operation expected, '(' found");
-                }
-                tokens.add(new Token(TokenType.LEFTPAR, "("));
-                last = TokenType.LEFTPAR;
-                pars++;
-            } else if (c == ')') {
-                if (!number.isEmpty()) {
-                    tokens.add(new Token(TokenType.NUMBER, number));
-                    last = TokenType.NUMBER;
-                    number = "";
-                }
-                if (last == TokenType.LEFTPAR || last == TokenType.BINARY_OP || last == TokenType.UNARY_OP) {
-                    throw new ParsingException("Number expected, ')' found");
-                }
-                if (pars <= 0) {
-                    throw new ParsingException("Unpaired parentheses");
-                }
-                tokens.add(new Token(TokenType.RIGHTPAR, ")"));
-                last = TokenType.RIGHTPAR;
-                pars--;
             } else {
-                throw new ParsingException("Invalid character: " + c);
+                if (!number.isEmpty()) {
+                    tokens.add(new Token(TokenType.NUMBER, number));
+                    last = TokenType.NUMBER;
+                    number = "";
+                }
+                if (c == '+' || c == '-' || c == '*' || c == '/') {
+                    Token t = createOperation(c, last);
+                    tokens.add(t);
+                    last = t.getType();
+                } else if (c == '(') {
+                    ensureFalse(last == TokenType.NUMBER || last == TokenType.RIGHTPAR,
+                            "Operation expected, '(' found");
+                    tokens.add(new Token(TokenType.LEFTPAR, "("));
+                    last = TokenType.LEFTPAR;
+                    pars++;
+                } else if (c == ')') {
+                    ensureFalse(last == TokenType.LEFTPAR || last == TokenType.BINARY_OP || last == TokenType.UNARY_OP,
+                            "Number expected, ')' found");
+                    ensureFalse(pars <= 0, "Unpaired parentheses");
+                    tokens.add(new Token(TokenType.RIGHTPAR, ")"));
+                    last = TokenType.RIGHTPAR;
+                    pars--;
+                } else {
+                    ensureFalse(!Character.isWhitespace(c), "Invalid character: " + c);
+                }
             }
         }
-        if (pars != 0) {
-            throw new ParsingException("Unpaired parentheses");
-        }
+        ensureFalse(pars != 0, "Unpaired parentheses");
         return tokens;
     }
 
@@ -196,7 +195,7 @@ class MyCalculator implements Calculator {
      * @param tokens the list of tokens
      * @return the list of tokens in postfix notation
      */
-    protected ArrayList<Token> reorder(ArrayList<Token> tokens) {
+    private ArrayList<Token> reorder(ArrayList<Token> tokens) {
         ArrayList<Token> result = new ArrayList<>();
         Stack<Token> stack = new Stack<>();
         for (Token t : tokens) {
@@ -207,7 +206,7 @@ class MyCalculator implements Calculator {
                 case UNARY_OP:
                 case BINARY_OP:
                     while (!stack.empty() && stack.peek().getType() != TokenType.LEFTPAR &&
-                            getPrecedence(stack.peek()) >= getPrecedence(t) && !isRightAssoc(stack.peek())) {
+                            getPrecedence(stack.peek()) >= getPrecedence(t)) {
                         result.add(stack.pop());
                     }
                     // fallthrough
