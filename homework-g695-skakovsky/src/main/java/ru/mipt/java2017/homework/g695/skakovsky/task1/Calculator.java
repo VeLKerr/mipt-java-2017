@@ -1,4 +1,6 @@
-package task1;
+package ru.mipt.java2017.homework.g695.skakovsky.task1;
+
+import ru.mipt.java2017.homework.base.task1.ParsingException;
 
 public interface Calculator {
     /**

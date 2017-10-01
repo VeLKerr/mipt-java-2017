@@ -1,4 +1,4 @@
-package task1;
+package ru.mipt.java2017.homework.g695.skakovsky.task1;
 
 public class ParsingException extends Exception {
 
