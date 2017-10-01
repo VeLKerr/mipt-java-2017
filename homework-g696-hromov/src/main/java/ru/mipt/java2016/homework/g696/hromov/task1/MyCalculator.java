@@ -92,7 +92,7 @@ public class MyCalculator implements Calculator {
         char operation = expression.charAt(i);
         if ((operation == '-') && ((i == 0) || (isOperation(expression.charAt(i - 1)))
             || (expression.charAt(i - 1) == '('))) {
-            operationsStack.push('#');
+          operationsStack.push('#');
         } else {
           while (!operationsStack.empty() &&
             priorityOfOperation(operationsStack.peek()) >= priorityOfOperation(
