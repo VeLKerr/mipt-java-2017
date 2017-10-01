@@ -84,7 +84,7 @@ public class UraCalculator implements Calculator {
     }
 
     private final ArrayList<String> parseToTokens(String expression) throws ParsingException {
-        if (expression == "") {
+        if (expression == "" || expression == null) {
             throw  new ParsingException("Expression is empty.");
         }
         if (!expression.matches("[ \\-/+/0-9./*/()\t\n]+")) {
@@ -238,7 +238,7 @@ public class UraCalculator implements Calculator {
     }
 
     @Override
-    public final double calculate(final String expression) throws ParsingException {
+    public double calculate(String expression) throws ParsingException {
         return calculate(parseToTokens(expression));
     }
 
