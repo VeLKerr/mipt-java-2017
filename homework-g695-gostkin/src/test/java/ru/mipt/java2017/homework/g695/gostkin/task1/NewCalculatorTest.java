@@ -46,10 +46,6 @@ public class NewCalculatorTest extends AbstractCalculatorTest {
   @Test(expected = ParsingException.class)
   public void exceptionTestLetters() throws ParsingException {
     tryFail("Hola!");
-    tryFail(".45");
-    tryFail("((()(())))()");
-    tryFail("5 + (2 + 3");
-    tryFail("2-+3");
   }
 
   @Test(expected = ParsingException.class)
