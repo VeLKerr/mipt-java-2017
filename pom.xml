@@ -16,6 +16,7 @@
         <module>homework-tests</module>
         <module>homework-g000-lavrentyev</module>
         <module>homework-g696-feofanova</module>
+        <module>homework-g694-kalinin</module>
     </modules>
 
     <build>
@@ -174,7 +175,14 @@
                                 <!-- Miscellaneous other checks.                   -->
                                 <!-- See http://checkstyle.sf.net/config_misc.html -->
                                 <module name="ArrayTypeStyle"/>
-                                <module name="Indentation"/>
+                                <module name="Indentation">
+                                    <property name="basicOffset" value="2"/>
+                                    <property name="braceAdjustment" value="0"/>
+                                    <property name="caseIndent" value="2"/>
+                                    <property name="throwsIndent" value="4"/>
+                                    <property name="lineWrappingIndentation" value="4"/>
+                                    <property name="arrayInitIndent" value="2"/>
+                                </module>
                                 <module name="TodoComment"/>
                                 <module name="UpperEll"/>
 
