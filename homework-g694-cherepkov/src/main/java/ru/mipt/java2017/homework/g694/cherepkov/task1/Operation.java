@@ -73,7 +73,8 @@ public class Operation {
   }
 
   /**
-   * Returns the priority for the operation Table of priorities (from highest ones):
+   * Returns the priority for the operation
+   * Table of priorities (from highest ones):
    * -(unary), +(unary)
    * *, /
    * +(binary), -(binary)
