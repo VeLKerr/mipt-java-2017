@@ -33,8 +33,8 @@ public class MyCalculator implements Calculator {
 
   /**
    * @param operation current operation to be proceeded
-   * @throws ParsingException in case operation can not be done (e.g. missing numbers in
-   * expression)
+   * @throws ParsingException in case operation can not be done (e.g. not enough elements in
+   * numbers)
    */
   private void proceedOperation(Operation operation) throws ParsingException {
     Double leftNumber;
