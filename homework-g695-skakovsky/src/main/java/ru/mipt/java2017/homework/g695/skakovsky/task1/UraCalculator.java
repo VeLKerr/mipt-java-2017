@@ -11,7 +11,6 @@ import java.util.ArrayList;
  * @since 01.10.17
  */
 public class UraCalculator implements Calculator {
-  private static final double EPS = 1e-9;
 
   @Override
   public double calculate(String expression) throws ParsingException {
