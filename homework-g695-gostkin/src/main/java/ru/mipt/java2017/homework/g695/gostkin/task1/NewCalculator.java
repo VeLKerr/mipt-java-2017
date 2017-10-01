@@ -1,5 +1,6 @@
 package ru.mipt.java2017.homework.g695.gostkin.task1;
 
+import java.util.NoSuchElementException;
 import ru.mipt.java2017.homework.base.task1.Calculator;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
@@ -25,7 +26,20 @@ public class NewCalculator implements Calculator {
     UnaryPlus,
     Space,
     Digit,
-    Point
+    Point,
+    Null
+  }
+
+  private boolean isPreUnary(Operator operator) {
+    switch (operator) {
+      case Plus:
+      case Minus:
+      case UnaryPlus:
+      case UnaryMinus:
+        return true;
+      default:
+        return false;
+    }
   }
 
   private boolean isUnary(Operator operator) {
@@ -57,6 +71,7 @@ public class NewCalculator implements Calculator {
       case '/':
         return Operator.Divide;
       case ' ':
+      case '\t':
         return Operator.Space;
       case '.':
         return Operator.Point;
@@ -77,8 +92,7 @@ public class NewCalculator implements Calculator {
       case UnaryMinus:
         return 3;
       default:
-        throw new ParsingException(String.format("Operator \"%s\" does not have priority.",
-            operator.toString()));
+        return -1;
     }
   }
 
@@ -113,13 +127,35 @@ public class NewCalculator implements Calculator {
         case Divide:
           stack.push(left / right);
           break;
+        default:
+          throw new ParsingException(String.format("Operator \"%s\" is not recognized.",
+              operator.toString()));
       }
     }
   }
 
+  /**
+   * Takes String with valid math expression. Returns result of its execution.
+   *
+   * May contain real numbers, operators +, -, *, / and braces (, ). Any spaces could be in the
+   * expression.
+   *
+   * @param expression string with arithmetic expression
+   * @return the result of its execution
+   * @throws ParsingException exception when the expression is not valid
+   */
+
   @Override
   public double calculate(String expression) throws ParsingException {
-    boolean unary = true;
+    if (expression == null) {
+      throw new ParsingException("No expression.");
+    }
+
+    boolean wasUnary = false;
+
+    expression = expression.replaceAll(" ", "");
+    expression = expression.replaceAll("\t", "");
+    expression = expression.replaceAll("\n", "");
 
     Stack<Double> stack = new Stack<Double>();
     Stack<Operator> operators = new Stack<Operator>();
@@ -131,45 +167,96 @@ public class NewCalculator implements Calculator {
       if (operator != Operator.Space) {
         if (operator == Operator.LeftBrace) {
           operators.push(Operator.LeftBrace);
-          unary = true;
+          wasUnary = false;
         } else if (operator == Operator.RightBrace) {
-          while (operators.lastElement() != Operator.LeftBrace) {
-            processOperator(stack, operators.pop());
+          try {
+            while (operators.lastElement() != Operator.LeftBrace) {
+              processOperator(stack, operators.pop());
+            }
+          } catch (NoSuchElementException exception) {
+            throw new ParsingException("Unbalanced braces.");
+          }
+          operators.pop();
+          wasUnary = false;
+        } else if (operator != Operator.Digit) {
+          if (i + 1 == expression.length()) {
+            throw new ParsingException("Invalid operators order.");
           }
 
-          operators.pop();
-          unary = false;
-        } else if (operator != Operator.Digit) {
-          boolean unaryFinal = unary && isUnary(operator);
+          Operator prevOperator;
+          if (i == 0) {
+            prevOperator = Operator.Null;
+          } else {
+            prevOperator = makeOperator(expression.charAt(i - 1));
+          }
+
+          boolean unary = false;
+
+          if (prevOperator == Operator.Null ||
+              prevOperator == Operator.Plus || prevOperator == Operator.Minus ||
+              prevOperator == Operator.Multiply || prevOperator == Operator.Divide ||
+              prevOperator == Operator.LeftBrace) {
+            if (isPreUnary(operator)) {
+              if (operator == Operator.Plus) {
+                operator = Operator.UnaryPlus;
+              } else if (operator == Operator.Minus) {
+                operator = Operator.UnaryMinus;
+              } else {
+                throw new ParsingException(String.format("Operator \"%s\" is not unary.",
+                    operator.toString()));
+              }
+
+              unary = true;
+
+              if (wasUnary) {
+                throw new ParsingException("Two unary operators are applied to one number.");
+              }
+
+              wasUnary = true;
+            } else {
+              throw new ParsingException("Non-unary operator is used like unary.");
+            }
+          }
 
           while (!operators.empty() &&
-              (!unaryFinal && getOperatorPriority(operators.lastElement()) >=
-                  getOperatorPriority(operator)
-                  || unaryFinal && getOperatorPriority(operators.lastElement()) >
-                  getOperatorPriority(operator))
-              ) {
+              (!unary && getOperatorPriority(operators.lastElement()) >=
+                  getOperatorPriority(operator) || unary &&
+                  getOperatorPriority(operators.lastElement()) >
+                      getOperatorPriority(operator))) {
             processOperator(stack, operators.pop());
           }
 
           operators.push(operator);
-          unary = true;
         } else {
           StringBuilder operand = new StringBuilder();
           String result;
+          boolean hasPoint = false;
           while (i < expression.length() && (Character.isDigit(expression.charAt(i)) ||
               expression.charAt(i) == '.')) {
+            if (expression.charAt(i) == '.') {
+              if (!hasPoint) {
+                hasPoint = true;
+              } else {
+                throw new ParsingException("Too many points in one number.");
+              }
+            }
             operand.append(expression.charAt(i++));
           }
           --i;
           result = operand.toString();
           stack.push(Double.parseDouble(result));
-          unary = false;
+          wasUnary = false;
         }
       }
     }
     while (!operators.empty()) {
       processOperator(stack, operators.pop());
     }
-    return stack.lastElement();
+
+    if (!stack.empty()) {
+      return stack.lastElement();
+    } else {
+      throw new ParsingException("Expression has no result");
+    }
   }
 }
