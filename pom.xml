@@ -15,9 +15,11 @@
         <module>homework-base</module>
         <module>homework-tests</module>
         <module>homework-g000-lavrentyev</module>
+        <module>homework-g695-gostkin</module>
     </modules>
 
     <build>
+        <defaultGoal>test</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
