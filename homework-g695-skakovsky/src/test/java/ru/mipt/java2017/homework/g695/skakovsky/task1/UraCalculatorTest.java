@@ -10,12 +10,9 @@ import ru.mipt.java2017.homework.tests.task1.AbstractCalculatorTest;
  *
  */
 
-
-public class UraCalculatorTest extends AbstractCalculatorTest {
-
-    @Override
-    protected Calculator calc() {
-        return new UraCalculator();
-    }
-
+public
+class UraCalculatorTest extends AbstractCalculatorTest {
+  @Override protected Calculator calc() {
+    return new UraCalculator();
+  }
 }
