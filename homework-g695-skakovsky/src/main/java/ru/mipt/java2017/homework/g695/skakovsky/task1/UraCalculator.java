@@ -237,6 +237,7 @@ public class UraCalculator implements Calculator {
         return arguments.get(0);
     }
 
+    @Override
     public final double calculate(final String expression) throws ParsingException {
         return calculate(parseToTokens(expression));
     }
