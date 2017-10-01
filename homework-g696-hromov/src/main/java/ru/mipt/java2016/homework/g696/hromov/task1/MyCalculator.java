@@ -91,8 +91,8 @@ public class MyCalculator implements Calculator {
       } else if (isOperation(expression.charAt(i))) {
         char operation = expression.charAt(i);
         if ((operation == '-') && ((i == 0) || (isOperation(expression.charAt(i - 1)))
-          || (expression.charAt(i - 1) == '('))) {
-          operationsStack.push('#');
+            || (expression.charAt(i - 1) == '('))) {
+            operationsStack.push('#');
         } else {
           while (!operationsStack.empty() &&
             priorityOfOperation(operationsStack.peek()) >= priorityOfOperation(
