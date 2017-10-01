@@ -9,7 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.mipt.java2017</groupId>
     <artifactId>homework-g695-gazizullin</artifactId>
     <version>1.0.0</version>
 

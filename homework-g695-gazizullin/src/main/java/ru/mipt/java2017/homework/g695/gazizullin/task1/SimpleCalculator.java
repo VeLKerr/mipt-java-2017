@@ -1,11 +1,11 @@
-package ru.mipt.java2017.homework.g695.gazizullin;
+package ru.mipt.java2017.homework.g695.gazizullin.task1;
 
 import ru.mipt.java2017.homework.base.task1.Calculator;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
 import java.util.Stack;
 
-import static ru.mipt.java2017.homework.g695.gazizullin.Parser.*;
+import static ru.mipt.java2017.homework.g695.gazizullin.task1.Parser.*;
 
 /**
  * @author Malik R. Gazizullin
