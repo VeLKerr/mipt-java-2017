@@ -3,6 +3,7 @@ package ru.mipt.java2017.homework.g694.cherepkov.task1;
 import java.util.EmptyStackException;
 import java.util.NoSuchElementException;
 import java.util.Stack;
+
 import ru.mipt.java2017.homework.base.task1.Calculator;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
@@ -31,12 +32,14 @@ public class MyCalculator implements Calculator {
   }
 
   /**
-   *
    * @param operation current operation to be proceeded
-   * @throws ParsingException in case operation can not be done (e.g. missing numbers in expression)
+   * @throws ParsingException in case operation can not be done (e.g. missing numbers in
+   * expression)
    */
-  private void proceed_operation(Operation operation) throws ParsingException {
-    Double leftNumber, rightNumber, resultNumber;
+  private void proceedOperation(Operation operation) throws ParsingException {
+    Double leftNumber;
+    Double rightNumber;
+    Double resultNumber;
 
     if (operation.isUnary()) {
       try {
@@ -83,7 +86,6 @@ public class MyCalculator implements Calculator {
   }
 
   /**
-   *
    * @param expression string containing arithmetic expression
    * @return result of expression
    * @throws ParsingException in case of parsing error
@@ -110,7 +112,7 @@ public class MyCalculator implements Calculator {
       } else if (expression.charAt(position) == ')') {
         try {
           while (operations.lastElement().getSign() != '(') {
-            proceed_operation(operations.pop());
+            proceedOperation(operations.pop());
           }
           operations.pop();
           unaryAllowedHere = false;
@@ -122,7 +124,7 @@ public class MyCalculator implements Calculator {
             unaryAllowedHere && Operation.canBeUnary(expression.charAt(position)));
         while (!operations.isEmpty() && operations.lastElement().getPriority() >= newOperation
             .getPriority()) {
-          proceed_operation(operations.pop());
+          proceedOperation(operations.pop());
         }
         operations.push(newOperation);
         unaryAllowedHere = true;
@@ -149,7 +151,7 @@ public class MyCalculator implements Calculator {
     }
 
     while (!operations.isEmpty()) {
-      proceed_operation(operations.pop());
+      proceedOperation(operations.pop());
     }
 
     if (numbers.size() != 1) {

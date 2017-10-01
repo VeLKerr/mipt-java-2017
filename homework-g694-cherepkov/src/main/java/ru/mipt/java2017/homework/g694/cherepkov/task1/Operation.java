@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Operation {
 
-  private static final List<Character> availableOperations = Arrays.asList('+', '-', '*', '/');
+  private static final List<Character> AVAILABLE_OPERATIONS = Arrays.asList('+', '-', '*', '/');
 
   private Character sign;
   private boolean isUnary;
@@ -31,7 +31,7 @@ public class Operation {
    * @return true if exists, false otherwise
    */
   static boolean isOperation(char sign) {
-    return availableOperations.contains(sign);
+    return AVAILABLE_OPERATIONS.contains(sign);
   }
 
   /**
@@ -45,7 +45,6 @@ public class Operation {
   }
 
   /**
-   *
    * @param sign sign of operation to set
    */
   public void setSign(Character sign) {
@@ -53,7 +52,6 @@ public class Operation {
   }
 
   /**
-   *
    * @param unary true to switch operation to unary, false to switch operation to binary
    */
   public void setUnary(boolean unary) {
@@ -61,7 +59,6 @@ public class Operation {
   }
 
   /**
-   *
    * @return sign of operation
    */
   Character getSign() {
@@ -69,7 +66,6 @@ public class Operation {
   }
 
   /**
-   *
    * @return true if operation is unary, false if binary
    */
   boolean isUnary() {
@@ -77,11 +73,10 @@ public class Operation {
   }
 
   /**
-   * Returns the priority for the operation
-   * Table of priorities (from highest ones):
-   *  -(unary), +(unary)
-   *  *, /
-   *  +(binary), -(binary)
+   * Returns the priority for the operation Table of priorities (from highest ones):
+   * -(unary), +(unary)
+   * *, /
+   * +(binary), -(binary)
    *
    * @return 3 if unary, 2 if * or /, 1 if + or -, 0 otherwise
    */
