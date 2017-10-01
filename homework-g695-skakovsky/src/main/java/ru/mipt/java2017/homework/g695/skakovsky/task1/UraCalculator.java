@@ -5,6 +5,11 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
 
 import java.util.ArrayList;
 
+/**
+ * @author Uyri
+ * @since 01.10.17
+ */
+
 public class UraCalculator implements Calculator {
 
     private final double EPS = 1e-9;

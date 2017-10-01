@@ -6,7 +6,7 @@ import ru.mipt.java2017.homework.tests.task1.AbstractCalculatorTest;
 /**
  *
  * @author Uriy
- * @ 01.01.17
+ * @since 01.01.17
  *
  */
 
