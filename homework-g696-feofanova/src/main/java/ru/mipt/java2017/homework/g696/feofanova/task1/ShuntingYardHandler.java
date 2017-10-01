@@ -7,10 +7,17 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
  * ShuntingYardHandler implements ExpressionHandler. It's a specific implementation of handler, that
  * using shunting-yard algorithm with 2 stacks: for numbers and for operators. We give for each
  * operator the priority and calculate expressions in stacks when it possible.
+ * @author Mary Feofanova
+ * @since 25.09.17
  */
 public class ShuntingYardHandler implements ExpressionHandler {
 
-    // constructor.
+    /**
+     * Constructor.
+     * Initialise {@link ShuntingYardHandler#numbersStack},
+     * {@link ShuntingYardHandler#functionsStack},
+     * and {@link ShuntingYardHandler#isPrevNumber}
+     */
     public ShuntingYardHandler() {
         numbersStack = new Stack<Double>();
         functionsStack = new Stack<Character>();
@@ -18,15 +25,23 @@ public class ShuntingYardHandler implements ExpressionHandler {
         isPrevNumber = false;
     }
 
-    // we keep numbers in special stack.
+    /** We keep numbers in special stack
+     *
+     * @param number is a value to be pushed
+     * @throws ParsingException if input expression was invalid
+     */
     public void pushNumber(double number) throws ParsingException {
         numbersStack.push(number);
         isPrevNumber = true;
     }
 
-    // same for operators, but sometimes we should calculate intermediate expressions.
+    /** Same for operators, but sometimes we should calculate intermediate expressions
+     *
+     * @param operator is an operator to be pushed
+     * @throws ParsingException if input expression was invalid
+     */
     public void pushOperator(char operator) throws ParsingException {
-        // firstly, to make our task more simple, we convert unary + and - operations to binary.
+        // firstly, to make our task more simple, we convert unary + and - operators to binary.
         // it's only possible if the last token was brace or it was operator with less priority.
         if ((operator == '+' || operator == '-') && !isPrevNumber) {
             switch (functionsStack.peek()) {
@@ -68,7 +83,11 @@ public class ShuntingYardHandler implements ExpressionHandler {
         }
     }
 
-    // func that returns the answer.
+    /** Func that returns the answer
+     *
+     * @return correct answer
+     * @throws ParsingException if input expression was invalid
+     */
     public double getAnswer() throws ParsingException {
         if (numbersStack.size() != 1 || !functionsStack.empty()) {
             // if there isn't only one number or remained some operators, something wrong with expression.

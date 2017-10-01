@@ -8,11 +8,24 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
  * AbstractTokenCalculator implements interface Calculator from base. This class realises expression
  * parsing using StringTokenizer. Also it used interface ExpressionHandler, that calculate
  * expressions.
+ * @author Mary Feofanova
+ * @since 25.09.17
  */
 public abstract class AbstractTokenCalculator implements Calculator {
-    // fabric of handlers.
+    /**
+     * Fabric of handlers
+     *
+     * @return ExpressionHandler object
+     */
     public abstract ExpressionHandler createExpressionHandler();
 
+    /**
+     * Main method, that calculates something
+     *
+     * @param expression string with arithmetic expression that should be calculate
+     * @return correct answer
+     * @throws ParsingException if input expression was invalid
+     */
     public double calculate(String expression) throws ParsingException {
         if (expression == null) {
             throw new ParsingException("Null expression");
@@ -24,7 +37,7 @@ public abstract class AbstractTokenCalculator implements Calculator {
 
             // this calculator is using StringTokenizer to parse expression.
             // expression must be wrapped in braces for correct work of some handler.
-            // we parse expression on operations, numbers and braces, and also we should skip
+            // we parse expression on operators, numbers and braces, and also we should skip
             // special symbols like \t or \n.
             StringTokenizer stringTokenizer =
                 new StringTokenizer('(' + expression + ")", "\\+/*-()\t\n", true);
