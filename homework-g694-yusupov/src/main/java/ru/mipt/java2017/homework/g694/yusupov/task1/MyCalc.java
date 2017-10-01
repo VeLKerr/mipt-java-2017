@@ -113,7 +113,13 @@ public class MyCalc implements Calculator {
     }
   }
 
-  private void calculating() throws ParsingException {
+  /**
+   * Calculates value of arithmetic expression with the only one operation
+   *
+   * @throws ParsingException exception thrown in case of invalid expression
+   */
+
+  private void calculateOneOperation() throws ParsingException {
     Integer operation;
     try {
       operation = operations.pop();
@@ -166,6 +172,13 @@ public class MyCalc implements Calculator {
       }
     }
   }
+
+  /**
+   * Calculates code of operation
+   *
+   * @param operation operation to calculate code of
+   * @return Code of operation
+   */
 
   private Integer operationCode(char operation) {
     switch (operation) {
@@ -243,6 +256,13 @@ public class MyCalc implements Calculator {
     return -1;
   }
 
+  /**
+   * The main algorithm to calculate value of arithmetic expression
+   *
+   * @return the value of the arithmetic expression
+   * @throws ParsingException exception thrown in case of invalid expression
+   */
+
   private double solve() throws ParsingException {
     isUnary = true;
     for (int i = 0; i < expression.length(); i++) {
@@ -252,7 +272,7 @@ public class MyCalc implements Calculator {
         isUnary = true;
       } else if (current == ')') {
         while (!operations.peek().equals(operationCode('('))) {
-          calculating();
+          calculateOneOperation();
         }
         operations.pop();
         isUnary = false;
@@ -260,7 +280,7 @@ public class MyCalc implements Calculator {
         Integer operation = operationCode(current);
         while (!operations.empty()
             && operationPriority(operations.peek()) >= operationPriority(operation)) {
-          calculating();
+          calculateOneOperation();
         }
         operations.push(operation);
         isUnary = true;
@@ -282,7 +302,7 @@ public class MyCalc implements Calculator {
       }
     }
     while (!operations.empty()) {
-      calculating();
+      calculateOneOperation();
     }
     if (operands.size() != 1) {
       throw new ParsingException("Parsing error");
