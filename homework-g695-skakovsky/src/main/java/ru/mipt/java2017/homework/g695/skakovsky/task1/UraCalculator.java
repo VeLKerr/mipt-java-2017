@@ -12,31 +12,31 @@ import java.util.ArrayList;
  */
 public
 class UraCalculator implements Calculator {
- private
-  final double EPS = 1e-9;
- private
-  final boolean isOperator(final Character argument) {
+  private static final double EPS = 1e-9;
+
+  @Override
+  public double calculate(String expression) throws ParsingException {
+    return calculate(parseToTokens(expression));
+  }
+
+ private final boolean isOperator(final Character argument) {
     return argument == '+' || argument == '-' || argument == '*' ||
            argument == '/';
   }
 
- private
-  final boolean isMathematicalSymbol(final Character argument) {
+  private final boolean isMathematicalSymbol(final Character argument) {
     return isOperator(argument) || argument == '(' || argument == ')';
   }
 
- private
-  final boolean isSymbolOfDecimalNotation(final Character arg) {
+  private final boolean isSymbolOfDecimalNotation(final Character arg) {
     return arg >= '0' && arg <= '9' || arg == '.';
   }
 
- private
-  final boolean isDecimalNumber(final String expression) {
+  private final boolean isDecimalNumber(final String expression) {
     return expression.matches("[-+]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)");
   }
 
- private
-  final boolean isCorrectBracketSequence(final String expression) {
+  private final boolean isCorrectBracketSequence(final String expression) {
     int currentBalance = 0;
     for (int i = 0; i < expression.length(); ++i) {
       if (expression.charAt(i) == '(' || expression.charAt(i) == '{') {
@@ -52,8 +52,7 @@ class UraCalculator implements Calculator {
     return currentBalance == 0;
   }
 
- private
-  final int operatorPriority(final Character argument) throws ParsingException {
+  private final int operatorPriority(final Character argument) throws ParsingException {
     switch (argument) {
       case '+':
         return 0;
@@ -76,8 +75,7 @@ class UraCalculator implements Calculator {
     }
   }
 
- private
-  final double operate(final double firstArgument, final double secondArgument,
+  private final double operate(final double firstArgument, final double secondArgument,
                        final Character operator) {
     switch (operator) {
       case '+':
@@ -92,8 +90,7 @@ class UraCalculator implements Calculator {
     return 0;
   }
 
- private
-  final ArrayList<String> parseToTokens(String expression) throws
+  private final ArrayList<String> parseToTokens(String expression) throws
       ParsingException {
     if (expression == "" || expression == null) {
       throw new ParsingException("Expression is empty.");
@@ -163,8 +160,7 @@ class UraCalculator implements Calculator {
     return tokens;
   }
 
- private
-  final double calculate(ArrayList<String> tokens) throws ParsingException {
+  private final double calculate(ArrayList<String> tokens) throws ParsingException {
     ArrayList<Character> operators = new ArrayList<Character>();
     ArrayList<Double> arguments = new ArrayList<Double>();
     for (int i = 0; i < tokens.size(); ++i) {
@@ -261,7 +257,4 @@ class UraCalculator implements Calculator {
     return arguments.get(0);
   }
 
-  @Override public double calculate(String expression) throws ParsingException {
-    return calculate(parseToTokens(expression));
-  }
 }
