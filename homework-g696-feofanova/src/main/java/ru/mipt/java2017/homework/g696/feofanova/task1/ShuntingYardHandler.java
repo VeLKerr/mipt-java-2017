@@ -21,19 +21,20 @@ public class ShuntingYardHandler implements ExpressionHandler {
   public ShuntingYardHandler() {
     numbersStack = new Stack<Double>();
     functionsStack = new Stack<Character>();
-        // checks if previous token is number.
-        isPrevNumber = false;
-    }
+    // checks if previous token is number.
+    isPrevNumber = false;
+  }
 
-    /** We keep numbers in special stack
-     *
-     * @param number is a value to be pushed
-     * @throws ParsingException if input expression was invalid
-     */
-    public void pushNumber(double number) throws ParsingException {
-        numbersStack.push(number);
-        isPrevNumber = true;
-    }
+  /**
+   * We keep numbers in special stack
+   *
+   * @param number is a value to be pushed
+   * @throws ParsingException if input expression was invalid
+   */
+  public void pushNumber(double number) throws ParsingException {
+    numbersStack.push(number);
+    isPrevNumber = true;
+  }
 
   /**
    * Same for operators, but sometimes we should calculate intermediate expressions

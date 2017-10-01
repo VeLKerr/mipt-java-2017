@@ -71,13 +71,13 @@ public abstract class AbstractTokenCalculator implements Calculator {
     }
   }
 
-    // function, that converting token to double, or tells that it isn't a number.
-    private double toDouble(String token) {
+  // function, that converting token to double, or tells that it isn't a number.
+  private double toDouble(String token) {
     try {
       return Double.parseDouble(token);
     } catch (NumberFormatException e) {
       return -1;
     }
-    }
+  }
 }
 
