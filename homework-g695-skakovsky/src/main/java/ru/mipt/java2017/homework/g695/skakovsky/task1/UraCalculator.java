@@ -19,16 +19,16 @@ class UraCalculator implements Calculator {
     return calculate(parseToTokens(expression));
   }
 
- private final boolean isOperator(final Character argument) {
+  private final boolean isOperator(char argument) {
     return argument == '+' || argument == '-' || argument == '*' ||
            argument == '/';
   }
 
-  private final boolean isMathematicalSymbol(final Character argument) {
+  private final boolean isMathematicalSymbol(char argument) {
     return isOperator(argument) || argument == '(' || argument == ')';
   }
 
-  private final boolean isSymbolOfDecimalNotation(final Character arg) {
+  private final boolean isSymbolOfDecimalNotation(char arg) {
     return arg >= '0' && arg <= '9' || arg == '.';
   }
 
@@ -52,7 +52,7 @@ class UraCalculator implements Calculator {
     return currentBalance == 0;
   }
 
-  private final int operatorPriority(final Character argument) throws ParsingException {
+  private final int operatorPriority(char argument) throws ParsingException {
     switch (argument) {
       case '+':
         return 0;
