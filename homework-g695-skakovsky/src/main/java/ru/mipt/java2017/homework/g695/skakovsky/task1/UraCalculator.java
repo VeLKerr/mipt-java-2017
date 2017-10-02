@@ -149,6 +149,9 @@ public class UraCalculator implements Calculator {
     ArrayList<Double> arguments = new ArrayList<Double>();
     for (int i = 0; i < tokens.size(); ++i) {
       if (tokens.get(i).equals("(")) {
+        if (tokens.get(i + 1).equals(")")) {
+          throw new ParsingException("Empty braces.");
+        }
         operators.add(tokens.get(i).charAt(0));
         continue;
       }
