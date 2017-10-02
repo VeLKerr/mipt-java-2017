@@ -28,13 +28,13 @@ public class AwesomeCalculator implements Calculator {
         expression = "0" + expression;
       }
 
-      if(expression.contains("/-0")) {
+      if (expression.contains("/-0")) {
         return Double.NEGATIVE_INFINITY;
       }
 
       // Разобьем строку на токены
       StringTokenizer stringTokenizer = new StringTokenizer(expression,
-        OPERATORS + "()", true);
+          operations + "()", true);
 
       // Алгоритм Сортирующей станции
       while (stringTokenizer.hasMoreTokens()) {   // Пока ещё есть токены
@@ -68,8 +68,9 @@ public class AwesomeCalculator implements Calculator {
       String[] exp = new String[expressions.size()];
 
       int j = 0;
-      while(!expressions.empty()) {
-        exp[j] = expressions.pop(); j++;
+      while (!expressions.empty()) {
+        exp[j] = expressions.pop();
+        j++;
       }
 
       Stack<Double> stack = new Stack<>();
@@ -94,12 +95,12 @@ public class AwesomeCalculator implements Calculator {
         }
       }
       return stack.pop();
-    } catch(Exception e) {
+    } catch (Exception e) {
       throw new ParsingException(e.getMessage());
     }
   }
 
-  private final String OPERATORS = "+-*/";    // Все возможные математические операторы
+  private final String operations = "+-*/";    // Все возможные математические операторы
 
   // Методы для парсинга
   private boolean isOpenBracket(String token) {
@@ -111,9 +112,9 @@ public class AwesomeCalculator implements Calculator {
   }
 
   private boolean isOperator(String token) {
-    return OPERATORS.contains(token);
+    return operations.contains(token);
   }
-  
+
   private byte getPrecedence(String token) {
     if (token.equals("+") || token.equals("-")) {
       return 1;
