@@ -8,8 +8,9 @@ import ru.mipt.java2017.homework.tests.task1.AbstractCalculatorTest;
  * @since 29.09.16
  */
 public class CachedJEvalCalculatorTest extends AbstractCalculatorTest {
-    @Override
-    protected Calculator calc() {
-        return CachedJEvalCalculator.INSTANCE;
-    }
+
+  @Override
+  protected Calculator calc() {
+    return CachedJEvalCalculator.INSTANCE;
+  }
 }
