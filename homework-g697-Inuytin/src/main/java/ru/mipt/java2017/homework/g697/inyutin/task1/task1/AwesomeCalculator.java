@@ -100,7 +100,7 @@ public class AwesomeCalculator implements Calculator {
     }
   }
 
-  private final String OPERATORS = "+-*/";    // Все возможные математические операторы
+  private static final String OPERATORS = "+-*/";    // Все возможные математические операторы
 
   // Методы для парсинга
   private boolean isOpenBracket(String token) {
