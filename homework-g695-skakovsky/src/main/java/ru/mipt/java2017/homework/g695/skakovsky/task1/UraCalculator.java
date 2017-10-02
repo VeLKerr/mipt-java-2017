@@ -160,8 +160,8 @@ public class UraCalculator implements Calculator {
       if (isOperator(tokens.get(i).charAt(0))) {
         char currentOperator = tokens.get(i).charAt(0);
         int j = operators.size() - 1;
-        if (currentOperator == '-' && (tokens.get(i - 1).equals("(") || tokens.get(i - 1).equals("*") || tokens.get(i - 1).equals("/") || 
-            tokens.get(i - 1).equals("{"))) {
+        if (currentOperator == '-' && (tokens.get(i - 1).equals("(") || tokens.get(i - 1).equals("*") 
+            || tokens.get(i - 1).equals("/") || tokens.get(i - 1).equals("{"))) {
           if (isDecimalNumber(tokens.get(i + 1))) {
             tokens.set(i + 1, Double.toString(-Double.parseDouble(tokens.get(i + 1))));
           } else {
