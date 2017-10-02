@@ -255,4 +255,4 @@ public class UraCalculator implements Calculator {
     return arguments.get(0);
   }
 
-}
+}//
