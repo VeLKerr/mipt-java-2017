@@ -9,32 +9,32 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
 /**
  * Реализация Парсинга калькулятора с помощью алгоритма Сортирующей станции
  *
- * @author Stepan A. Kalinin
+ * @author Inyutin Dmitry
  * @since 21.09.17
  */
 
-public class AwesomeCalculator implements Calculator{
-  public double calculate(String expression) throws ParsingException{
+public class AwesomeCalculator implements Calculator {
+  public double calculate(String expression) throws ParsingException {
 
-    try{
+    try {
       operations.clear();    // Отчищаем стек операций
       expressions.clear();   //  Отчищаем стек Выражений
 
       // Сделаем некоторые приготовления
       expression = expression.replace(" ", "").replace("(-", "(0-")
         .replace(".-", ".0-")
-        .replace("\n","").replace("\t","");
+        .replace("\n", "").replace("\t", "");
       if (expression.charAt(0) == '-') {
         expression = "0" + expression;
       }
 
-      if(expression.contains("/-0")){
+      if(expression.contains("/-0")) {
         return Double.NEGATIVE_INFINITY;
       }
 
       // Разобьем строку на токены
       StringTokenizer stringTokenizer = new StringTokenizer(expression,
-        OPERATORS +  "()", true);
+        OPERATORS + "()", true);
 
       // Алгоритм Сортирующей станции
       while (stringTokenizer.hasMoreTokens()) {   // Пока ещё есть токены
@@ -42,21 +42,18 @@ public class AwesomeCalculator implements Calculator{
 
         if (isOpenBracket(token)) { // Если это открывающая скобка
           operations.push(token);
-        }
-        else if (isCloseBracket(token)) {   // Если это закрывающая скобка
+        } else if (isCloseBracket(token)) {   // Если это закрывающая скобка
           while (!operations.empty() && !isOpenBracket(operations.lastElement())) {
             expressions.push(operations.pop());
           }
           operations.pop();
-        }
-        else if (isOperator(token)) {   // Если это математический оператор
+        } else if (isOperator(token)) {   // Если это математический оператор
           while (!operations.empty() && isOperator(operations.lastElement())
             && getPrecedence(token) <= getPrecedence(operations.lastElement())) {
             expressions.push(operations.pop());
           }
           operations.push(token);
-        }
-        else {
+        } else {
           expressions.push(token);
         }
       }
@@ -71,7 +68,7 @@ public class AwesomeCalculator implements Calculator{
       String[] exp = new String[expressions.size()];
 
       int j = 0;
-      while(!expressions.empty()){
+      while(!expressions.empty()) {
         exp[j] = expressions.pop(); j++;
       }
 
@@ -84,17 +81,20 @@ public class AwesomeCalculator implements Calculator{
           double op1 = Double.valueOf(stack.pop());
           double result = 0;
           String operator = exp[i];
-          if (operator.equals("+")) result = op1 + op2;
-          else if (operator.equals("-")) result = op1 - op2;
-          else if (operator.equals("*")) result = op1 * op2;
-          else if (operator.equals("/")) result = op1 / op2;
+          if (operator.equals("+")) {
+            result = op1 + op2;
+          } else if (operator.equals("-")) {
+            result = op1 - op2;
+          } else if (operator.equals("*")) {
+            result = op1 * op2;
+          } else if (operator.equals("/")) {
+            result = op1 / op2;
+          }
           stack.push(result);
         }
       }
       return stack.pop();
-
-
-    }catch(Exception e){
+    } catch(Exception e) {
       throw new ParsingException(e.getMessage());
     }
   }
@@ -105,12 +105,15 @@ public class AwesomeCalculator implements Calculator{
   private boolean isOpenBracket(String token) {
     return token.equals("(");
   }
+
   private boolean isCloseBracket(String token) {
     return token.equals(")");
   }
+
   private boolean isOperator(String token) {
     return OPERATORS.contains(token);
   }
+  
   private byte getPrecedence(String token) {
     if (token.equals("+") || token.equals("-")) {
       return 1;
