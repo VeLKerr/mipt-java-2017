@@ -103,95 +103,121 @@ public class MyCalculator implements Calculator {
     return currentBuf.toString();
   }
 
+  private static int helper;
+  private static boolean unary;
+  private static boolean isPreviousNumber;
+  private static double sign;
+
+  private void solverForDigit(String expression, Stack<CalculateItems> calcItems, Integer i)
+      throws ParsingException {
+    int n = expression.length();
+    char c = expression.charAt(i);
+    boolean hasDot = false;
+    helper = i;
+    StringBuilder curr = new StringBuilder();
+    for (; helper < n && (Character.isDigit(c) || c == '.'); ++helper) {
+      curr.append(c);
+      if (helper + 1 < n) {
+        c = expression.charAt(helper + 1);
+        if (c == '.') {
+          if (hasDot) {
+            throw new ParsingException("Problem with a dot");
+          }
+          hasDot = true;
+        }
+      }
+    }
+    --helper;
+    String currExpression = curr.toString();
+    if (currExpression.endsWith(".")) {
+      throw new ParsingException("Problem with a dot");
+    }
+    double currNumber = Double.parseDouble(currExpression);
+    calcItems.add(new Number(sign * currNumber));
+    sign = 1;
+    unary = false;
+    isPreviousNumber = true;
+  }
+
+  private void solverForBrackets(char c, Stack<StackItems> stackItems,
+      Stack<CalculateItems> calcItems) throws ParsingException {
+    if (c == '(') {
+      unary = true;
+      stackItems.add(new Bracket());
+      isPreviousNumber = false;
+    } else if (c == ')') {
+      if (!isPreviousNumber) {
+        throw new ParsingException("Problem with ')'");
+      }
+      unary = false;
+      while (!stackItems.empty() && !(stackItems.peek() instanceof Bracket)) {
+        StackItems tmp = stackItems.peek();
+        if (tmp instanceof Operator) {
+          calcItems.add((Operator) tmp);
+          stackItems.pop();
+        } else {
+          break;
+        }
+      }
+      if (stackItems.empty()) {
+        throw new ParsingException("Too many ')' ");
+      } else {
+        stackItems.pop();
+      }
+      isPreviousNumber = true;
+    }
+  }
+
+  private void solverForOperator(char c, Stack<StackItems> stackItems,
+      Stack<CalculateItems> calcItems) throws ParsingException {
+    if (unary) {
+      if (c == '*' || c == '/') {
+        throw new ParsingException("Unary is * or /");
+      } else if (c == '-') {
+        sign *= -1;
+      }
+      unary = false;
+
+    } else {
+      if (!isPreviousNumber) {
+        throw new ParsingException("Operator without previous number");
+      }
+      Operator curr = new Operator(c);
+      while (!stackItems.empty()) {
+        StackItems tmp = stackItems.peek();
+        if (tmp instanceof Operator && ((Operator) tmp).priotity <= curr.priotity) {
+          calcItems.add((Operator) tmp);
+          stackItems.pop();
+        } else {
+          break;
+        }
+      }
+      stackItems.push(curr);
+      unary = true;
+
+    }
+    isPreviousNumber = false;
+  }
+
   private Stack<CalculateItems> polishNotation(String expression) throws ParsingException {
     expression = deleteWhitespace(expression);
     Stack<StackItems> stackItems = new Stack<>();
     Stack<CalculateItems> calcItems = new Stack<>();
     int n = expression.length();
-    double sign = 1;
-    boolean unary = true;
-    boolean isPreviousNumber = false;
+    sign = 1;
+    unary = true;
+    isPreviousNumber = false;
     for (int i = 0; i < n; ++i) {
       char c = expression.charAt(i);
       if (Character.isDigit(c)) {
-        boolean hasDot = false;
-        StringBuilder curr = new StringBuilder();
-        for (; i < n && (Character.isDigit(c) || c == '.'); ++i) {
-          curr.append(c);
-          if (i + 1 < n) {
-            c = expression.charAt(i + 1);
-            if (c == '.') {
-              if (hasDot) {
-                throw new ParsingException("Problem with a dot");
-              }
-              hasDot = true;
-            }
-          }
-        }
-        --i;
-        String currExpression = curr.toString();
-        if (currExpression.endsWith(".")) {
-          throw new ParsingException("Problem with a dot");
-        }
-        double currNumber = Double.parseDouble(currExpression);
-        calcItems.add(new Number(sign * currNumber));
-        sign = 1;
-        unary = false;
-        isPreviousNumber = true;
+        solverForDigit(expression, calcItems, i);
+        i = helper;
       } else if (c == '.') {
         throw new ParsingException("Problem with a dot");
-      } else if (c == '(') {
-        unary = true;
-        stackItems.add(new Bracket());
-        isPreviousNumber = false;
-      } else if (c == ')') {
-        if (!isPreviousNumber) {
-          throw new ParsingException("Problem with ')'");
-        }
-        unary = false;
-        while (!stackItems.empty() && !(stackItems.peek() instanceof Bracket)) {
-          StackItems tmp = stackItems.peek();
-          if (tmp instanceof Operator) {
-            calcItems.add((Operator) tmp);
-            stackItems.pop();
-          } else {
-            break;
-          }
-        }
-        if (stackItems.empty()) {
-          throw new ParsingException("Too many ')' ");
-        } else {
-          stackItems.pop();
-        }
-        isPreviousNumber = true;
+      } else if (c == '(' || c == ')') {
+        solverForBrackets(c, stackItems, calcItems);
       } else if (c == '+' || c == '-' || c == '*' || c == '/') {
-        if (unary) {
-          if (c == '*' || c == '/') {
-            throw new ParsingException("Unary is * or /");
-          } else if (c == '-') {
-            sign *= -1;
-          }
-          unary = false;
-
-        } else {
-          if (!isPreviousNumber) {
-            throw new ParsingException("Operator without previous number");
-          }
-          Operator curr = new Operator(c);
-          while (!stackItems.empty()) {
-            StackItems tmp = stackItems.peek();
-            if (tmp instanceof Operator && ((Operator) tmp).priotity <= curr.priotity) {
-              calcItems.add((Operator) tmp);
-              stackItems.pop();
-            } else {
-              break;
-            }
-          }
-          stackItems.push(curr);
-          unary = true;
-
-        }
-        isPreviousNumber = false;
+        solverForOperator(c, stackItems, calcItems);
       } else {
         throw new ParsingException("New strange symbol");
       }
