@@ -19,6 +19,7 @@
         <module>homework-g694-kalinin</module>
         <module>homework-g694-cherepkov</module>
         <module>homework-g695-gazizullin</module>
+        <module>homework-g696-grebenshikov</module>
     </modules>
 
     <build>
@@ -213,5 +214,4 @@
             <url>http://repo1.maven.org/maven2/</url>
         </pluginRepository>
     </pluginRepositories>
-
 </project>
