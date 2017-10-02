@@ -134,6 +134,15 @@ public class NewCalculator implements Calculator {
     }
   }
 
+  /**
+   * Parses digit starting at index.
+   *
+   * @param expression string with arithmetic expression
+   * @param stack stack with numbers
+   * @param index index of operator
+   * @return returns last value of index
+   * @throws ParsingException exception when the expression is not valid
+   */
   private int parseDigit(String expression, Stack<Double> stack,
       int index) throws ParsingException {
     StringBuilder operand = new StringBuilder();
@@ -156,6 +165,18 @@ public class NewCalculator implements Calculator {
     return index;
   }
 
+  /**
+   * Parses Operator operator at index.
+   *
+   * @param expression string with arithmetic expression
+   * @param stack stack with numbers
+   * @param operators stack with operators
+   * @param operator current operator
+   * @param wasUnary condition: if the last operator was unary
+   * @param index index of operator
+   * @return returns if current operator is unary
+   * @throws ParsingException exception when the expression is not valid
+   */
   private boolean parseOperator(String expression, Stack<Double> stack, Stack<Operator> operators,
       Operator operator, boolean wasUnary, int index) throws ParsingException {
     if (index + 1 == expression.length()) {
