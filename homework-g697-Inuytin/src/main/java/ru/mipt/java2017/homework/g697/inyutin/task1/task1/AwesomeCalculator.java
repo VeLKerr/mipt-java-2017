@@ -34,7 +34,7 @@ public class AwesomeCalculator implements Calculator {
 
       // Разобьем строку на токены
       StringTokenizer stringTokenizer = new StringTokenizer(expression,
-          operations + "()", true);
+          OPERATORS + "()", true);
 
       // Алгоритм Сортирующей станции
       while (stringTokenizer.hasMoreTokens()) {   // Пока ещё есть токены
@@ -100,7 +100,7 @@ public class AwesomeCalculator implements Calculator {
     }
   }
 
-  private final String operations = "+-*/";    // Все возможные математические операторы
+  private final String OPERATORS = "+-*/";    // Все возможные математические операторы
 
   // Методы для парсинга
   private boolean isOpenBracket(String token) {
@@ -112,7 +112,7 @@ public class AwesomeCalculator implements Calculator {
   }
 
   private boolean isOperator(String token) {
-    return operations.contains(token);
+    return OPERATORS.contains(token);
   }
 
   private byte getPrecedence(String token) {
