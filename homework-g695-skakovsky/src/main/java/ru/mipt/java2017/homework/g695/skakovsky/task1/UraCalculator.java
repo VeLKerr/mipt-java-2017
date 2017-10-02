@@ -19,7 +19,7 @@ public class UraCalculator implements Calculator {
 
   private boolean isOperator(char argument) {
     return argument == '+' || argument == '-' || argument == '*' ||
-           argument == '/';
+        argument == '/';
   }
 
   private boolean isMathematicalSymbol(char argument) {
@@ -98,7 +98,7 @@ public class UraCalculator implements Calculator {
     }
     expression = expression.replaceAll("[ \t\n]", "");
     if (expression.matches(
-            "[^ ]*[+\\-*\\/][*\\/][^ ]*|[^ ]*[+\\-][+\\-][^ ]*")) {
+        "[^ ]*[+\\-*\\/][*\\/][^ ]*|[^ ]*[+\\-][+\\-][^ ]*")) {
       throw new ParsingException("Contract operators in the expression.");
     }
     expression = "(" + expression + ")";
@@ -117,7 +117,7 @@ public class UraCalculator implements Calculator {
     for (int i = 0; i < expression.length(); ++i) {
       if (isSymbolOfDecimalNotation(expression.charAt(i))) {
         if (!isSymbolOfDecimalNotation(
-                expression.charAt(startOfCurrentToken))) {
+            expression.charAt(startOfCurrentToken))) {
           startOfCurrentToken = i;
         }
       } else {
@@ -177,7 +177,7 @@ public class UraCalculator implements Calculator {
             tokens.get(i - 1).equals("*") || tokens.get(i - 1).equals("/")) {
           if (isDecimalNumber(tokens.get(i + 1))) {
             tokens.set(i + 1,
-                       Double.toString(-Double.parseDouble(tokens.get(i + 1))));
+                Double.toString(-Double.parseDouble(tokens.get(i + 1))));
           } else {
             tokens.set(i + 1, "{");
           }
@@ -190,8 +190,8 @@ public class UraCalculator implements Calculator {
           continue;
         }
         while ((operators.get(j) != '(' || operators.get(j) != '{') &&
-               operatorPriority(operators.get(j)) >
-                   operatorPriority(currentOperator)) {
+            operatorPriority(operators.get(j)) >
+                operatorPriority(currentOperator)) {
           --j;
         }
         ++j;
@@ -201,11 +201,11 @@ public class UraCalculator implements Calculator {
           arguments.set(
               indexOfNewArgument,
               operate(arguments.get(indexOfNewArgument),
-                      arguments.get(indexOfNewArgument + 1), operators.get(j)));
+                  arguments.get(indexOfNewArgument + 1), operators.get(j)));
           arguments.remove(indexOfNewArgument + 1);
           if (operators.get(j) == '{') {
             arguments.set(arguments.size() - 1,
-                          -arguments.get(arguments.size() - 1));
+                -arguments.get(arguments.size() - 1));
           }
           operators.remove(j);
         }
@@ -222,11 +222,11 @@ public class UraCalculator implements Calculator {
           arguments.set(
               indexOfNewArgument,
               operate(arguments.get(indexOfNewArgument),
-                      arguments.get(indexOfNewArgument + 1), operators.get(j)));
+                  arguments.get(indexOfNewArgument + 1), operators.get(j)));
           arguments.remove(indexOfNewArgument + 1);
           if (operators.get(j) == '{') {
             arguments.set(arguments.size() - 1,
-                          -arguments.get(arguments.size() - 1));
+                -arguments.get(arguments.size() - 1));
           }
           operators.remove(j);
         }
@@ -241,11 +241,11 @@ public class UraCalculator implements Calculator {
           arguments.set(
               indexOfNewArgument,
               operate(arguments.get(indexOfNewArgument),
-                      arguments.get(indexOfNewArgument + 1), operators.get(j)));
+                  arguments.get(indexOfNewArgument + 1), operators.get(j)));
           arguments.remove(indexOfNewArgument + 1);
           if (operators.get(j) == '{') {
             arguments.set(arguments.size() - 1,
-                          -arguments.get(arguments.size() - 1));
+                -arguments.get(arguments.size() - 1));
           }
           operators.remove(j);
         }
@@ -255,4 +255,4 @@ public class UraCalculator implements Calculator {
     return arguments.get(0);
   }
 
-}//
+}
