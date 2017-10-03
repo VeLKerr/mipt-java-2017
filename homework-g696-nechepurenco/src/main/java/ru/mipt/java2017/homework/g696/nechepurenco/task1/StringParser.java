@@ -17,8 +17,9 @@ class StringParser {
   private boolean weFinished = false;
 
   StringParser(String _sample) throws ParsingException {
-    if (_sample == null)
+    if (_sample == null) {
       throw new ParsingException("Empty string");
+    }
     sample = '(' + _sample + ')';
     numbers = new Stack();
     operators = new Stack();
@@ -27,14 +28,17 @@ class StringParser {
   private Double readDouble() throws ParsingException {
     double d = 0;
     while (pos < sample.length()) {
-      if (sample.charAt(pos) > '9' || sample.charAt(pos) < '0')
+      if (sample.charAt(pos) > '9' || sample.charAt(pos) < '0') {
         break;
+      }
       d = d * 10 + sample.charAt(pos) - '0';
       pos++;
     }
-    if (pos < sample.length())
-      if (sample.charAt(pos) == '.')
+    if (pos < sample.length()) {
+      if (sample.charAt(pos) == '.') {
         d += readDoubleAfterPoint();
+      }
+    }
     pos--;
     return d;
   }
@@ -44,14 +48,16 @@ class StringParser {
     double d = 0;
     double exp = 0.1;
     while (pos < sample.length()) {
-      if (sample.charAt(pos) > '9' || sample.charAt(pos) < '0')//засунь ты это в отдельную функцию
+      if (sample.charAt(pos) > '9' || sample.charAt(pos) < '0') {//засунь ты это в отдельную функцию
         break;
+      }
       d = d + (sample.charAt(pos) - '0') * exp;
       exp /= 10;
       pos++;
     }
-    if (exp == 0.1)
+    if (exp == 0.1) {
       throw new ParsingException("Incorrect number");
+    }
     return d;
   }
 
@@ -70,16 +76,18 @@ class StringParser {
   }
 
   private boolean canPop() throws ParsingException {
-    if (operators.size() == 0)
+    if (operators.size() == 0){
       return false;
+    }
     int p1 = getPriority(currentToken.operand);
     int p2 = getPriority(operators.peek());
     return p2 >= 0 && p1 >= p2;
   }
 
   private void Pop() throws ParsingException {//подумай над названием
-    if (operators.size() == 0 || numbers.size() < 2)
+    if (operators.size() == 0 || numbers.size() < 2) {
       throw new ParsingException("Something is wrong");
+    }
     double op2 = numbers.pop();
     char operator = operators.pop();
     double op1 = numbers.pop();
@@ -107,23 +115,24 @@ class StringParser {
     Token t = new Token('f');
     Character ch = sample.charAt(pos);
     if (ch <= '9' && ch >= '0') {
-      if (wasSpace && currentToken.type == 1)
+      if (wasSpace && currentToken.type == 1) {
         throw new ParsingException("Useless space");
+      }
       wasSpace = false;
       double d = readDouble();
       t = new Token(d);
     } else {
       switch (ch) {
         case '-':
-          if (previousToken.equal('('))
+          if (previousToken.equal('(')) {
             numbers.push(0.0);
+          }
           previousToken = new Token(0);
-          if (operators.peek() == '/') {//а *?
+          if (operators.peek() == '/') {
             System.out.print("!");
             double d = numbers.pop();
             numbers.push(-d);
             wasUnaryMinus = true;
-            //System.out.print(numbers.size());
           }
         case '+':
         case '/':
@@ -155,10 +164,12 @@ class StringParser {
     operators.push('(');
     for (; pos < sample.length(); ++pos) {
       currentToken = getNextToken();
-      if (currentToken.equal('f'))//there was a space
+      if (currentToken.equal('f')) {//there was a space
         continue;
-      if (weFinished)
+      }
+      if (weFinished) {
         throw new ParsingException("Too many closing brackets");
+      }
       if (currentToken.type == 1) {
         numbers.push(currentToken.number);
       } else {
@@ -171,10 +182,12 @@ class StringParser {
           numbers.push(0.0);
         }
         if (currentToken.equal(')')) {
-          while (operators.size() > 0 && operators.peek() != '(')
+          while (operators.size() > 0 && operators.peek() != '(') {
             Pop();
-          if (operators.peek() != '(')
+          }
+          if (operators.peek() != '(') {
             throw new ParsingException("Too many closing brackets");
+          }
           operators.pop();
           if (operators.size() == 1) {
             System.out.println(pos);
@@ -182,24 +195,28 @@ class StringParser {
             weFinished = true;
           }
         } else {
-          while (canPop())
+          while (canPop()) {
             Pop();
+          }
           operators.push(currentToken.operand);
         }
       }
       previousToken = currentToken;
     }
-    if (/*operators.size() > 0 || */numbers.size() != 1) {
-      for (char ch : operators)
+    //!!!
+    if (numbers.size() != 1) {
+      for (char ch : operators) {
         System.out.print(ch);
-      for (double d : numbers)
+      }
+      for (double d : numbers) {
         System.out.print(d);
+      }
       throw new ParsingException("Incorrect statement");
     }
     answer = numbers.get(0);
   }
 
-  double getanswer() throws ParsingException {
+  double getAnswer() throws ParsingException {
     return answer;
   }
 }

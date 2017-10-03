@@ -7,6 +7,6 @@ public class SimpleCalculator implements Calculator {
   public double calculate(String expression) throws ParsingException {
     StringParser sp = new StringParser(expression);
     sp.Parse();
-    return sp.getanswer();
+    return sp.getAnswer();
   }
 }
