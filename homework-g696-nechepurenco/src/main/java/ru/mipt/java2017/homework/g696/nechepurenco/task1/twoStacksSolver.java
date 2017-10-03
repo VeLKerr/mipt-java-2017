@@ -3,7 +3,11 @@ package ru.mipt.java2017.homework.g696.nechepurenco.task1;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 import java.util.Stack;
 
-class twoStacksSolver {
+/**
+ * class which does all the work
+ */
+
+class TwoStacksSolver {
   private String sample;
   private Token currentToken = new Token('b');
   private Token previousToken = new Token('b');
@@ -17,7 +21,10 @@ class twoStacksSolver {
   //при достижении ск-м баллансом 0 мы выставляем эту переменную в true, и дальше проверяем, что остаток строки состоит
   //только из эквивалентных пробелу символов
 
-  twoStacksSolver(String givenString) throws ParsingException {
+  /**
+   *@param givenString is our expression
+   */
+  TwoStacksSolver(String givenString) throws ParsingException {
     if (givenString == null) {
       throw new ParsingException("Empty string");
     }
@@ -26,10 +33,17 @@ class twoStacksSolver {
     operators = new Stack();
   }
 
-  boolean numberOnCurrentPosition() {
+  /**
+   * @return true if there is a digit on current position
+   */
+  private boolean numberOnCurrentPosition() {
     return sample.charAt(pos) <= '9' && sample.charAt(pos) >= '0';
   }
 
+  /**
+   * @return number starting on current position
+   * @throws ParsingException in case of numbers like 2.5
+   */
   private Double readDouble() throws ParsingException {
     double d = 0; //целая часть
     while (pos < sample.length()) {
@@ -48,6 +62,10 @@ class twoStacksSolver {
     return d;
   }
 
+  /**
+   * @return fractional part of number
+   * @throws ParsingException in the same case as in the class before
+   */
   private Double readDoubleAfterPoint() throws ParsingException {
     pos++; //проходим точку
     double d = 0; //дробная часть
@@ -66,6 +84,12 @@ class twoStacksSolver {
     return d;
   }
 
+  /**
+   *
+   * @param operand - one of operands of expression
+   * @return priority of it. Operands with lower positive priority are calculated first, but '-1' prohibits operating
+   * @throws ParsingException in case incorrect operator
+   * */
   private int getPriority(char operand) throws ParsingException {
     switch (operand) {
       case '(':
@@ -81,6 +105,11 @@ class twoStacksSolver {
     }
   }
 
+  /**
+   * @return true if we can calculate the result of last operator
+   * @throws ParsingException in case of incorrect operators
+   * function is used before we found closing bracket, so we are interested only in priority of operators
+   */
   private boolean canOperate() throws ParsingException {
     if (operators.size() == 0) {
       return false;
@@ -90,9 +119,13 @@ class twoStacksSolver {
     return p2 >= 0 && p1 >= p2;
   }
 
+  /**
+   * it calculates result of the last operation
+   * @throws ParsingException in case of incorrect expression
+   */
   private void operate() throws ParsingException { //подумай над названием
     if (operators.size() == 0 || numbers.size() < 2) {
-      throw new ParsingException("Something is wrong");
+      throw new ParsingException("Invalid expression");
     }
     double op2 = numbers.pop();
     char operator = operators.pop();
@@ -117,6 +150,10 @@ class twoStacksSolver {
     numbers.push(result);
   }
 
+  /**
+   * @return next number or operand(in special class), or signal Token('f'), if there was space
+   * @throws ParsingException in case of space between numbers or unexpected symbol or some incorrect operands in row
+   */
   private Token getNextToken() throws ParsingException {
     Token t = new Token('f');
     if (numberOnCurrentPosition()) {
@@ -164,6 +201,10 @@ class twoStacksSolver {
     return t;
   }
 
+  /**
+   * this function does all the work
+   * @throws ParsingException in case of empty string, string without numbers, with incorrect braces and something else
+   */
   void parse() throws ParsingException {
     if (sample.length() == 2) { //ма вначале добавили пару скобок
       throw new ParsingException("Empty buckets");
@@ -214,7 +255,10 @@ class twoStacksSolver {
     answer = numbers.get(0);
   }
 
-  double getAnswer() throws ParsingException {
+  /**
+   * @return value of correct expression
+   */
+  double getAnswer(){
     return answer;
   }
 }

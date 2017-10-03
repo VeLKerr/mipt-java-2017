@@ -1,5 +1,8 @@
 package ru.mipt.java2017.homework.g696.nechepurenco.task1;
 
+/**
+ * just a class which can consist number or operand
+ */
 class Token {
   private int type = -1;
   private char operand = '!';
