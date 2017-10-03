@@ -1,10 +1,10 @@
 package ru.mipt.java2017.homework.g696.nechepurenco.task1;
 
-
 import  ru.mipt.java2017.homework.base.task1.ParsingException;
-import java.util.Stack;
+import  java.util.Stack;
 
-public class StringParser{
+class StringParser{
+    private String sample;
     private Token currentToken = new Token('s');
     private Token previousToken = new Token('s');
     private Stack<Double> numbers;
@@ -12,16 +12,15 @@ public class StringParser{
     private int pos = 0;
     private double answer = 0;
     private boolean wasSpace = false;
-    private String sample;
     private boolean wasUnaryMinus = false;
-    boolean weFinished = false;
+    private boolean weFinished = false;
 
-    public StringParser(String _sample) throws ParsingException{
+    StringParser(String _sample) throws ParsingException{
         if(_sample == null)
             throw new ParsingException("Empty string");
         sample = '(' + _sample + ')';
-        numbers = new Stack<Double>();
-        operators = new Stack<Character>();
+        numbers = new Stack();
+        operators = new Stack();
     }
 
     private Double readDouble() throws ParsingException{
@@ -147,7 +146,7 @@ public class StringParser{
         return t;
     }
 
-    public void Parse() throws ParsingException{
+    void Parse() throws ParsingException{
         if(sample.length() == 2)//ма вначале добавили пару скобок
             throw new ParsingException("Empty buckets");
         operators.push('(');
@@ -197,7 +196,7 @@ public class StringParser{
         answer = numbers.get(0);
     }
 
-    public double getanswer() throws ParsingException{
+    double getanswer() throws ParsingException{
         return answer;
     }
 }
