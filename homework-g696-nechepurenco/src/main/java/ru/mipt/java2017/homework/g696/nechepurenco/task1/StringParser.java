@@ -16,11 +16,11 @@ class StringParser {
   private boolean wasUnaryMinus = false;
   private boolean weFinished = false;
 
-  StringParser(String _sample) throws ParsingException {
-    if (_sample == null) {
+  StringParser(String givenString) throws ParsingException {
+    if (givenString == null) {
       throw new ParsingException("Empty string");
     }
-    sample = '(' + _sample + ')';
+    sample = '(' + givenString + ')';
     numbers = new Stack();
     operators = new Stack();
   }
@@ -44,11 +44,11 @@ class StringParser {
   }
 
   private Double readDoubleAfterPoint() throws ParsingException {
-    pos++;//проходим точку
+    pos++; //проходим точку
     double d = 0;
     double exp = 0.1;
     while (pos < sample.length()) {
-      if (sample.charAt(pos) > '9' || sample.charAt(pos) < '0') {//засунь ты это в отдельную функцию
+      if (sample.charAt(pos) > '9' || sample.charAt(pos) < '0') { //засунь ты это в отдельную функцию
         break;
       }
       d = d + (sample.charAt(pos) - '0') * exp;
@@ -79,12 +79,12 @@ class StringParser {
     if (operators.size() == 0){
       return false;
     }
-    int p1 = getPriority(currentToken.operand);
+    int p1 = getPriority(currentToken.getOperand());
     int p2 = getPriority(operators.peek());
     return p2 >= 0 && p1 >= p2;
   }
 
-  private void Pop() throws ParsingException {//подумай над названием
+  private void pop() throws ParsingException { //подумай над названием
     if (operators.size() == 0 || numbers.size() < 2) {
       throw new ParsingException("Something is wrong");
     }
@@ -115,7 +115,7 @@ class StringParser {
     Token t = new Token('f');
     Character ch = sample.charAt(pos);
     if (ch <= '9' && ch >= '0') {
-      if (wasSpace && currentToken.type == 1) {
+      if (wasSpace && currentToken.getType() == 1) {
         throw new ParsingException("Useless space");
       }
       wasSpace = false;
@@ -137,8 +137,8 @@ class StringParser {
         case '+':
         case '/':
         case '*':
-          if (previousToken.type == 2 && previousToken.operand != ')') {
-            System.out.print(previousToken.operand);
+          if (previousToken.getType() == 2 && previousToken.getOperand() != ')') {
+            System.out.print(previousToken.getOperand());
             throw new ParsingException("Invalid string");
           }
         case ')':
@@ -158,9 +158,10 @@ class StringParser {
     return t;
   }
 
-  void Parse() throws ParsingException {
-    if (sample.length() == 2)//ма вначале добавили пару скобок
+  void parse() throws ParsingException {
+    if (sample.length() == 2) { //ма вначале добавили пару скобок
       throw new ParsingException("Empty buckets");
+    }
     operators.push('(');
     for (; pos < sample.length(); ++pos) {
       currentToken = getNextToken();
@@ -170,8 +171,8 @@ class StringParser {
       if (weFinished) {
         throw new ParsingException("Too many closing brackets");
       }
-      if (currentToken.type == 1) {
-        numbers.push(currentToken.number);
+      if (currentToken.getType() == 1) {
+        numbers.push(currentToken.getNumber());
       } else {
         if (wasUnaryMinus) {
           wasUnaryMinus = false;
@@ -183,7 +184,7 @@ class StringParser {
         }
         if (currentToken.equal(')')) {
           while (operators.size() > 0 && operators.peek() != '(') {
-            Pop();
+            pop();
           }
           if (operators.peek() != '(') {
             throw new ParsingException("Too many closing brackets");
@@ -196,9 +197,9 @@ class StringParser {
           }
         } else {
           while (canPop()) {
-            Pop();
+            pop();
           }
-          operators.push(currentToken.operand);
+          operators.push(currentToken.getOperand());
         }
       }
       previousToken = currentToken;

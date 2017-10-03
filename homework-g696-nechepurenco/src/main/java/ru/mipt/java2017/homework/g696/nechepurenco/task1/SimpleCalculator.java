@@ -6,7 +6,7 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
 public class SimpleCalculator implements Calculator {
   public double calculate(String expression) throws ParsingException {
     StringParser sp = new StringParser(expression);
-    sp.Parse();
+    sp.parse();
     return sp.getAnswer();
   }
 }

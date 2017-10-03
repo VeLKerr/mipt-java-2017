@@ -1,9 +1,9 @@
 package ru.mipt.java2017.homework.g696.nechepurenco.task1;
 
 class Token {
-  int type = -1;
-  char operand = '!';
-  double number = 0;
+  private int type = -1;
+  private char operand = '!';
+  private double number = 0;
   Token(char _operand){
     operand = _operand;
     type = 2;
@@ -15,4 +15,13 @@ class Token {
   boolean equal(char _operand){
         return (type == 2 && operand == _operand);
     }
+  int getType() {
+    return type;
+  }
+  char getOperand(){
+    return operand;
+  }
+  double getNumber(){
+    return number;
+  }
 }
