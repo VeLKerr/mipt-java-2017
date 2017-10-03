@@ -158,7 +158,7 @@ public class MyCalculator implements Calculator {
           }
           opers.push(new Char(curCh));
         } else if ((curCh == '+' || curCh == '-') && (lastCh == '!' || lastCh == '('
-          || isOperator(lastCh))) {
+            || isOperator(lastCh))) {
           if (curCh == '-') {
             opers.push(new Char('m'));
           } else {
