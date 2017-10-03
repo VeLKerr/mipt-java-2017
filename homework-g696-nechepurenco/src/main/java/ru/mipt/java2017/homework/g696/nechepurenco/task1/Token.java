@@ -5,8 +5,8 @@ class Token {
   private char operand = '!';
   private double number = 0;
 
-  Token(char _operand) {
-    operand = _operand;
+  Token(char givenOperand) {
+    operand = givenOperand;
     type = 2;
   }
 
@@ -16,7 +16,7 @@ class Token {
   }
 
   boolean equal(char givenOperand) {
-        return (type == 2 && operand == givenOperand);
+    return (type == 2 && operand == givenOperand);
   }
 
   int getType() {
