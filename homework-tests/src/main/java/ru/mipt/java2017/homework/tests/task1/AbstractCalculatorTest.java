@@ -61,7 +61,7 @@ public abstract class AbstractCalculatorTest {
   @Test
   public void testDivisionByZero() throws ParsingException {
     test("4.5 / 0", Double.POSITIVE_INFINITY);
-    test("4.5 / (-0.0)", Double.NEGATIVE_INFINITY);
+    test("4.5 / -0.0", Double.NEGATIVE_INFINITY);
   }
 
   @Test
