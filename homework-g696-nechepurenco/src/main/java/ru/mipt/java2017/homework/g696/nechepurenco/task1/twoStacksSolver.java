@@ -1,22 +1,23 @@
 package ru.mipt.java2017.homework.g696.nechepurenco.task1;
 
 import ru.mipt.java2017.homework.base.task1.ParsingException;
-
 import java.util.Stack;
 
-class StringParser {
+class twoStacksSolver {
   private String sample;
-  private Token currentToken = new Token('s');
-  private Token previousToken = new Token('s');
+  private Token currentToken = new Token('b');
+  private Token previousToken = new Token('b');
   private Stack<Double> numbers;
   private Stack<Character> operators;
   private int pos = 0;
   private double answer = 0;
-  private boolean wasSpace = false;
+  private boolean wasSpace = false; //нужно для обработки ошибки двух чисел через пробел
   private boolean wasUnaryMinus = false;
-  private boolean weFinished = false;
+  private boolean weFinished = false; //для обработки случая, когда скобочный балланс выражения становится < 0
+  //при достижении ск-м баллансом 0 мы выставляем эту переменную в true, и дальше проверяем, что остаток строки состоит
+  //только из эквивалентных пробелу символов
 
-  StringParser(String givenString) throws ParsingException {
+  twoStacksSolver(String givenString) throws ParsingException {
     if (givenString == null) {
       throw new ParsingException("Empty string");
     }
@@ -25,10 +26,14 @@ class StringParser {
     operators = new Stack();
   }
 
+  boolean numberOnCurrentPosition() {
+    return sample.charAt(pos) <= '9' && sample.charAt(pos) >= '0';
+  }
+
   private Double readDouble() throws ParsingException {
-    double d = 0;
+    double d = 0; //целая часть
     while (pos < sample.length()) {
-      if (sample.charAt(pos) > '9' || sample.charAt(pos) < '0') {
+      if (!numberOnCurrentPosition()) {
         break;
       }
       d = d * 10 + sample.charAt(pos) - '0';
@@ -45,10 +50,10 @@ class StringParser {
 
   private Double readDoubleAfterPoint() throws ParsingException {
     pos++; //проходим точку
-    double d = 0;
+    double d = 0; //дробная часть
     double exp = 0.1;
     while (pos < sample.length()) {
-      if (sample.charAt(pos) > '9' || sample.charAt(pos) < '0') { //засунь ты это в отдельную функцию
+      if (!numberOnCurrentPosition()) { //засунь ты это в отдельную функцию
         break;
       }
       d = d + (sample.charAt(pos) - '0') * exp;
@@ -76,7 +81,7 @@ class StringParser {
     }
   }
 
-  private boolean canPop() throws ParsingException {
+  private boolean canOperate() throws ParsingException {
     if (operators.size() == 0) {
       return false;
     }
@@ -85,7 +90,7 @@ class StringParser {
     return p2 >= 0 && p1 >= p2;
   }
 
-  private void pop() throws ParsingException { //подумай над названием
+  private void operate() throws ParsingException { //подумай над названием
     if (operators.size() == 0 || numbers.size() < 2) {
       throw new ParsingException("Something is wrong");
     }
@@ -114,8 +119,7 @@ class StringParser {
 
   private Token getNextToken() throws ParsingException {
     Token t = new Token('f');
-    Character ch = sample.charAt(pos);
-    if (ch <= '9' && ch >= '0') {
+    if (numberOnCurrentPosition()) {
       if (wasSpace && currentToken.getType() == 1) {
         throw new ParsingException("Useless space");
       }
@@ -123,14 +127,16 @@ class StringParser {
       double d = readDouble();
       t = new Token(d);
     } else {
+      Character ch = sample.charAt(pos);
       switch (ch) {
         case '-':
           if (previousToken.equal('(')) {
             numbers.push(0.0);
           }
           previousToken = new Token(0);
-          if (operators.peek() == '/') {
-            System.out.print("!");
+          if (operators.peek() == '/') { //мы можем рассматривать и 2 оператора подряд, с такой хитростью: не делим на
+          //отрицательное число, а сначала умножаем делимое на -1. С умножением такое рассматривать,
+          // мне кажется, не обязательно
             double d = numbers.pop();
             numbers.push(-d);
             wasUnaryMinus = true;
@@ -139,12 +145,12 @@ class StringParser {
         case '/':
         case '*':
           if (previousToken.getType() == 2 && previousToken.getOperand() != ')') {
-            System.out.print(previousToken.getOperand());
             throw new ParsingException("Invalid string");
           }
         case ')':
         case '(':
           t = new Token(ch);
+          wasSpace = false;
           break;
         case ' ':
         case '\n':
@@ -152,7 +158,6 @@ class StringParser {
           wasSpace = true;
           break;
         default:
-          System.out.print(ch);
           throw new ParsingException("Unexpected symbol");
       }
     }
@@ -185,34 +190,25 @@ class StringParser {
         }
         if (currentToken.equal(')')) {
           while (operators.size() > 0 && operators.peek() != '(') {
-            pop();
+            operate();
           }
           if (operators.peek() != '(') {
             throw new ParsingException("Too many closing brackets");
           }
           operators.pop();
           if (operators.size() == 1) {
-            System.out.println(pos);
-            System.out.print("We finished");
             weFinished = true;
           }
         } else {
-          while (canPop()) {
-            pop();
+          while (canOperate()) {
+            operate();
           }
           operators.push(currentToken.getOperand());
         }
       }
       previousToken = currentToken;
     }
-    //!!!
     if (numbers.size() != 1) {
-      for (char ch : operators) {
-        System.out.print(ch);
-      }
-      for (double d : numbers) {
-        System.out.print(d);
-      }
       throw new ParsingException("Incorrect statement");
     }
     answer = numbers.get(0);
