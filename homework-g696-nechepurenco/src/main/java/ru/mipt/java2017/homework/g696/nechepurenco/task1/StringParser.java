@@ -71,12 +71,13 @@ class StringParser {
       case '*':
       case '/':
         return 1;
+      default:
+        throw new ParsingException("This mustn't happen!");
     }
-    return -1;
   }
 
   private boolean canPop() throws ParsingException {
-    if (operators.size() == 0){
+    if (operators.size() == 0) {
       return false;
     }
     int p1 = getPriority(currentToken.getOperand());
@@ -165,7 +166,7 @@ class StringParser {
     operators.push('(');
     for (; pos < sample.length(); ++pos) {
       currentToken = getNextToken();
-      if (currentToken.equal('f')) {//there was a space
+      if (currentToken.equal('f')) { //there was a space
         continue;
       }
       if (weFinished) {

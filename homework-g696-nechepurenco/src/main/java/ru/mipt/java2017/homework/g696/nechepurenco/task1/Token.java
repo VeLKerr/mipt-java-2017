@@ -4,24 +4,30 @@ class Token {
   private int type = -1;
   private char operand = '!';
   private double number = 0;
-  Token(char _operand){
+
+  Token(char _operand) {
     operand = _operand;
     type = 2;
   }
-  Token(double value){
+
+  Token(double value) {
     number = value;
     type = 1;
   }
-  boolean equal(char _operand){
-        return (type == 2 && operand == _operand);
-    }
+
+  boolean equal(char givenOperand) {
+        return (type == 2 && operand == givenOperand);
+  }
+
   int getType() {
     return type;
   }
-  char getOperand(){
+
+  char getOperand() {
     return operand;
   }
-  double getNumber(){
+
+  double getNumber() {
     return number;
   }
 }
