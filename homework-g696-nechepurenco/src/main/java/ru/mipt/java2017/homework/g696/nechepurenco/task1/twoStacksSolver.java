@@ -258,7 +258,7 @@ class TwoStacksSolver {
   /**
    * @return value of correct expression
    */
-  double getAnswer(){
+  double getAnswer() {
     return answer;
   }
 }
