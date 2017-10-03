@@ -27,10 +27,8 @@ import java.util.Stack;
 class MyCalculator implements Calculator {
 
   /**
-   *
    * @param expression the string expression.
    * @return calculation result type of double.
-   * @throws ParsingException
    */
 
   @Override
@@ -38,8 +36,8 @@ class MyCalculator implements Calculator {
     if (expression == null) {
       throw new ParsingException("Expression is null");
     }
-    StringBuilder new_expression = expressionPreparation(expression);
-    return countPostfix(fromInfixToPostfix(new_expression));
+    StringBuilder newExpression = expressionPreparation(expression);
+    return countPostfix(fromInfixToPostfix(newExpression));
   }
 
   private static int getPriority(char operator) throws ParsingException {
@@ -78,7 +76,8 @@ class MyCalculator implements Calculator {
     }
   }
 
-  private static StringBuilder fromInfixToPostfix(StringBuilder expression) throws ParsingException {
+  private static StringBuilder fromInfixToPostfix(StringBuilder expression)
+    throws ParsingException {
     StringBuilder postfix = new StringBuilder();
     Stack<String> operators = new Stack<>();
     String token = "";

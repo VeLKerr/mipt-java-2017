@@ -19,10 +19,11 @@ public class Parser {
   public static final char UNARYMINUS = '$';
 
   private static boolean isOperator(Character c) {
-    return  (c == ')' || c == '(' || c == '+' || c == '-' || c == '*' || c == '/');
+    return (c == ')' || c == '(' || c == '+' || c == '-' || c == '*' || c == '/');
   }
 
-  private static void addNumber(StringBuilder answer, StringBuilder number) throws ParsingException {
+  private static void addNumber(StringBuilder answer, StringBuilder number)
+    throws ParsingException {
     // In case of number ends with a dot.
     if (number.charAt(number.length() - 1) == '.') {
       throw new ParsingException("Incorrect number");
@@ -34,17 +35,15 @@ public class Parser {
   }
 
   /**
-   *
    * @param expression the string expression.
    * @return answer the valid string expression.
-   * @throws ParsingException
    */
 
   public static StringBuilder expressionPreparation(String expression) throws ParsingException {
     expression = expression.replace('\n', ' ').replace('\t', ' ');
     StringBuilder answer = new StringBuilder();
 
-    int BracketBalance = 0;
+    int bracketBalance = 0;
     // Is there a dot in number.
     boolean isDot = false;
     boolean isUnary = true;
@@ -79,20 +78,20 @@ public class Parser {
           if (c == '(') {
             if (answer.length() > 0) {
               // -2 because of the spaces between operators
-              if (answer.charAt(answer.length() - 2 ) == ')'|| !previousIsOperator) {
+              if (answer.charAt(answer.length() - 2) == ')' || !previousIsOperator) {
                 throw new ParsingException("Incorrect expression");
               }
             }
-            BracketBalance += 1;
+            bracketBalance += 1;
           } else {
             if (answer.length() > 0) {
               if (answer.charAt(answer.length() - 2) == '(' || !previousIsNum) {
                 throw new ParsingException("Incorrect expression");
               }
             }
-            BracketBalance -= 1;
+            bracketBalance -= 1;
           }
-          if (BracketBalance < 0) {
+          if (bracketBalance < 0) {
             throw new ParsingException("Bracket balance is incorrect");
           }
           answer.append(c + " ");
@@ -126,7 +125,7 @@ public class Parser {
     if (number.length() != 0) {
       addNumber(answer, number);
     }
-    if (BracketBalance != 0) {
+    if (bracketBalance != 0) {
       throw new ParsingException("Bracket balance is incorrect");
     }
     if (answer.length() == 0) {
