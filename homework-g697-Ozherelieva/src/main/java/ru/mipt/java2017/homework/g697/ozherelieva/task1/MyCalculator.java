@@ -77,7 +77,7 @@ class MyCalculator implements Calculator {
   }
 
   private static StringBuilder fromInfixToPostfix(StringBuilder expression)
-    throws ParsingException {
+      throws ParsingException {
     StringBuilder postfix = new StringBuilder();
     Stack<String> operators = new Stack<>();
     String token = "";

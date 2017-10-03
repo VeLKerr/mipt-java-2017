@@ -23,7 +23,7 @@ public class Parser {
   }
 
   private static void addNumber(StringBuilder answer, StringBuilder number)
-    throws ParsingException {
+      throws ParsingException {
     // In case of number ends with a dot.
     if (number.charAt(number.length() - 1) == '.') {
       throw new ParsingException("Incorrect number");
