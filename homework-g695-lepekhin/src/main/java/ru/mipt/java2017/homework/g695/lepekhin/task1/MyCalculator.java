@@ -139,7 +139,7 @@ public class MyCalculator implements Calculator {
       }
       opers.push(new Char(oper));
     } else if ((oper == '+' || oper == '-') && (lastCh == '!' || lastCh == '('
-      || isOperator(lastCh))) {
+        || isOperator(lastCh))) {
       if (oper == '-') {
         opers.push(new Char('m'));
       } else {
