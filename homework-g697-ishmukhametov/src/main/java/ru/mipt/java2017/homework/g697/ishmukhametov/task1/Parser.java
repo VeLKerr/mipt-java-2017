@@ -5,7 +5,7 @@ import java.util.Stack;
 
 public class Parser {
   private String rebuildedExpression = "";
-  private final String NUMBERS = "^[0-9.]";
+  static final String NUMBERS = "^[0-9.]";
 
   String getRez() {
     return rebuildedExpression;

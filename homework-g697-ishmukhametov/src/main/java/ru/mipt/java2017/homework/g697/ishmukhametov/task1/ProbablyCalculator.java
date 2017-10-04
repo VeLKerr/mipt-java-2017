@@ -4,7 +4,9 @@ import ru.mipt.java2017.homework.base.task1.*;
 import java.util.Stack;
 
 public final class ProbablyCalculator implements Calculator {
-  private final String NUMBERS = "0123456789";
+
+  static final String NUMBERS = "0123456789";
+
   @Override
   public double calculate(String expression) throws ParsingException {
     Parser p = new Parser();
