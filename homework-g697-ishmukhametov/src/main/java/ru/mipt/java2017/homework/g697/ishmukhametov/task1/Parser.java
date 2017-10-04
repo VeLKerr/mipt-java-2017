@@ -5,17 +5,16 @@ import java.util.Stack;
 
 public class Parser {
   private String rebuildedExpression = "";
-  static final String NUMBERS = "^[0-9.]";
+  static final String NUMBERS = "0123456789.";
+  private Integer pos;
+  private Character currentPrev;
+  private Character prevAtRebuilded;
 
   String getRez() {
     return rebuildedExpression;
   }
 
   public void rebuild(String expression) throws ParsingException {
-
-    Integer pos;
-    Character currentPrev;
-    Character prevAtRebuilded;
 
     if (expression == null) {
       throw new ParsingException("Empty expression", new NullPointerException());
@@ -36,11 +35,11 @@ public class Parser {
       char symbol = expression.charAt(pos);
 
       if ("*/".indexOf(symbol) != -1) {
-        fstPriorityHandler(symbol, pos, currentPrev, prevAtRebuilded,  temp);
+        fstPriorityHandler(symbol, temp);
         continue;
       }
       if ("+-".indexOf(symbol) != -1) {
-        sndPriorityHandler(symbol, pos, currentPrev, prevAtRebuilded, temp);
+        sndPriorityHandler(symbol, temp);
         continue;
       }
       if (symbol == '(') {
@@ -50,11 +49,11 @@ public class Parser {
         continue;
       }
       if (symbol == ')') {
-        closeBrace(pos, currentPrev, prevAtRebuilded, temp);
+        closeBrace(temp);
         continue;
       }
       if (symbol == '#') {
-        endSymbol(pos, currentPrev, prevAtRebuilded, temp);
+        endSymbol(temp);
         continue;
       }
       if (NUMBERS.indexOf(symbol) != -1) {
@@ -92,8 +91,7 @@ public class Parser {
     rebuildedExpression = tmp;
   }
 
-  private void fstPriorityHandler(char symbol, Integer pos, Character currentPrev,
-                                  Character prevAtRebuilded, Stack<Character> temp) throws ParsingException {
+  private void fstPriorityHandler(char symbol, Stack<Character> temp) throws ParsingException {
     if ("(+-/*#".indexOf(currentPrev) != -1) {
       throw new ParsingException("Operators");
     }
@@ -111,8 +109,7 @@ public class Parser {
     }
   }
 
-  private void sndPriorityHandler(char symbol, Integer pos, Character currentPrev,
-                                  Character prevAtRebuilded, Stack<Character> temp) throws ParsingException {
+  private void sndPriorityHandler(char symbol, Stack<Character> temp) throws ParsingException {
     if ("+-*/".indexOf(currentPrev) != -1) {
       throw new ParsingException("Operators");
     }
@@ -137,8 +134,7 @@ public class Parser {
     }
   }
 
-  private void closeBrace(Integer pos, Character currentPrev,
-                          Character prevAtRebuilded, Stack<Character> temp) throws ParsingException {
+  private void closeBrace(Stack<Character> temp) throws ParsingException {
     if (currentPrev == '(') {
       throw new ParsingException("Empty braces");
     }
@@ -158,8 +154,7 @@ public class Parser {
     }
   }
 
-  private void endSymbol(Integer pos, Character currentPrev,
-                         Character prevAtRebuilded, Stack<Character> temp) throws ParsingException {
+  private void endSymbol(Stack<Character> temp) throws ParsingException {
     if (temp.peek() == '(') {
       throw new ParsingException("Wrong number of braces");
     }
