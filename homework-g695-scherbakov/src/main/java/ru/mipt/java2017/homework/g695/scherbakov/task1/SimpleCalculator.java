@@ -63,7 +63,7 @@ public class SimpleCalculator implements Calculator {
 
           case '+':
             if (last == null || last.operator == Operator.LEFT_BRACE ||
-              last.operator == Operator.DIVIDE || last.operator == Operator.MULTIPLY) {
+                last.operator == Operator.DIVIDE || last.operator == Operator.MULTIPLY) {
               last = new OperatorOrNumber(Operator.UNARY_PLUS);
               result.add(last);
             } else if (last.isNumber || last.operator == Operator.RIGHT_BRACE) {
@@ -76,7 +76,7 @@ public class SimpleCalculator implements Calculator {
 
           case '-':
             if (last == null || last.operator == Operator.LEFT_BRACE ||
-              last.operator == Operator.DIVIDE || last.operator == Operator.MULTIPLY) {
+                last.operator == Operator.DIVIDE || last.operator == Operator.MULTIPLY) {
               last = new OperatorOrNumber(Operator.UNARY_MINUS);
               result.add(last);
             } else if (last.isNumber || last.operator == Operator.RIGHT_BRACE) {
@@ -89,7 +89,7 @@ public class SimpleCalculator implements Calculator {
 
           case '*':
             if (last != null && (last.operator == Operator.RIGHT_BRACE || last.isNumber)) {
-              last = new OperatorOrNumber(Operator.MULTIPLY);
+                last = new OperatorOrNumber(Operator.MULTIPLY);
               result.add(last);
             } else {
               throw new ParsingException("Invalid placement of multiplying operator");
@@ -107,7 +107,7 @@ public class SimpleCalculator implements Calculator {
 
           case '(':
             if (last == null || (!last.isNumber && last.operator != Operator.LEFT_BRACE &&
-              last.operator != Operator.RIGHT_BRACE)) {
+                last.operator != Operator.RIGHT_BRACE)) {
               last = new OperatorOrNumber(Operator.LEFT_BRACE);
               result.add(last);
             } else {
@@ -203,7 +203,7 @@ public class SimpleCalculator implements Calculator {
         stack.push(expression.remove().number);
       } else {
         Operator operator = expression.remove().operator;
-        double operands[] = new double[operator.numberOfArgs];
+        double [] operands = new double[operator.numberOfArgs];
 
         for (int i = 0; i < operator.numberOfArgs; i++) {
           operands[i] = stack.pop();
