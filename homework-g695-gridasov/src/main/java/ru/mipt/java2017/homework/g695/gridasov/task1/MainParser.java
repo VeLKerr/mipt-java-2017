@@ -4,9 +4,11 @@
 
 package ru.mipt.java2017.homework.g695.gridasov.task1;
 
+import ru.mipt.java2017.homework.base.task1.ParsingException;
+
 public class MainParser implements AbstractParser {
 
-    public static final int OPERATOR_NOT_EXIST = -111;
+    private static final int OPERATOR_NOT_EXIST = -111;
 
     public Operation parse(String expression) throws ParsingException {
         if (expression == null) {
@@ -31,7 +33,7 @@ public class MainParser implements AbstractParser {
         return stringBuilder.toString();
     }
 
-    private Operation getOperationTree(String expression) {
+    private Operation getOperationTree(String expression) throws ParsingException{
         try {
             double x = Double.parseDouble(expression);
             return new Number(x);

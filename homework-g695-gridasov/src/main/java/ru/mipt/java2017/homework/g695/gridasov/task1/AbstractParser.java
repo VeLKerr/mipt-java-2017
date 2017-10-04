@@ -3,6 +3,8 @@
  */
 package ru.mipt.java2017.homework.g695.gridasov.task1;
 
+import ru.mipt.java2017.homework.base.task1.ParsingException;
+
 public interface AbstractParser {
-    public ru.mipt.java2017.homework.g695.gridasov.task1.Operation parse(String expression);
+    Operation parse(String expression) throws ParsingException;
 }

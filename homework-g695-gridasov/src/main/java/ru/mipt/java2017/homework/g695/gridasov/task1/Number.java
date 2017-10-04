@@ -4,18 +4,10 @@
 package ru.mipt.java2017.homework.g695.gridasov.task1;
 
 public class Number implements Operation {
-    public Number(double value) {
+    Number(double value) {
         this.value = value;
     }
-    public Number(String epxression) {
-        try {
-            this.value = Double.parseDouble(epxression);
-        } catch (NumberFormatException e) {
-            throw new ParsingException("Bad number in expression");
-        }
-    }
     private double value;
-
     public double evaluate() {
         return value;
     }
