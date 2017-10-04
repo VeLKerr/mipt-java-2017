@@ -53,7 +53,7 @@ public class SimpleCalculator implements Calculator {
         continue;
       }
       if (isNumberCharacter(pieces[i].charAt(pieces[i].length() - 1)) &&
-        isNumberCharacter(pieces[i + 1].charAt(0))) {
+          isNumberCharacter(pieces[i + 1].charAt(0))) {
         return false;
       }
     }
@@ -167,12 +167,12 @@ public class SimpleCalculator implements Calculator {
       return result;
     }
     if (!unaryOperationAllowed &&
-      (expression.charAt(currentPosition) == '-' || expression.charAt(currentPosition) == '+')) {
+        (expression.charAt(currentPosition) == '-' || expression.charAt(currentPosition) == '+')) {
       throw new ParsingException("Unexpected unary plus/minus");
     }
     if (expression.charAt(currentPosition) == '+' || expression.charAt(currentPosition) == '-') {
       if (currentPosition + 1 >= expression.length() ||
-        (expression.charAt(currentPosition + 1) != '(' &&
+          (expression.charAt(currentPosition + 1) != '(' &&
           !Character.isDigit(expression.charAt(currentPosition + 1)))) {
         throw new ParsingException("Unary operation incorrect usage");
       }
@@ -199,7 +199,7 @@ public class SimpleCalculator implements Calculator {
    */
   private double parseNumber() throws ParsingException {
     if (currentPosition >= expression.length() || !Character
-      .isDigit(expression.charAt(currentPosition))) {
+        .isDigit(expression.charAt(currentPosition))) {
       throw new ParsingException("Error while parsing number");
     }
     int position = currentPosition;
