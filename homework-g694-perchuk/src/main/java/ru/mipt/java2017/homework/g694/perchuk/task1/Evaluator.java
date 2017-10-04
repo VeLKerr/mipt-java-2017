@@ -39,7 +39,7 @@ class Evaluator {
     }
   }
 
-  static private short priority(Character ch) throws ParsingException {
+  private short priority(Character ch) throws ParsingException {
     switch (ch) {
       case '(':
         return 3;
