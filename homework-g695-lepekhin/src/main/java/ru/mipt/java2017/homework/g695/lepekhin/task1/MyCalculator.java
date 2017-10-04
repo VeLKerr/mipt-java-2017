@@ -63,7 +63,6 @@ public class MyCalculator implements Calculator {
     if (nums.size() < 2) {
       throw new ParsingException("Lack of the operands");
     }
-
     Double b = nums.pop();
     Double a = nums.pop();
     Char curOper = opers.pop();
@@ -87,10 +86,9 @@ public class MyCalculator implements Calculator {
     nums.push(result);
   }
 
-  public static void check(String expr) throws ParsingException {
+  public static void check(String expr) throws ParsingException, NullPointerException {
     if (expr == null) {
-      throw new ParsingException("null string");
-      //throw new NullPointerException();
+      throw new NullPointerException();
     }
 
     int openBalance = 0;
@@ -132,6 +130,51 @@ public class MyCalculator implements Calculator {
     }
   }
 
+  public void processOper(char oper, char lastCh, ArrayDeque<Char> opers, ArrayDeque<Double> nums)
+    throws ParsingException {
+    if (isOperator(oper) && !((oper == '+' || oper == '-') && (lastCh == '!'
+      || lastCh == '(' || isOperator(lastCh)))) {
+      while (!opers.isEmpty() && prior(opers.getFirst().getValue()) >= prior(oper)) {
+        action(opers, nums);
+      }
+      opers.push(new Char(oper));
+    } else if ((oper == '+' || oper == '-') && (lastCh == '!' || lastCh == '('
+      || isOperator(lastCh))) {
+      if (oper == '-') {
+        opers.push(new Char('m'));
+      } else {
+        opers.push(new Char('p'));
+      }
+    }
+  }
+
+  public int processNumber(int pos, String expr, ArrayDeque<Char> opers, ArrayDeque<Double> nums)
+    throws ParsingException {
+    int r = pos;
+    int ptcnt = 0;
+    while (r + 1 < expr.length() && (Character.isDigit(expr.charAt(r + 1))
+      || expr.charAt(r + 1) == '.')) {
+      ++r;
+      if (expr.charAt(r) == '.') {
+        ++ptcnt;
+      }
+    }
+    if (ptcnt > 1) {
+      throw new ParsingException("More than 1 point in the double");
+    }
+    double curd = Double.parseDouble(expr.substring(pos, r + 1));
+    nums.push(curd);
+    return r;
+  }
+
+  public void processCloseBracket(ArrayDeque<Char> opers, ArrayDeque<Double> nums)
+    throws ParsingException {
+    while (opers.getFirst().getValue() != '(') {
+      action(opers, nums);
+    }
+    opers.pop();
+  }
+
   public double calculate(String expr) throws ParsingException {
     double res = 0.0;
     try {
@@ -147,43 +190,14 @@ public class MyCalculator implements Calculator {
         if (curCh == '.') {
           throw new ParsingException("Unexpected point");
         }
-        if (isOperator(curCh) && !((curCh == '+' || curCh == '-') && (lastCh == '!'
-            || lastCh == '(' || isOperator(lastCh)))) {
-          while (!opers.isEmpty() && prior(opers.getFirst().getValue()) >= prior(curCh)) {
-            action(opers, nums);
-          }
-          opers.push(new Char(curCh));
-        } else if ((curCh == '+' || curCh == '-') && (lastCh == '!' || lastCh == '('
-            || isOperator(lastCh))) {
-          if (curCh == '-') {
-            opers.push(new Char('m'));
-          } else {
-            opers.push(new Char('p'));
-          }
+        if (isOperator(curCh)) {
+          processOper(curCh, lastCh, opers, nums);
         } else if (curCh == '(') {
           opers.push(new Char('('));
         } else if (curCh == ')') {
-          while (opers.getFirst().getValue() != '(') {
-            action(opers, nums);
-          }
-          Char kek = opers.pop();
+          processCloseBracket(opers, nums);
         } else {
-          int r = i;
-          int ptcnt = 0;
-          while (r + 1 < expr.length() && (Character.isDigit(expr.charAt(r + 1))
-            || expr.charAt(r + 1) == '.')) {
-            ++r;
-            if (expr.charAt(r) == '.') {
-              ++ptcnt;
-            }
-          }
-          if (ptcnt > 1) {
-            throw new ParsingException("More than 1 point in the double");
-          }
-          double curd = Double.parseDouble(expr.substring(i, r + 1));
-          nums.push(curd);
-          i = r;
-          curCh = expr.charAt(r);
+          i = processNumber(i, expr, opers, nums);
         }
         lastCh = curCh;
       }
@@ -194,9 +208,11 @@ public class MyCalculator implements Calculator {
         throw new ParsingException("Inbalance in the amount of operators and operands");
       }
       res = nums.getLast();
+      return res;
     } catch (ParsingException parsingExpr) {
       throw parsingExpr;
+    } catch (NullPointerException npexpr) {
+      throw new ParsingException("null string");
     }
-    return res;
   }
 }
