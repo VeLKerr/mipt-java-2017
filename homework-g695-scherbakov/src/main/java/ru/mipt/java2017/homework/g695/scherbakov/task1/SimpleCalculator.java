@@ -16,7 +16,7 @@ public class SimpleCalculator implements Calculator {
    * @return a list of operands and operators of type OperatorOrNumber as they come in the string
    * @throws ParsingException if the expression is not syntactically valid and cannot be computed
    */
-  private List<OperatorOrNumber> ParseExpression(String expression) throws ParsingException {
+  private List<OperatorOrNumber> parseExpression(String expression) throws ParsingException {
     List<OperatorOrNumber> result = new LinkedList<>();
 
     int brackets = 0; // to check if brackets are balanced
@@ -102,7 +102,8 @@ public class SimpleCalculator implements Calculator {
             break;
 
           case '(':
-            if (last == null || (!last.isNumber && last.operator != Operator.LEFT_BRACE && last.operator != Operator.RIGHT_BRACE)) {
+            if (last == null || (!last.isNumber && last.operator != Operator.LEFT_BRACE &&
+              last.operator != Operator.RIGHT_BRACE)) {
               last = new OperatorOrNumber(Operator.LEFT_BRACE);
               result.add(last);
             } else {
@@ -140,12 +141,14 @@ public class SimpleCalculator implements Calculator {
     }
 
     // Expression must be not empty and end with number or ')'
-    if (last == null || !(last.isNumber || last.operator == Operator.RIGHT_BRACE))
+    if (last == null || !(last.isNumber || last.operator == Operator.RIGHT_BRACE)) {
       throw new ParsingException("Unexpected ending of expression");
+    }
 
     // Brackets balance should be 0
-    if (brackets != 0)
+    if (brackets != 0) {
       throw new ParsingException("Unbalanced brackets");
+    }
 
     return result;
   }
@@ -154,7 +157,7 @@ public class SimpleCalculator implements Calculator {
    * @param expression - expression using infix notation containing numbers and allowed operators
    * @return same expression written using postfix notation
    */
-  private Queue<OperatorOrNumber> ToRPN(List<OperatorOrNumber> expression) {
+  private Queue<OperatorOrNumber> toRPN(List<OperatorOrNumber> expression) {
     Queue<OperatorOrNumber> result = new LinkedList<>();
     Stack<Operator> stack = new Stack<>();
 
@@ -189,7 +192,7 @@ public class SimpleCalculator implements Calculator {
    * @param expression: a valid (!) expression of operators and numbers in reverse polish notation
    * @return result of calculating the expression
    */
-  private double ProcessRPN(Queue<OperatorOrNumber> expression) {
+  private double processRPN(Queue<OperatorOrNumber> expression) {
     Stack<Double> stack = new Stack<>();
     while (!expression.isEmpty()) {
       if (expression.peek().isNumber) {
@@ -210,7 +213,7 @@ public class SimpleCalculator implements Calculator {
 
   @Override
   public double calculate(String expression) throws ParsingException {
-    return ProcessRPN(ToRPN(ParseExpression(expression)));
+    return processRPN(toRPN(parseExpression(expression)));
   }
 
   private enum Operator {
