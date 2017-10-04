@@ -101,7 +101,7 @@ public class MyCalculator implements Calculator {
   private static boolean canPop(String str, Stack<String> operations)throws ParsingException {
     boolean f;
     if (operations.size() == 0) {
-       f = false;
+      f = false;
     } else {
       int p1 = priority(str);
       int p2 = priority(operations.peek());
@@ -117,8 +117,8 @@ public class MyCalculator implements Calculator {
    * @return приоритет.
    * @throws ParsingException сообщение об ошибке.
    */
-  private static int priority (String str) throws ParsingException {
-    switch(str) {
+  private static int priority(String str) throws ParsingException {
+    switch (str) {
       case "(":
         return -1;
       case "+":
@@ -166,7 +166,8 @@ public class MyCalculator implements Calculator {
       double n = invertToDouble(part);
       // Если не получилось инвертировать
       if (n == -1) {
-        if (part.equals("+") || part.equals("-") || part.equals("*") || part.equals("/") || part.equals("(") || part.equals(")")) {
+        if (part.equals("+") || part.equals("-") || part.equals("*")
+          || part.equals("/") || part.equals("(") || part.equals(")")) {
           String o = part;
           flagLast = flag;
 
@@ -185,7 +186,9 @@ public class MyCalculator implements Calculator {
             throw new ParsingException("Invalid brackets");
           }
           // Если неправльно расставлены операции (Например: ++1).
-          if ((flagLast == 1 && (flag == 2 || flag == 5 || flag == 6)) || (flagLast == 2 && flag == 1) || ((flagLast == 3 || flagLast == 4) && (flag != 1)) || ((flagLast == 5 || flagLast == 6) && (flag == 2 || flag == 5 || flag == 6))) {
+          if ((flagLast == 1 && (flag == 2 || flag == 5 || flag == 6))
+            || (flagLast == 2 && flag == 1) || ((flagLast == 3 || flagLast == 4) && (flag != 1))
+            || ((flagLast == 5 || flagLast == 6) && (flag == 2 || flag == 5 || flag == 6))) {
             throw new ParsingException("Invalid operation");
           }
           if (flagLast == 1 && (flag == 3 || flag == 4)) {
@@ -219,7 +222,8 @@ public class MyCalculator implements Calculator {
         }
         // Если получилось инвертировать.
       } else {
-        flag = flagLast = 0;
+        flag = 0;
+        flagLast = 0;
         numbers.push(n);
       }
     }
