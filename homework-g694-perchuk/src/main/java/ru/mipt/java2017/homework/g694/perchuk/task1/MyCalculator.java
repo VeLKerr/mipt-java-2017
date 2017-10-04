@@ -9,14 +9,14 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
  */
 public class MyCalculator implements Calculator {
 
-    public double calculate(String expression) throws ParsingException {
-        if (expression == null) {
-            throw new ParsingException("Null expression");
-        }
-
-        Evaluator evaluator = new Evaluator();
-        Parser parser = new Parser(evaluator);
-        parser.parse(expression);
-        return evaluator.completeEvaluation();
+  public double calculate(String expression) throws ParsingException {
+    if (expression == null) {
+      throw new ParsingException("Null expression");
     }
+
+    Evaluator evaluator = new Evaluator();
+    Parser parser = new Parser(evaluator);
+    parser.parse(expression);
+    return evaluator.completeEvaluation();
+  }
 }
