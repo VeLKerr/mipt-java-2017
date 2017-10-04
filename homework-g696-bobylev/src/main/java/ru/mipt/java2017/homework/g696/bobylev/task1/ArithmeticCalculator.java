@@ -4,19 +4,17 @@ import ru.mipt.java2017.homework.base.task1.Calculator;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.function.IntPredicate;
 
 /**
  * @author Igor V. Bobylev
  * @since 03.10.17
  *
  * Grammar:
- * <E>  ::= <T> <E’>.
+ * <E>  ::= <T> <E’>
  * <E’> ::= + <T> <E’> | - <T> <E’> | .
- * <T>  ::= <F> <T’>.
+ * <T>  ::= <F> <T’>
  * <T’> ::= * <F> <T’> | / <F> <T’> | .
- * <F>  ::= <number> | ( <E> ) | - <F>.
+ * <F>  ::= <number> | ( <E> ) | - <F>
  */
 
 public class ArithmeticCalculator implements Calculator {

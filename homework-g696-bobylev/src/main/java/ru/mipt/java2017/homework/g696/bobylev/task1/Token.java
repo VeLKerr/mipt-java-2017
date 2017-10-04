@@ -3,40 +3,6 @@ package ru.mipt.java2017.homework.g696.bobylev.task1;
 import java.util.Arrays;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
-enum Tag {
-  NUMBER,
-  LPAREN,
-  RPAREN,
-  END_OF_TEXT,
-  ADD,
-  SUB,
-  MUL,
-  DIV;
-
-  public String toString() {
-    switch (this) {
-      case NUMBER:
-        return "number";
-      case LPAREN:
-        return "'('";
-      case RPAREN:
-        return "')'";
-      case END_OF_TEXT:
-        return "end of text";
-      case ADD:
-        return "+";
-      case SUB:
-        return "-";
-      case MUL:
-        return "*";
-      case DIV:
-        return "|";
-      default:
-        throw new RuntimeException("unreachable code");
-    }
-  }
-}
-
 class Token {
 
   private Tag tag;
