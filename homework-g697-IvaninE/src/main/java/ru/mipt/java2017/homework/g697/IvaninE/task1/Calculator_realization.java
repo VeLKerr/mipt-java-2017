@@ -8,6 +8,7 @@ class Calculator_realization implements Calculator {
     public double calculate(String expression) throws ParsingException {
         if (expression == null) {
           throw new ParsingException("ERROR: Where is the line?");
+
         }
         expression = expression.replaceAll("\\s+", "");
         if (expression.length() == 0) {
