@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                     http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,6 +15,25 @@
         <module>homework-base</module>
         <module>homework-tests</module>
         <module>homework-g694-nachinkin</module>
+        <module>homework-g000-lavrentyev</module>
+        <module>homework-g696-mosyagin</module>
+        <module>homework-g696-feofanova</module>
+        <module>homework-g695-kalinochkin</module>
+        <module>homework-g697-IvaninVitaly</module>
+        <module>homework-g694-kalinin</module>
+        <module>homework-g694-yusupov</module>
+        <module>homework-g694-cherepkov</module>
+        <module>homework-g695-gazizullin</module>
+        <module>homework-g695-skakovsky</module>
+        <module>homework-g695-lunin</module>
+        <module>homework-g695-lepekhin</module>
+        <module>homework-g696-nechepurenco</module>
+        <module>homework-g696-pak</module>
+        <module>homework-g697-kolodin</module>
+        <module>homework-g696-grebenshikov</module>
+        <module>homework-g695-gostkin</module>
+        <module>homework-g696-hromov</module>
+        <module>homework-g697-Inuytin</module>
     </modules>
 
     <build>
@@ -210,5 +229,4 @@
             <url>http://repo1.maven.org/maven2/</url>
         </pluginRepository>
     </pluginRepositories>
-
 </project>
