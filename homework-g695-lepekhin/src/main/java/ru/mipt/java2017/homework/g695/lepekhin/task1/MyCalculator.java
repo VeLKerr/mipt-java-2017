@@ -87,10 +87,10 @@ public class MyCalculator implements Calculator {
     nums.push(result);
   }
 
-  public static void check(String expr) throws ParsingException, NullPointerException {
+  public static void check(String expr) throws ParsingException {
     if (expr == null) {
-     // throw new ParsingException("null string");
-      throw new NullPointerException();
+      throw new ParsingException("null string");
+      //throw new NullPointerException();
     }
 
     int openBalance = 0;
