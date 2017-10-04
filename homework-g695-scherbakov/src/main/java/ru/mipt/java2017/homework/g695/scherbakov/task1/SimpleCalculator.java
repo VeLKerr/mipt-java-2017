@@ -33,16 +33,20 @@ public class SimpleCalculator implements Calculator {
         if (Character.isDigit(symbol)) {
           double number = 0;
 
-          do {
+          while (Character.isDigit(symbol)) {
             number *= 10;
             number += Character.getNumericValue(symbol);
-          } while (Character.isDigit(symbol = reader.read()));
+            symbol = reader.read();
+          }
 
           if (symbol == '.') {
             double base = 1;
-            while (Character.isDigit(symbol = reader.read())) {
+            symbol = reader.read();
+
+            while (Character.isDigit(symbol)) {
               base /= 10;
               number += base * Character.getNumericValue(symbol);
+              symbol = reader.read();
             }
           }
 
