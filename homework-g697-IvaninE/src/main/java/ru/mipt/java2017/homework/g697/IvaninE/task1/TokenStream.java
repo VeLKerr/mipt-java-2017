@@ -16,11 +16,11 @@ public class TokenStream {
   //пустой ли буфер?
   private boolean bufferisfilled;
 
-  private static final char[] arithmeticsymbols = {'+', '-', '*', '/', '(', ')'};
+  private static final char[] ARSYM = {'+', '-', '*', '/', '(', ')'};
 
   //проверка на то является ли символ оператором или скобкой
   private static boolean isOperator(char character) {
-    for (char ch : arithmeticsymbols) {
+    for (char ch : ARSYM) {
       if (character == ch) {
         return true;
       }
