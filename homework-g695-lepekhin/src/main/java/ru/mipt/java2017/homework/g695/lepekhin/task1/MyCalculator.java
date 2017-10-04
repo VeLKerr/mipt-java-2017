@@ -84,17 +84,13 @@ public class MyCalculator implements Calculator {
       default:
         throw new ParsingException("An error occured.");
     }
-       /* System.out.print(a);
-        System.out.print(curOper.value);
-        System.out.print(b);
-        System.out.print("=");
-        System.out.println(result);*/
     nums.push(result);
   }
 
-  public static void check(String expr) throws ParsingException {
+  public static void check(String expr) throws ParsingException, NullPointerException {
     if (expr == null) {
-      throw new ParsingException("null string");
+     // throw new ParsingException("null string");
+      throw new NullPointerException();
     }
 
     int openBalance = 0;
