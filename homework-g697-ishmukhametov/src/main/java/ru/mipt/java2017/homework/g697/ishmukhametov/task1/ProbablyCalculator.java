@@ -16,7 +16,7 @@ public final class ProbablyCalculator implements Calculator {
     Stack<Double> calcOrder = new Stack<>();
     for (int i = 0; i < data.length; i++) {
       if (NUMBERS.indexOf(data[i].charAt(0)) != -1 ||
-        data[i].length() >= 2) {
+          data[i].length() >= 2) {
         double t;
         try {
           t = Double.parseDouble(data[i]);
