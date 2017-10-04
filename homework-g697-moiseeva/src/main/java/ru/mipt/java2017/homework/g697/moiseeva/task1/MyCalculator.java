@@ -13,11 +13,11 @@ import java.util.StringTokenizer;
 public class MyCalculator implements Calculator {
 
   // Стек чисел.
-  Stack<Double> numbers = new Stack<>();
+  private Stack<Double> numbers = new Stack<>();
   // Стек операций.
-  Stack<String> operations = new Stack<>();
+  private Stack<String> operations = new Stack<>();
   // Позиция в выражении.
-  Integer position = 0;
+  private Integer position = 0;
 
   /**
    * @param str строка-выражение.
@@ -49,7 +49,7 @@ public class MyCalculator implements Calculator {
    * @return номер операции.
    * @throws ParsingException сообщение об ошибке.
    */
-  private int definitionOfSymbol(String part) throws ParsingException{
+  private int definitionOfSymbol(String part) throws ParsingException {
     switch (part) {
       case "(":
         return 1;
@@ -63,16 +63,16 @@ public class MyCalculator implements Calculator {
         return 5;
       case "/":
         return 6;
-        default:
-          throw new ParsingException("Invalid operation");
+      default:
+        throw new ParsingException("Invalid operation");
     }
   }
 
   // Достаём операцию.
-  private static void pop (Stack<Double> numbers, Stack<String> operations){
+  private static void pop(Stack<Double> numbers, Stack<String> operations) throws ParsingException {
     double b = numbers.pop();
     double a = numbers.pop();
-    switch (operations.pop()){
+    switch (operations.pop()) {
       case "+":
         numbers.push(a + b);
         break;
@@ -85,6 +85,8 @@ public class MyCalculator implements Calculator {
       case "/":
         numbers.push(a / b);
         break;
+      default:
+        throw new ParsingException("Invalid operation");
     }
   }
 
@@ -96,11 +98,11 @@ public class MyCalculator implements Calculator {
    * @return результат проверки.
    * @throws ParsingException сообщение об ошибке.
    */
-  private static boolean canPop(String str, Stack<String> operations)throws ParsingException{
+  private static boolean canPop(String str, Stack<String> operations)throws ParsingException {
     boolean f;
-    if (operations.size() == 0){
+    if (operations.size() == 0) {
        f = false;
-    }else {
+    } else {
       int p1 = priority(str);
       int p2 = priority(operations.peek());
       f = (p1 >= 0 && p2 >= 0 && p1 >= p2);
@@ -115,8 +117,8 @@ public class MyCalculator implements Calculator {
    * @return приоритет.
    * @throws ParsingException сообщение об ошибке.
    */
-  private static int priority (String str) throws ParsingException{
-    switch(str){
+  private static int priority (String str) throws ParsingException {
+    switch(str) {
       case "(":
         return -1;
       case "+":
@@ -183,9 +185,7 @@ public class MyCalculator implements Calculator {
             throw new ParsingException("Invalid brackets");
           }
           // Если неправльно расставлены операции (Например: ++1).
-          if ((flagLast == 1 && (flag == 2 || flag == 5 || flag == 6)) || (flagLast == 2
-            && flag == 1) || ((flagLast == 3 || flagLast == 4) && (flag != 1)) || (
-            (flagLast == 5 || flagLast == 6) && (flag == 2 || flag == 5 || flag == 6))) {
+          if ((flagLast == 1 && (flag == 2 || flag == 5 || flag == 6)) || (flagLast == 2 && flag == 1) || ((flagLast == 3 || flagLast == 4) && (flag != 1)) || ((flagLast == 5 || flagLast == 6) && (flag == 2 || flag == 5 || flag == 6))) {
             throw new ParsingException("Invalid operation");
           }
           if (flagLast == 1 && (flag == 3 || flag == 4)) {
