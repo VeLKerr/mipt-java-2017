@@ -167,7 +167,7 @@ public class MyCalculator implements Calculator {
       // Если не получилось инвертировать
       if (n == -1) {
         if (part.equals("+") || part.equals("-") || part.equals("*")
-          || part.equals("/") || part.equals("(") || part.equals(")")) {
+            || part.equals("/") || part.equals("(") || part.equals(")")) {
           String o = part;
           flagLast = flag;
 
@@ -187,8 +187,8 @@ public class MyCalculator implements Calculator {
           }
           // Если неправльно расставлены операции (Например: ++1).
           if ((flagLast == 1 && (flag == 2 || flag == 5 || flag == 6))
-            || (flagLast == 2 && flag == 1) || ((flagLast == 3 || flagLast == 4) && (flag != 1))
-            || ((flagLast == 5 || flagLast == 6) && (flag == 2 || flag == 5 || flag == 6))) {
+              || (flagLast == 2 && flag == 1) || ((flagLast == 3 || flagLast == 4) && (flag != 1))
+              || ((flagLast == 5 || flagLast == 6) && (flag == 2 || flag == 5 || flag == 6))) {
             throw new ParsingException("Invalid operation");
           }
           if (flagLast == 1 && (flag == 3 || flag == 4)) {
