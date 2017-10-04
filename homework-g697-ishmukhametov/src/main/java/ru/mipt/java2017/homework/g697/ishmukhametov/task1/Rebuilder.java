@@ -3,7 +3,17 @@ package ru.mipt.java2017.homework.g697.ishmukhametov.task1;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 import java.util.Stack;
 
-public class Parser {
+/*
+*
+* Rebuilder of our expression
+* Rebuilded expression doesn't have:
+*   Unnecessary spaces
+*   Braces
+*
+ */
+
+public class Rebuilder {
+
   private String rebuildedExpression = "";
   static final String NUMBERS = "0123456789.";
   private Integer pos;
@@ -15,11 +25,14 @@ public class Parser {
   }
 
   public void rebuild(String expression) throws ParsingException {
-
+    /*If expression is null, then we have NullPointerException*/
     if (expression == null) {
       throw new ParsingException("Empty expression", new NullPointerException());
     }
 
+    /* Removing of unnecessary spaces
+    and adding start and terminal states
+    */
     expression = expression.replace(" ", "")
       .replace("\n", "")
       .replace("\t", "");
@@ -33,29 +46,34 @@ public class Parser {
 
     while (!temp.isEmpty()) {
       char symbol = expression.charAt(pos);
-
+      /* Case study */
       if ("*/".indexOf(symbol) != -1) {
         fstPriorityHandler(symbol, temp);
         continue;
       }
+
       if ("+-".indexOf(symbol) != -1) {
         sndPriorityHandler(symbol, expression.charAt(pos + 1), temp);
         continue;
       }
+
       if (symbol == '(') {
         temp.add(symbol);
         currentPrev = symbol;
         pos++;
         continue;
       }
+
       if (symbol == ')') {
-        closeBrace(temp);
+        closeBracesHandler(temp);
         continue;
       }
+
       if (symbol == '#') {
-        endSymbol(temp);
+        terminalStateHandler(temp);
         continue;
       }
+
       if (NUMBERS.indexOf(symbol) != -1) {
         rebuildedExpression += symbol;
         prevAtRebuilded = symbol;
@@ -65,9 +83,15 @@ public class Parser {
         throw new ParsingException("Invalid symbol");
       }
     }
+
+    /* Check if we have expression which consisted of braces and spaces*/
     if (rebuildedExpression.equals("")) {
       throw new ParsingException("Empty expression");
     }
+
+    /* Else we should remove constractions
+      of pluses and minuses before numbers
+    */
     String tmp = "";
     for (int i = 0; i < rebuildedExpression.length(); i++) {
       if ("+-".indexOf(rebuildedExpression.charAt(i)) == -1) {
@@ -91,10 +115,13 @@ public class Parser {
     rebuildedExpression = tmp;
   }
 
+  /* Handler of * and / */
   private void fstPriorityHandler(char symbol, Stack<Character> temp) throws ParsingException {
+    /* None of the operators can be before them */
     if ("(+-/*#".indexOf(currentPrev) != -1) {
       throw new ParsingException("Operators");
     }
+    /* If previous symbolwa*/
     if (NUMBERS.indexOf(prevAtRebuilded) != -1) {
       rebuildedExpression += " ";
       prevAtRebuilded = ' ';
@@ -109,8 +136,13 @@ public class Parser {
     }
   }
 
+  /* Handler of + and -
+  Have problems if 5 + + 6 or 5 - - 6.
+  Can be solved by changing ++ and -- on **
+  */
   private void sndPriorityHandler(char symbol, char nextSymbol,
                                   Stack<Character> temp) throws ParsingException {
+    /*Not so easy as * and / because of + - and - + cases */
     if ("+-*/".indexOf(currentPrev) != -1) {
       if (NUMBERS.indexOf(nextSymbol) == -1 &&
           nextSymbol != '(' || currentPrev.equals(symbol)) {
@@ -127,6 +159,7 @@ public class Parser {
       rebuildedExpression += " ";
       prevAtRebuilded = ' ';
     }
+    /*If number has minus or plus */
     if ("(#".indexOf(currentPrev) != -1) {
       currentPrev = symbol;
       prevAtRebuilded = symbol;
@@ -144,10 +177,13 @@ public class Parser {
     }
   }
 
-  private void closeBrace(Stack<Character> temp) throws ParsingException {
+  /* Handler of ) */
+  private void closeBracesHandler(Stack<Character> temp) throws ParsingException {
+    /* If we don't have anything in braces it is unforgivable */
     if (currentPrev == '(') {
       throw new ParsingException("Empty braces");
     }
+    /* If we have more close braces when it is error */
     if (temp.peek() == '#') {
       throw new ParsingException("Wrong number of braces");
     }
@@ -164,7 +200,9 @@ public class Parser {
     }
   }
 
-  private void endSymbol(Stack<Character> temp) throws ParsingException {
+  /* Terminal state handler */
+  private void terminalStateHandler(Stack<Character> temp) throws ParsingException {
+    /* If we have more open braces it is error */
     if (temp.peek() == '(') {
       throw new ParsingException("Wrong number of braces");
     }
