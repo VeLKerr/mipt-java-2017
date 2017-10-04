@@ -1,4 +1,4 @@
-/**
+package ru.mipt.java2017.homework.g695.gridasov.task1; /**
  * Created by ilya on 02.10.17.
  */
 
