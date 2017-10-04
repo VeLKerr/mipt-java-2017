@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>ru.mipt.java2017</groupId>
+    <artifactId>mipt-java-2017</artifactId>
+    <version>1.0.0</version>
+  </parent>
+  <groupId>ru.mipt.java2017</groupId>
+  <artifactId>homework-g695-kalinochkin</artifactId>
+  <version>1.0</version>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+    <dependency>
+        <groupId>ru.mipt.java2017</groupId>
+        <artifactId>homework-base</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+    <dependency>
+        <groupId>ru.mipt.java2017</groupId>
+        <artifactId>homework-tests</artifactId>
+        <version>1.0.0</version>
+        <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
