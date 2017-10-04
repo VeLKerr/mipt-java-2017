@@ -89,7 +89,7 @@ public class SimpleCalculator implements Calculator {
 
           case '*':
             if (last != null && (last.operator == Operator.RIGHT_BRACE || last.isNumber)) {
-                last = new OperatorOrNumber(Operator.MULTIPLY);
+              last = new OperatorOrNumber(Operator.MULTIPLY);
               result.add(last);
             } else {
               throw new ParsingException("Invalid placement of multiplying operator");
@@ -203,7 +203,7 @@ public class SimpleCalculator implements Calculator {
         stack.push(expression.remove().number);
       } else {
         Operator operator = expression.remove().operator;
-        double [] operands = new double[operator.numberOfArgs];
+        double[] operands = new double[operator.numberOfArgs];
 
         for (int i = 0; i < operator.numberOfArgs; i++) {
           operands[i] = stack.pop();
