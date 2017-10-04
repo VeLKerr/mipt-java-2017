@@ -1,6 +1,5 @@
 package ru.mipt.java2017.homework.g697.IvaninE.task1;
 
-import ru.mipt.java2017.homework.base.task1.Calculator;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
 import java.util.Stack;
@@ -38,7 +37,7 @@ public class Calculation {
     double value = primaryExprRule();
     Token curToken = tokenStream.getCurrentToken();
     while (true) {
-      switch (curToken.symbol) {
+      switch (curToken.symbol()) {
         case '*':
           value *= primaryExprRule();
           curToken = tokenStream.getCurrentToken();
@@ -57,9 +56,9 @@ public class Calculation {
   // Случай чисел и скобок
   private double primaryExprRule() throws ParsingException {
     Token curToken = tokenStream.getCurrentToken();
-    switch (curToken.symbol) {
+    switch (curToken.symbol()) {
       case 'x':
-        return curToken.value;
+        return curToken.value();
 
       case '-':
         return -primaryExprRule();
@@ -67,7 +66,7 @@ public class Calculation {
       case '(':
         double value = expressionRule();
         curToken = tokenStream.getCurrentToken();
-        if (curToken.symbol != ')') {
+        if (curToken.symbol() != ')') {
           throw new ParsingException("ERROR: bad parentheses balance");
         }
         return value;
@@ -81,7 +80,7 @@ public class Calculation {
     double value = termRule();
     Token curToken = tokenStream.getCurrentToken();
     while (true) {
-      switch (curToken.symbol) {
+      switch (curToken.symbol()) {
         case '-':
           value -= termRule();
           curToken = tokenStream.getCurrentToken();

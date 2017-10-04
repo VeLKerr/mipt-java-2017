@@ -1,6 +1,5 @@
 package ru.mipt.java2017.homework.g697.IvaninE.task1;
 
-import ru.mipt.java2017.homework.base.task1.Calculator;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
 public class TokenStream {
@@ -15,13 +14,13 @@ public class TokenStream {
   private String expression;
 
   //пустой ли буфер?
-  private boolean buffer_is_filled;
+  private boolean bufferisfilled;
 
-  private static final char[] arithmetic_symbols = {'+', '-', '*', '/', '(', ')'};
+  private static final char[] arithmeticsymbols = {'+', '-', '*', '/', '(', ')'};
 
   //проверка на то является ли символ оператором или скобкой
   private static boolean isOperator(char character) {
-    for (char ch : arithmetic_symbols) {
+    for (char ch : arithmeticsymbols) {
       if (character == ch) {
         return true;
       }
@@ -33,14 +32,14 @@ public class TokenStream {
   public void setParsingExpression(String parsingExpression) {
     expression = parsingExpression;
     curPos = 0;
-    buffer_is_filled = false;
+    bufferisfilled = false;
   }
 
   //функция получения и обработки текущего токена
   public Token getCurrentToken() throws ParsingException {
     //если в буфере чтото- есть, то возвращаем его содержимое
-    if (buffer_is_filled) {
-      buffer_is_filled = false;
+    if (bufferisfilled) {
+      bufferisfilled = false;
       return buffer;
     }
     if (curPos >= expression.length()) {
@@ -74,11 +73,11 @@ public class TokenStream {
   }
 
   public void putBackToStream(Token token) throws ParsingException {
-    if (buffer_is_filled) {
+    if (bufferisfilled) {
       throw new ParsingException("Illegal expression");
     }
     buffer = token;
-    buffer_is_filled = true;
+    bufferisfilled = true;
   }
 
 }
