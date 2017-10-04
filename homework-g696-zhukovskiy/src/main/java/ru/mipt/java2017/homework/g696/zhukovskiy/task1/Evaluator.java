@@ -12,11 +12,11 @@ class Evaluator {
   /**
    * Initializes Evaluator and creates it's inner state
    *
-   * @param rpnExpression_ expression in Reverse Polish Notation
+   * @param rpnExpr expression in Reverse Polish Notation
    * @return {@code Evaluator} object
    */
-  Evaluator(String rpnExpression_) {
-    rpnExpression = rpnExpression_;
+  Evaluator(String rpnExpr) {
+    rpnExpression = rpnExpr;
     rpnStack = new java.util.Stack<>();
   }
 
@@ -51,7 +51,7 @@ class Evaluator {
    *
    * @param operation the character of the operation
    */
-  private void eval_single(char operation) {
+  private void evalSingle(char operation) throws ParsingException {
     double first = rpnStack.pop();
     double second = rpnStack.pop();
     switch (operation) {
@@ -67,6 +67,8 @@ class Evaluator {
       case ('*'):
         rpnStack.push(second * first);
         break;
+      default:
+        throw new ParsingException("Broken expression (invalid operator)");
     }
   }
 
@@ -123,7 +125,7 @@ class Evaluator {
           // Выполняем арифметическую операцию над двумя числами в стеке
         } else {
           if (rpnStack.size() >= 2) {
-            eval_single(currentChar);
+            evalSingle(currentChar);
           } else {
             throw new ParsingException("Broken expression (wrong usage of \"" + currentChar + ")");
           }

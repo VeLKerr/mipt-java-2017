@@ -16,10 +16,10 @@ public class SimpleCalculator implements Calculator {
     if (expression == null) {
       throw new ParsingException("Null expression");
     } else {
-      Parser LocalParser = new Parser(expression);
-      String rpnExpression = LocalParser.parseRPN();
-      Evaluator Evaluator = new Evaluator(rpnExpression);
-      return Evaluator.evaluateRPN();
+      Parser localParser = new Parser(expression);
+      String rpnExpression = localParser.parseRPN();
+      Evaluator evaluator = new Evaluator(rpnExpression);
+      return evaluator.evaluateRPN();
     }
   }
 }
