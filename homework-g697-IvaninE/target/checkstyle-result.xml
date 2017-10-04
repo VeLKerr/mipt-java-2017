@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="7.1.2">
+<file name="C:\Users\Mvideo\Desktop\repo\mipt-java-2017\homework-g697-IvaninE\src\main\java\ru\mipt\java2017\homework\g697\IvaninE\task1\Calculation.java">
+<error line="3" column="8" severity="error" message="Unused import - ru.mipt.java2017.homework.base.task1.Calculator." source="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck"/>
+</file>
+<file name="C:\Users\Mvideo\Desktop\repo\mipt-java-2017\homework-g697-IvaninE\src\main\java\ru\mipt\java2017\homework\g697\IvaninE\task1\Calculator_realization.java">
+<error line="6" column="7" severity="error" message="Name &apos;Calculator_realization&apos; must match pattern &apos;^[A-Z][a-zA-Z0-9]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.TypeNameCheck"/>
+</file>
+<file name="C:\Users\Mvideo\Desktop\repo\mipt-java-2017\homework-g697-IvaninE\src\main\java\ru\mipt\java2017\homework\g697\IvaninE\task1\Token.java">
+<error line="3" column="8" severity="error" message="Unused import - ru.mipt.java2017.homework.base.task1.Calculator." source="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck"/>
+<error line="4" column="8" severity="error" message="Unused import - ru.mipt.java2017.homework.base.task1.ParsingException." source="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck"/>
+<error line="8" column="15" severity="error" message="Variable &apos;symbol&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="9" column="17" severity="error" message="Variable &apos;value&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+</file>
+<file name="C:\Users\Mvideo\Desktop\repo\mipt-java-2017\homework-g697-IvaninE\src\main\java\ru\mipt\java2017\homework\g697\IvaninE\task1\TokenStream.java">
+<error line="3" column="8" severity="error" message="Unused import - ru.mipt.java2017.homework.base.task1.Calculator." source="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck"/>
+<error line="18" column="19" severity="error" message="Name &apos;buffer_is_filled&apos; must match pattern &apos;^[a-z][a-zA-Z0-9]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.MemberNameCheck"/>
+<error line="20" column="31" severity="error" message="Name &apos;arithmetic_symbols&apos; must match pattern &apos;^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck"/>
+</file>
+</checkstyle>
