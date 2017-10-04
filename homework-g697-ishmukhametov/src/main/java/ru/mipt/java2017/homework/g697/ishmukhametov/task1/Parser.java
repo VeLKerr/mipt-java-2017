@@ -5,56 +5,62 @@ import java.util.Stack;
 
 public class Parser {
   private String rebuildedExpression = "";
-  private int pos;
-  private char current_prev;
-  private char reformated_prev;
-  private final String NUMBERS = "0123456789.";
+  private final String NUMBERS = "^[0-9.]";
 
   String getRez() {
     return rebuildedExpression;
   }
 
-  public void Parse(String expression) throws ParsingException {
+  public void rebuild(String expression) throws ParsingException {
+
+    Integer pos;
+    Character currentPrev;
+    Character prevAtRebuilded;
+
     if (expression == null) {
       throw new ParsingException("Empty expression", new NullPointerException());
     }
-    expression = expression.replace(" ", "").
-      replace("\n", "").
-      replace("\t", "");
+
+    expression = expression.replace(" ", "")
+    .replace("\n", "")
+    .replace("\t", "");
     expression = '#' + expression + '#';
+
     Stack<Character> temp = new Stack<>();
     temp.add('#');
     pos = 1;
-    current_prev = '#';
-    reformated_prev = current_prev;
+    currentPrev = '#';
+    prevAtRebuilded = currentPrev;
+
     while (!temp.isEmpty()) {
-      char curr = expression.charAt(pos);
-      if ("*/".indexOf(curr) != -1) {
-        FstPriorityHandler(curr, temp);
+      char symbol = expression.charAt(pos);
+
+      if ("*/".indexOf(symbol) != -1) {
+        fstPriorityHandler(symbol, pos, currentPrev, prevAtRebuilded,  temp);
         continue;
       }
-      if ("+-".indexOf(curr) != -1) {
-        SndPriorityHandler(curr, temp);
+      if ("+-".indexOf(symbol) != -1) {
+        sndPriorityHandler(symbol, pos, currentPrev, prevAtRebuilded, temp);
         continue;
       }
-      if (curr == '(') {
-        temp.add(curr);
-        current_prev = curr;
+      if (symbol == '(') {
+        temp.add(symbol);
+        currentPrev = symbol;
         pos++;
         continue;
       }
-      if (curr == ')') {
-        CloseBrace(temp);
+      if (symbol == ')') {
+        closeBrace(pos, currentPrev, prevAtRebuilded, temp);
         continue;
       }
-      if (curr == '#') {
-        ExitSymbol(temp);
+      if (symbol == '#') {
+        endSymbol(pos, currentPrev, prevAtRebuilded, temp);
         continue;
       }
-      if (NUMBERS.indexOf(curr) != -1) {
-        rebuildedExpression += curr;
-        reformated_prev = curr;
-        current_prev = curr;
+      if (NUMBERS.indexOf(symbol) != -1) {
+        rebuildedExpression += symbol;
+        prevAtRebuilded = symbol;
+        currentPrev = symbol;
         pos++;
       } else {
         throw new ParsingException("Invalid symbol");
@@ -63,7 +69,7 @@ public class Parser {
     if (rebuildedExpression.equals("")) {
       throw new ParsingException("Empty expression");
     }
-    String tmp_string = "";
+    String tmp = "";
     for (int i = 0; i < rebuildedExpression.length(); i++) {
       if ("+-".indexOf(rebuildedExpression.charAt(i)) == -1) {
         while (temp.size() != 1 && !temp.isEmpty()) {
@@ -76,90 +82,94 @@ public class Parser {
           }
         }
         if (temp.size() == 1) {
-          tmp_string += temp.pop();
+          tmp += temp.pop();
         }
-        tmp_string += rebuildedExpression.charAt(i);
+        tmp += rebuildedExpression.charAt(i);
       } else {
         temp.add(rebuildedExpression.charAt(i));
       }
     }
-    rebuildedExpression = tmp_string;
+    rebuildedExpression = tmp;
   }
 
-  private void FstPriorityHandler(char symbol, Stack<Character> temp) throws ParsingException {
-    if ("(+-/*#".indexOf(current_prev) != -1) {
+  private void fstPriorityHandler(char symbol, Integer pos, Character currentPrev,
+                                  Character prevAtRebuilded, Stack<Character> temp) throws ParsingException {
+    if ("(+-/*#".indexOf(currentPrev) != -1) {
       throw new ParsingException("Operators");
     }
-    if (NUMBERS.indexOf(reformated_prev) != -1) {
+    if (NUMBERS.indexOf(prevAtRebuilded) != -1) {
       rebuildedExpression += " ";
-      reformated_prev = ' ';
+      prevAtRebuilded = ' ';
     }
     if (temp.peek() == '*' || temp.peek() == '/') {
-      reformated_prev = ' ';
+      prevAtRebuilded = ' ';
       rebuildedExpression += temp.pop() + " ";
     } else {
       temp.add(symbol);
-      current_prev = symbol;
+      currentPrev = symbol;
       pos++;
     }
   }
 
-  private void SndPriorityHandler(char symbol, Stack<Character> temp) throws ParsingException {
-    if ("+-*/".indexOf(current_prev) != -1) {
+  private void sndPriorityHandler(char symbol, Integer pos, Character currentPrev,
+                                  Character prevAtRebuilded, Stack<Character> temp) throws ParsingException {
+    if ("+-*/".indexOf(currentPrev) != -1) {
       throw new ParsingException("Operators");
     }
-    if (NUMBERS.indexOf(reformated_prev) != -1) {
+    if (NUMBERS.indexOf(prevAtRebuilded) != -1) {
       rebuildedExpression += " ";
-      reformated_prev = ' ';
+      prevAtRebuilded = ' ';
     }
-    if ("(#".indexOf(current_prev) != -1) {
-      current_prev = symbol;
-      reformated_prev = symbol;
+    if ("(#".indexOf(currentPrev) != -1) {
+      currentPrev = symbol;
+      prevAtRebuilded = symbol;
       rebuildedExpression += symbol;
       pos++;
       return;
     }
     if (temp.peek() == '#' || temp.peek() == '(') {
       temp.add(symbol);
-      current_prev = symbol;
+      currentPrev = symbol;
       pos++;
     } else {
-      reformated_prev = ' ';
+      prevAtRebuilded = ' ';
       rebuildedExpression += temp.pop() + " ";
     }
   }
 
-  private void CloseBrace(Stack<Character> temp) throws ParsingException {
-    if (current_prev == '(') {
+  private void closeBrace(Integer pos, Character currentPrev,
+                          Character prevAtRebuilded, Stack<Character> temp) throws ParsingException {
+    if (currentPrev == '(') {
       throw new ParsingException("Empty braces");
     }
     if (temp.peek() == '#') {
       throw new ParsingException("Wrong number of braces");
     }
     if (temp.peek() == '(') {
-      current_prev = ')';
+      currentPrev = ')';
       pos++;
       temp.pop();
     } else {
-      if (NUMBERS.indexOf(reformated_prev) != -1) {
+      if (NUMBERS.indexOf(prevAtRebuilded) != -1) {
         rebuildedExpression = rebuildedExpression.concat(" ");
       }
-      reformated_prev = ' ';
+      prevAtRebuilded = ' ';
       rebuildedExpression = rebuildedExpression.concat(temp.pop() + " ");
     }
   }
 
-  private void ExitSymbol(Stack<Character> temp) throws ParsingException {
+  private void endSymbol(Integer pos, Character currentPrev,
+                         Character prevAtRebuilded, Stack<Character> temp) throws ParsingException {
     if (temp.peek() == '(') {
       throw new ParsingException("Wrong number of braces");
     }
     if (temp.peek() == '#') {
       temp.pop();
     } else {
-      if (NUMBERS.indexOf(reformated_prev) != -1) {
+      if (NUMBERS.indexOf(prevAtRebuilded) != -1) {
         rebuildedExpression = rebuildedExpression.concat(" ");
       }
-      reformated_prev = ' ';
+      prevAtRebuilded = ' ';
       rebuildedExpression = rebuildedExpression.concat(temp.pop() + " ");
     }
   }

@@ -5,14 +5,13 @@ import java.util.Stack;
 
 public final class ProbablyCalculator implements Calculator {
   private final String NUMBERS = "0123456789";
-
   @Override
   public double calculate(String expression) throws ParsingException {
     Parser p = new Parser();
-    p.Parse(expression);
-    String reformated_expression = p.getRez();
-    String[] data = reformated_expression.split(" ");
-    Stack<Double> CalcOrder = new Stack<>();
+    p.rebuild(expression);
+    String rebuildedExpression = p.getRez();
+    String[] data = rebuildedExpression.split(" ");
+    Stack<Double> calcOrder = new Stack<>();
     for (int i = 0; i < data.length; i++) {
       if (NUMBERS.indexOf(data[i].charAt(0)) != -1 ||
         data[i].length() >= 2) {
@@ -22,26 +21,28 @@ public final class ProbablyCalculator implements Calculator {
         } catch (Exception e) {
           throw new ParsingException("Problem with decimal", e);
         }
-        CalcOrder.add(t);
+        calcOrder.add(t);
       } else {
-        double b = CalcOrder.pop();
-        double a = CalcOrder.pop();
+        double b = calcOrder.pop();
+        double a = calcOrder.pop();
         switch (data[i]) {
           case "+":
-            CalcOrder.add(a + b);
+            calcOrder.add(a + b);
             break;
           case "-":
-            CalcOrder.add(a - b);
+            calcOrder.add(a - b);
             break;
           case "*":
-            CalcOrder.add(a * b);
+            calcOrder.add(a * b);
             break;
           case "/":
-            CalcOrder.add(a / b);
+            calcOrder.add(a / b);
             break;
+          default:
+            throw new ParsingException("Unexpected error");
         }
       }
     }
-    return CalcOrder.pop();
+    return calcOrder.pop();
   }
 }
