@@ -21,8 +21,6 @@ public class Parser {
     }
 
     expression = expression.replace(" ", "")
-      .replace("++", "**")
-      .replace("--", "**")
       .replace("\n", "")
       .replace("\t", "");
     expression = '#' + expression + '#';
@@ -41,7 +39,7 @@ public class Parser {
         continue;
       }
       if ("+-".indexOf(symbol) != -1) {
-        sndPriorityHandler(symbol,expression.charAt(pos + 1), temp);
+        sndPriorityHandler(symbol, expression.charAt(pos + 1), temp);
         continue;
       }
       if (symbol == '(') {
@@ -115,7 +113,7 @@ public class Parser {
                                   Stack<Character> temp) throws ParsingException {
     if ("+-*/".indexOf(currentPrev) != -1) {
       if (NUMBERS.indexOf(nextSymbol) == -1 &&
-        nextSymbol != '(') {
+          nextSymbol != '(' || currentPrev.equals(symbol)) {
         throw new ParsingException("Operators");
       } else {
         currentPrev = symbol;
