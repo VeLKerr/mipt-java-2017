@@ -14,6 +14,7 @@
     <modules>
         <module>homework-base</module>
         <module>homework-tests</module>
+        <module>homework-g695-ogorodnikov</module>
         <module>homework-g000-lavrentyev</module>
         <module>homework-g696-mosyagin</module>
         <module>homework-g696-feofanova</module>
