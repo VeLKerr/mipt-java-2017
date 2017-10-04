@@ -131,7 +131,7 @@ public class MyCalculator implements Calculator {
   }
 
   public void processOper(char oper, char lastCh, ArrayDeque<Char> opers, ArrayDeque<Double> nums)
-    throws ParsingException {
+      throws ParsingException {
     if (isOperator(oper) && !((oper == '+' || oper == '-') && (lastCh == '!'
       || lastCh == '(' || isOperator(lastCh)))) {
       while (!opers.isEmpty() && prior(opers.getFirst().getValue()) >= prior(oper)) {
@@ -149,7 +149,7 @@ public class MyCalculator implements Calculator {
   }
 
   public int processNumber(int pos, String expr, ArrayDeque<Char> opers, ArrayDeque<Double> nums)
-    throws ParsingException {
+      throws ParsingException {
     int r = pos;
     int ptcnt = 0;
     while (r + 1 < expr.length() && (Character.isDigit(expr.charAt(r + 1))
@@ -168,7 +168,7 @@ public class MyCalculator implements Calculator {
   }
 
   public void processCloseBracket(ArrayDeque<Char> opers, ArrayDeque<Double> nums)
-    throws ParsingException {
+      throws ParsingException {
     while (opers.getFirst().getValue() != '(') {
       action(opers, nums);
     }
