@@ -101,7 +101,7 @@ public class MyJavaCalculator implements Calculator {
     // 1) we add brackets
     expression = "(" + expression + ")";
     // 2) if we see some operator, surround it with spaces
-    expression = expression.replaceAll(STRING_OF_OPERANDS," $0 ");
+    expression = expression.replaceAll(STRING_OF_OPERANDS, " $0 ");
 
     // 3) if we have unary operations in our input string,
     // we make it binary by adding 0 at the beginning of the string
