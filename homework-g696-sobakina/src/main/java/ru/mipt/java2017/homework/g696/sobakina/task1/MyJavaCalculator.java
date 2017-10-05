@@ -14,7 +14,7 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
 // from valid input string get an answer -- result of calculations
 public class MyJavaCalculator implements Calculator {
 
-  static final String Operators = "\\(|\\)|\\*|\\/|\\-|\\+";
+  static final String STRING_OF_OPERANDS = "\\(|\\)|\\*|\\/|\\-|\\+";
 
   // check if our input string is a double number
   public static boolean isOperand(String presumablyOperand) {
@@ -28,7 +28,7 @@ public class MyJavaCalculator implements Calculator {
 
   // check if our input string is an operator
   public static boolean isOperator(String presumablyOperator) {
-    return presumablyOperator.matches(Operators);
+    return presumablyOperator.matches(STRING_OF_OPERANDS);
   }
 
   // transform from String to Double if possible
@@ -67,26 +67,26 @@ public class MyJavaCalculator implements Calculator {
   }
 
   // pop 2 operands and 1 operator and return the result of received simple expression
-  private void accessoryCalculation(Stack<Double> Q, Stack<String> W)
-    throws ParsingException {
-    if (Q.size() >= 2) {
-      double a = Q.pop();
-      double b = Q.pop();
+  private void accessoryCalculation(Stack<Double> q, Stack<String> w) throws ParsingException {
+
+    if (q.size() >= 2) {
+      double a = q.pop();
+      double b = q.pop();
       double result;
-      String operator = W.pop();
+      String operator = w.pop();
 
       if (operator.matches("\\+")) {
         result = a + b;
-        Q.push(result);
+        q.push(result);
       } else if (operator.matches("\\-")) {
         result = b - a;
-        Q.push(result);
+        q.push(result);
       } else if (operator.matches("\\*")) {
         result = a * b;
-        Q.push(result);
+        q.push(result);
       } else if (operator.matches("\\/")) {
         result = b / a;
-        Q.push(result);
+        q.push(result);
       } else {
         throw new ParsingException("valid operator is not given.");
       }
@@ -101,7 +101,7 @@ public class MyJavaCalculator implements Calculator {
     // 1) we add brackets
     expression = "(" + expression + ")";
     // 2) if we see some operator, surround it with spaces
-    expression = expression.replaceAll(Operators," $0 ");
+    expression = expression.replaceAll(STRING_OF_OPERANDS," $0 ");
 
     // 3) if we have unary operations in our input string,
     // we make it binary by adding 0 at the beginning of the string
@@ -115,45 +115,43 @@ public class MyJavaCalculator implements Calculator {
 
     // simplification is finished
     // now we start the algorithm (read more in detail here: https://habrahabr.ru/post/50196/)
-    Stack<String> W = new Stack<String>(); // stack of operators
-    Stack<Double> Q = new Stack<Double>(); // stack of operands - numbers
+    Stack<String> w = new Stack<String>(); // stack of operators
+    Stack<Double> q = new Stack<Double>(); // stack of operands - numbers
 
     for (int i = 0; i < expressionModified.length; i++) {
       if (isOperand(expressionModified[i])) {
-        Q.push(transformOperand(expressionModified[i]));
-      }
-      else if (isOperator(expressionModified[i])) {
-        if (expressionModified[i].matches("\\(") ||
-          expressionModified[i].matches("\\)")) {
+        q.push(transformOperand(expressionModified[i]));
+      } else if (isOperator(expressionModified[i])) {
+        if (expressionModified[i].matches("\\(") || expressionModified[i].matches("\\)")) {
           if (expressionModified[i].matches("\\)")) {
-            while (!(W.empty() || (W.peek().matches("\\(")))) {
-              accessoryCalculation(Q, W);
+            while (!(w.empty() || (w.peek().matches("\\(")))) {
+              accessoryCalculation(q, w);
             }
-            if (W.empty()) {
+            if (w.empty()) {
               throw new ParsingException("don't have open-bracket.");
             } else {
-              W.pop();
+              w.pop();
             }
           } else {
-            W.push(expressionModified[i]);
+            w.push(expressionModified[i]);
           }
         } else {
-          while (!W.empty() && firstPriorityIsBigger(W.peek(), expressionModified[i])) {
-            accessoryCalculation(Q, W);
+          while (!w.empty() && firstPriorityIsBigger(w.peek(), expressionModified[i])) {
+            accessoryCalculation(q, w);
           }
-          W.push(expressionModified[i]);
+          w.push(expressionModified[i]);
         }
       } else {
         throw new ParsingException("not operand and not operator was met.");
       }
     }
-    if (Q.isEmpty()) {
+    if (q.isEmpty()) {
       throw new ParsingException("no operands in stack.");
     }
 
-    double answer = Q.pop();
+    double answer = q.pop();
 
-    if (Q.isEmpty()) {
+    if (q.isEmpty()) {
       return answer;
     } else {
       throw new ParsingException("not finished. still some operands are in stack.");
