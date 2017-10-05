@@ -3,8 +3,6 @@ package ru.mipt.java2017.homework.g697.volkov.task1;
 import ru.mipt.java2017.homework.base.task1.*;
 
 import java.util.Stack;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Calc implements Calculator {
 
@@ -31,7 +29,7 @@ public class Calc implements Calculator {
   }
 
   // Uses in getRPN() to parse +,-,*,/
-  private String parse_operations(Stack<Character> stack, char x, String notation)
+  private String parseOperations(Stack<Character> stack, char x, String notation)
     throws ParsingException {
     char symb = '!';
     while (!(symb == '#' || x == ' ')) {
@@ -91,7 +89,7 @@ public class Calc implements Calculator {
     boolean flaggus = false;
     int n = 0;
     int i = 0;
-    char prev_symb = '!';
+    char prevSymb = '!';
     String number = "";
     char symb;
     while (i < exp.length()) {
@@ -116,19 +114,19 @@ public class Calc implements Calculator {
           flaggus = false;
         }
 
-        if (symb == '-' && (prev_symb == '(' || prev_symb == '!' || prev_symb == '+'
-          || prev_symb == '/' || prev_symb == '*')) {
+        if (symb == '-' && (prevSymb == '(' || prevSymb == '!' || prevSymb == '+'
+          || prevSymb == '/' || prevSymb == '*')) {
           flaggus = !flaggus;
         } else {
-          notation = parse_operations(stack, symb, notation);
+          notation = parseOperations(stack, symb, notation);
         }
       }
 
       if (!f) {
-        prev_symb = symb;
+        prevSymb = symb;
         ++i;
       } else {
-        prev_symb = exp.charAt(i - 1);
+        prevSymb = exp.charAt(i - 1);
       }
     }
 
@@ -150,7 +148,8 @@ public class Calc implements Calculator {
 
       //System.out.println("<" + element + ">");
 
-      double x1 = .0, x2 = .0;
+      double x1 = .0;
+      double x2 = .0;
       if (element.equals("+")) {
         x2 = stack.pop();
         x1 = stack.pop();
