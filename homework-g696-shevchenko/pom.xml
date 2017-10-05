@@ -8,5 +8,18 @@
   <artifactId>homework-g696-shevchenko</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+  <dependencies>
+    <dependency>
+      <groupId>ru.mipt.java2017</groupId>
+      <artifactId>homework-base</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>ru.mipt.java2017</groupId>
+      <artifactId>homework-tests</artifactId>
+      <version>1.0.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 </project>

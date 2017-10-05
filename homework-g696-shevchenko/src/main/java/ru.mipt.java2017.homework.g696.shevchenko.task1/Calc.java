@@ -1,31 +1,20 @@
 package ru.mipt.java2017.homework.g696.shevchenko.task1;
 
-import java.io.IOException;
 import java.util.LinkedList;
-//import ru.mipt.java2017.homework.base.task1.ParsingException;
-import java.util.Scanner;
+import ru.mipt.java2017.homework.base.task1.ParsingException;
+import ru.mipt.java2017.homework.base.task1.Calculator;
 
-public class Calc {
+/**
+ * Class of a simple calculator which supports +,-,*,/ and brackets. Operation priorities
+ * are working.
+ * @author Alexey Shevchenko
+ */
+
+public class Calc implements Calculator
+{
   private enum Operations { PLUS, MINUS, MULTIPLY, DIVIDE }
   private static final char space = ' ', left_bracket = '(', right_bracket = ')';
-
-  public static void main()
-  {
-    System.out.println("My Calculator.\n");
-    Scanner in = new Scanner(System.in);
-    String expression = in.nextLine();
-    Calc c = new Calc(expression);
-    System.out.println(c.calculate());
-  }
-
   private String data;
-
-  //method string.equals()
-
-  public Calc(String str)
-  {
-    data = simplify(str);
-  }
 
   /**
    * Deletes tabs, spaces; checks if there are symbols that cannot be interpreted.
@@ -33,14 +22,94 @@ public class Calc {
    * @param str - given string.
    * @return string - simplified string ready for parsing.
    */
-  private String simplify(String str)
+  private String simplify(String str) throws ParsingException
   {
-    StringBuilder new_str;
+    try
+    {
+      if (str.equals(""))
+        throw new ParsingException("Empty string");
+    } catch (NullPointerException e)
+    {
+      throw new ParsingException("String is null");
+    }
+
+    int bracket_count = 0;
+    boolean in_brackets = false, empty_brackets = false, starting_symbol = true;
+    StringBuilder new_str = new StringBuilder();
     for (int cp = 0; cp < str.length(); ++cp)
-      //if () TODO!!!
+    {
+      switch (str.charAt(cp)) {
+        case space:
+        case '\n':
+        case '\t': {
+          if (in_brackets)
+            empty_brackets = false;
+          break;
+        }
+        case left_bracket: {
+          in_brackets = true;
+          ++bracket_count;
+          empty_brackets = true;
+          if (starting_symbol)
+            new_str.append('+');
+          starting_symbol = true;
+          new_str.append(str.charAt(cp));
+          break;
+        }
+        case right_bracket: {
+          --bracket_count;
+          starting_symbol = false;
+          if (empty_brackets || bracket_count < 0)
+            throw new ParsingException("");
+          new_str.append(str.charAt(cp));
+          break;
+        }
+        default:
+        {
+          if (in_brackets)
+            empty_brackets = false;
+          if (starting_symbol)
+          {
+            starting_symbol = false;
+            switch (str.charAt(cp)) {
+              case '+':
+              {
+                new_str.append('+'); //continue;
+                break;
+              }
+              case '-':
+              {
+                new_str.append('-');
+                break;
+              }
+              case '*':
+              {
+                throw new ParsingException("Invalid input: symbol * at the beginning.");
+              }
+              case '/':
+                throw new ParsingException("Invalid input: symbol / at the beginning.");
+              default:
+              {
+                if (Character.isDigit(str.charAt(cp)))
+                  new_str.append('+');
+                new_str.append(str.charAt(cp));
+              }
+            }
+          }
+          else
+          {
+            new_str.append(str.charAt(cp));
+          }
+        }
+      }
+    }
+    if (bracket_count > 0)
+      throw new ParsingException("Problem with brackets");
+    if (new_str.length() == 0)
+      throw new ParsingException("Nothing");
+    return new_str.toString();
   }
 
-  //FIXME
   /**
    * Parses data into arrays expression and actions. Recursively calls itself and
    * method double calc(LinkedList<String> expr, LinkedList<Operations> actions).
@@ -48,26 +117,26 @@ public class Calc {
    * @param end - ending CodePoint of data
    */
   private void parse(LinkedList<String> expression, LinkedList<Operations> actions,
-      int start, int end) throws MyParsingException
+      int start, int end) throws ParsingException
   {
+    //Debug
+    //System.out.println("debug message: method parse is called");
     boolean last_was_number = false;
     boolean last_was_action = false;
     boolean digits = false; //writing digits at the moment
-    boolean empty_braces = true;
-    int brackets_count = 0;
+    boolean empty_braces;
+    int brackets_count;
     StringBuilder new_number = new StringBuilder();
 
-
-    //int count = 1;
-    actions.set(0, Operations.PLUS);
-    for (int cp = data.codePointAt(start); cp < end; ++cp)
+    //int cp = data.codePointAt(start
+    for (int cp = start; cp < end; ++cp)
     {
       if (Character.isDigit(data.charAt(cp)) || data.charAt(cp) == '.')
       {
-        if (data.charAt(cp) == '.' && new_number.length() == 0) // nothing can start with .
-          throw new MyParsingException;
-        else if (last_was_number && digits)//two numbers in a row without action
-          throw new MyParsingException;
+        if (data.charAt(cp) == '.' && new_number.length() == 0)
+          throw new ParsingException("Nothing can start with .");
+        else if (last_was_number && !digits)
+          throw new ParsingException("Two numbers in a row without action");
         else
         {
           new_number.append(data.charAt(cp));
@@ -89,8 +158,11 @@ public class Calc {
       {
         if (new_number.length() > 0)
           expression.add(new_number.toString());
+        new_number.setLength(0);
         digits = false;
+        last_was_action = false;
         last_was_number = true;
+        //last_was_number = true;
         LinkedList<String> additional = new LinkedList<String>();
         LinkedList<Operations> additional_actions = new LinkedList<Operations>();
         int j = cp + 1;
@@ -109,7 +181,7 @@ public class Calc {
           ++j;
         }
         if (empty_braces)
-          throw new MyParsingException;
+          throw new ParsingException("Invalid input: empty braces.");
         parse(additional, additional_actions, cp + 1, j);
         cp = j;
         expression.add(String.valueOf(calc(additional, additional_actions)));
@@ -119,9 +191,10 @@ public class Calc {
       //data.charAt(cp) is an operation sign
       if (new_number.length() > 0)
         expression.add(new_number.toString());
+      new_number.setLength(0);
       digits = false;
       if (last_was_action)
-        throw new MyParsingException;
+        throw new ParsingException("Two operation signs in a row.");
       last_was_action = true;
       last_was_number = false;
       switch (data.charAt(cp)) {
@@ -142,18 +215,21 @@ public class Calc {
           break;
         }
         default:
-          throw new MyParsingException;
+          throw new ParsingException("Symbol " + data.charAt(cp) + " is not suitable here.");
       }
 
     }
     if (last_was_action)
-      throw new ParsingException("Invalid input");
+      throw new ParsingException("Expression cannot end with an operation sign.");
     if (new_number.length() > 0)
       expression.add(new_number.toString());
   }
 
-  public double calculate()
+  public double calculate(String str) throws ParsingException
   {
+    data = simplify(str);
+    //Debug
+    //System.out.println("debug message: method calculate is called");
     LinkedList<String> expression = new LinkedList<String>();
     LinkedList<Operations> operations = new LinkedList<Operations>();
     parse(expression, operations, 0, data.length());
@@ -167,25 +243,26 @@ public class Calc {
    * @param actions - LinkedList<Operations>, action[i] stands for the operation before expr[i]
    * @return calculated result
    */
-  private double calc(LinkedList<String> expr, LinkedList<Operations> actions)
+  private double calc(LinkedList<String> expr, LinkedList<Operations> actions) throws ParsingException
   {
+    //Debug
+    //System.out.println("debug message: method calc is called");
+    //1-st priority operations:
     try {
-      //1-st priority operations:
-
       for (int i = 0; i < expr.size(); ++i)
         if (actions.get(i) == Operations.MULTIPLY) {
           expr.set(i - 1,
-              String.valueOf(Double.valueOf(expr.get(i - 1)) * Double.valueOf(expr.get(i))));
+            String.valueOf(Double.valueOf(expr.get(i - 1)) * Double.valueOf(expr.get(i))));
           expr.remove(i);
           actions.remove(i);
         } else if (actions.get(i) == Operations.DIVIDE) {
           expr.set(i - 1,
-              String.valueOf(Double.valueOf(expr.get(i - 1)) / Double.valueOf(expr.get(i))));
+            String.valueOf(Double.valueOf(expr.get(i - 1)) / Double.valueOf(expr.get(i))));
           expr.remove(i);
-          actions.remove(i);
+          actions.remove(i--);
         }
 
-      double result = 0;
+      double result;
       if (actions.get(0) == Operations.MINUS)
         result = -Double.valueOf(expr.get(0));
       else
@@ -199,9 +276,10 @@ public class Calc {
           result -= Double.valueOf(expr.get(i));
       }
       return result;
-    } catch (IOException e)
+    } catch (NumberFormatException e)
     {
-      throw new MyParsingException;
+      throw new ParsingException("");
     }
   }
+
 }
