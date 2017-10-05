@@ -35,8 +35,8 @@ public class MyCalculator implements Calculator {
     for (int i = 0; i < expression.length(); ++i) {
       char symbol = expression.charAt(i);
       if (!((symbol >= '0' && symbol <= '9')
-        || symbol == '(' || symbol == ')' || symbol == '-' || symbol == '+' || symbol == '/' ||
-        symbol == '*' || symbol == '.')) {
+          || symbol == '(' || symbol == ')' || symbol == '-' || symbol == '+' || symbol == '/' ||
+          symbol == '*' || symbol == '.')) {
         throw new ParsingException("Incorrect symbol");
       }
       if (symbol == '(') {
@@ -78,7 +78,7 @@ public class MyCalculator implements Calculator {
   private boolean ifStrngIncorrect(char last, char next) {
     // Two operations can`t go one by one
     if ((last == '+' || last == '-' || last == '*' || last == '/' || last == '.') &&
-      (next == '+' || next == '.' || next == '*' || next == '/')) {
+        (next == '+' || next == '.' || next == '*' || next == '/')) {
       return true;
     }
 
@@ -89,7 +89,7 @@ public class MyCalculator implements Calculator {
 
     // Before ')' can`t be any operation
     if (next == ')' &&
-      (last == '+' || last == '-' || last == '*' || last == '/' || last == '.')) {
+        (last == '+' || last == '-' || last == '*' || last == '/' || last == '.')) {
       return true;
     }
 
@@ -133,7 +133,7 @@ public class MyCalculator implements Calculator {
         isPlus = true;
       }
       if (expression.charAt(i) == '-' && i > 0 &&
-        (expression.charAt(i - 1) >= '0' && expression.charAt(i - 1) <= '9')) {
+          (expression.charAt(i - 1) >= '0' && expression.charAt(i - 1) <= '9')) {
         sum += getInt(expression.substring(lastAct, i));
         lastAct = i;
         isPlus = true;
