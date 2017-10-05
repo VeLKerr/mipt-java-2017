@@ -20,14 +20,11 @@ public class App {
 //      System.out.println(text);
 //      System.out.println(new Double(-0.0));
 
-    String text = "6.0 + (-4) * ((0.0 + 5/2)";
+    String text = "-(-1)";
     MySimpleCalculator c = new MySimpleCalculator();
-    try
-    {
-      System.out.println( c.calculate(text));
-    }
-    catch (Exception e)
-    {
+    try {
+      System.out.println(c.calculate(text));
+    } catch (Exception e) {
       System.out.println("EXCEPTION!!!");
     }
   }

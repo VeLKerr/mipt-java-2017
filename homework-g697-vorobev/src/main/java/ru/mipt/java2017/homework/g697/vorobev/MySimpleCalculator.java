@@ -1,28 +1,21 @@
 package ru.mipt.java2017.homework.g697.vorobev;
 
-//import ru.mipt.java2017.homework.base.task1.Calculator;
-//import ru.mipt.java2017.homework.base.task1.ParsingException;
+import ru.mipt.java2017.homework.base.task1.Calculator;
+import ru.mipt.java2017.homework.base.task1.ParsingException;
 
-import jdk.nashorn.internal.runtime.ECMAException;
-
-import javax.crypto.ExemptionMechanismException;
-import javax.xml.crypto.dom.DOMCryptoContext;
-import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Stack;
 import java.util.StringTokenizer;
-import java.util.zip.DeflaterOutputStream;
 
-public class MySimpleCalculator {
+public class MySimpleCalculator implements Calculator {
   private String text = null;
 
-  public double calculate(String str) throws Exception {
+  @Override
+  public double calculate(String str) throws ParsingException {
     if (str != null) {
       text = str;
-    }
-    else
-    {
-      throw new Exception();
+    } else {
+      throw new ParsingException("Null string");
     }
 
     preprocess();
@@ -32,53 +25,40 @@ public class MySimpleCalculator {
 
     while (st.hasMoreTokens()) {
       String token = st.nextToken();
-      if(iSDouble(token))
-      {
-        numbers.push(token.contentEquals("o") ? -0.0 :  Double.parseDouble(token));
-      }
-      else if(isFunc(token) || token.contentEquals("("))
-      {
-        while(canPop(token.charAt(0), functions))
-        {
+      if (iSDouble(token)) {
+        numbers.push(token.contentEquals("o") ? (-0.0) : Double.parseDouble(token));
+      } else if (isFunc(token) || token.contentEquals("(")) {
+        while (canPop(token.charAt(0), functions)) {
           popFunction(functions, numbers);
         }
 
         functions.push(token.charAt(0));
-      }
-      else if(token.contentEquals(")"))
-      {
-        try
-        {
-          while (functions.peek() != '(')
-          {
+      } else if (token.contentEquals(")")) {
+        try {
+          while (functions.peek() != '(') {
             popFunction(functions, numbers);
           }
 
           functions.pop();
+        } catch (EmptyStackException e) {
+          throw new ParsingException("Wrong brackets sequence");
         }
-        catch (EmptyStackException e)
-        {
-          throw new Exception();
-        }
-      }
-      else if(isSpace(token)) {}
-      else
-      {
-        throw new Exception();
+      } else if (isSpace(token)) {
+      } else {
+        throw new ParsingException("Unexpected symbol", new Throwable(token));
       }
     }
 
-    if(!functions.empty() || numbers.size() != 1)
-    {
-      throw new Exception();
+    if (!functions.empty() || numbers.size() != 1) {
+      throw new ParsingException("Wrong number of operators or operands");
     }
 
     return numbers.pop();
   }
 
-  private void preprocess() throws Exception {
+  private void preprocess() throws ParsingException {
     if (text.indexOf('o') != -1) {
-      throw new Exception();
+      throw new ParsingException("Unexpected symbol", new Throwable("o"));
     }
 
     StringBuilder sb = new StringBuilder();
@@ -111,12 +91,11 @@ public class MySimpleCalculator {
       || token.matches("^\\d+$"));
   }
 
-  boolean isSpace(String token)
-  {
-   return token.matches("^\\s+$");
+  boolean isSpace(String token) {
+    return token.matches("^\\s+$");
   }
 
-  int getPriority(char ch){
+  int getPriority(char ch) {
     switch (ch) {
       case '+':
       case '-':
@@ -131,45 +110,39 @@ public class MySimpleCalculator {
     return 0;
   }
 
-  boolean canPop(char operation, Stack<Character> functions)
-  {
-    if(functions.empty())
-    {
+  boolean canPop(char operator, Stack<Character> functions) {
+    if (functions.empty()) {
       return false;
     }
 
-    int p1 = getPriority(operation);
-    int p2 = getPriority(functions.peek());
-    return p1 >= 0 && p2 >= 0 && p1 >= p2;
+    int operatorPriority = getPriority(operator);
+    int nextOperatorPriority = getPriority(functions.peek());
+    return operatorPriority >= 0 && nextOperatorPriority >= 0 && operatorPriority >= nextOperatorPriority;
   }
 
-  void popFunction(Stack<Character> functions, Stack<Double> numbers) throws Exception
-  {
+  void popFunction(Stack<Character> functions, Stack<Double> numbers) throws ParsingException {
     char op = functions.pop();
-    Double A, B;
-    try
-    {
-      B = new Double(numbers.pop());
-      A = new Double(numbers.pop());
-    }
-    catch (EmptyStackException e)
-    {
-      throw new Exception();
+    Double leftOperand;
+    Double rightOperand;
+    try {
+      rightOperand = new Double(numbers.pop());
+      leftOperand = new Double(numbers.pop());
+    } catch (EmptyStackException e) {
+      throw new ParsingException("Wrong number of operands or operators");
     }
 
-    switch (op)
-    {
+    switch (op) {
       case '+':
-        numbers.push(A + B);
+        numbers.push(leftOperand + rightOperand);
         break;
       case '-':
-        numbers.push(A - B);
+        numbers.push(leftOperand - rightOperand);
         break;
       case '*':
-        numbers.push(A * B);
+        numbers.push(leftOperand * rightOperand);
         break;
       case '/':
-        numbers.push(A / B);
+        numbers.push(leftOperand / rightOperand);
     }
   }
 }
