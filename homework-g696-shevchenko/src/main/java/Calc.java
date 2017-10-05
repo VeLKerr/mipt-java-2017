@@ -1,6 +1,8 @@
+package ru.mipt.java2017.homework.g696.shevchenko.task1;
+
 import java.io.IOException;
 import java.util.LinkedList;
-import ru.mipt.java2017.homework.base.task1.ParsingException;
+//import ru.mipt.java2017.homework.base.task1.ParsingException;
 import java.util.Scanner;
 
 public class Calc {
