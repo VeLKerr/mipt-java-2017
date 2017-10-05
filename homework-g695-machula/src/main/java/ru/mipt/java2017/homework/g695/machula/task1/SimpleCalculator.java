@@ -68,16 +68,7 @@ public class SimpleCalculator implements Calculator {
         ++i;
       }
       if (expression.charAt(i) == '(') {
-        int balance = 1;
-        for (i = i + 1; balance > 0 && i < expression.length(); ++i) {
-          if (expression.charAt(i) == ')') {
-            --balance;
-          }
-          if (expression.charAt(i) == '(') {
-            ++balance;
-          }
-        }
-        --i;
+        i = getPosEndBraces(expression, i);
       }
     }
     return expression.length();
@@ -113,7 +104,7 @@ public class SimpleCalculator implements Calculator {
 
   /**
    * @param term term that need to be divide into values
-   * @return position of end of the first met value
+   * @return position of the end of the first met value
    */
   private int getPosValueEnd(String term) {
     for (int i = 1; i < term.length(); ++i) {
@@ -121,19 +112,29 @@ public class SimpleCalculator implements Calculator {
         return i;
       }
       if (term.charAt(i) == '(') {
-        int balance = 1;
-        for (i = i + 1; balance > 0 && i < term.length(); ++i) {
-          if (term.charAt(i) == ')') {
-            --balance;
-          }
-          if (term.charAt(i) == '(') {
-            ++balance;
-          }
-        }
-        --i;
+        i = getPosEndBraces(term, i);
       }
     }
     return term.length();
+  }
+
+  /**
+   * @param st string in witch we need to find braces end
+   * @param i current position in term
+   * @return position of the end of braces
+   */
+  private int getPosEndBraces(String st, int i) {
+    int balance = 1;
+    for (i = i + 1; balance > 0 && i < st.length(); ++i) {
+      if (st.charAt(i) == ')') {
+        --balance;
+      }
+      if (st.charAt(i) == '(') {
+        ++balance;
+      }
+    }
+    --i;
+    return i;
   }
 
   /**
