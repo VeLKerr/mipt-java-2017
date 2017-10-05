@@ -16,13 +16,11 @@ import java.util.Stack;
  */
 
 public class ForActCalculator implements Calculator {
-  public ForActCalculator()
-  {
+  public ForActCalculator() {
     revPolishEntry = new LinkedList<>();
   }
 
-  public double calculate(String expression) throws ParsingException
-  {
+  public double calculate(String expression) throws ParsingException {
     if (expression == null) {
       throw new ParsingException("Error. Nothing to calculate.");
     }
@@ -34,9 +32,10 @@ public class ForActCalculator implements Calculator {
 
   private void parsing(String expression) throws ParsingException {
     Stack<Character> st = new Stack<>();
-    boolean b = false, b1 = true, sign = true, bot = false;
-    //b - if now we are reading a number, b1 - next symbol can be unary operator,
-    //sign - the sign of next number, bot - if there has already been a bot in the number,
+    boolean b = false; //If now we are reading a number.
+    boolean b1 = true; //Next symbol can be unary operator.
+    boolean sign = true;//The sign of next number
+    boolean bot = false;//If there has already been a bot in the number,
     String number = "";
     for (int i = 0; i < expression.length(); ++i) {
       char c = expression.charAt(i);
@@ -49,15 +48,15 @@ public class ForActCalculator implements Calculator {
         b1 = false;
         number += c;
       } else if (c == '.') { //If we are reading a dot.
-          if (!bot) {
-            if (number.equals("")) {
-              throw new ParsingException("Error. There must be an integer part of number.");
-            }
-            number += '.';
-            bot = true;
-          } else {           //There can not be more than one dot in a number.
-            throw new ParsingException("Error. Two bots in one number.");
+        if (!bot) {
+          if (number.equals("")) {
+            throw new ParsingException("Error. There must be an integer part of number.");
           }
+          number += '.';
+          bot = true;
+        } else {           //There can not be more than one dot in a number.
+          throw new ParsingException("Error. Two bots in one number.");
+        }
       } else {
         if (b) {      //If we have just finished to read a number.
           b = false;
@@ -147,7 +146,7 @@ public class ForActCalculator implements Calculator {
         }
       }
       revPolishEntry.pop();
-      }
+    }
     return numbers.peek();
   }
 }
