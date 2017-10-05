@@ -15,8 +15,7 @@ import java.util.Stack;
  * @since 02.10.17
  */
 
-public class ForActCalculator implements Calculator
-{
+public class ForActCalculator implements Calculator {
   public ForActCalculator()
   {
     revPolishEntry = new LinkedList<>();
@@ -33,8 +32,7 @@ public class ForActCalculator implements Calculator
 
   private LinkedList<String> revPolishEntry;
 
-  private void parsing(String expression) throws ParsingException
-  {
+  private void parsing(String expression) throws ParsingException {
     Stack<Character> st = new Stack<>();
     boolean b = false, b1 = true, sign = true, bot = false;
     //b - if now we are reading a number, b1 - next symbol can be unary operator,
@@ -121,8 +119,7 @@ public class ForActCalculator implements Calculator
     }
   }
 
-  private double counting() throws ParsingException
-  {
+  private double counting() throws ParsingException {
     Stack<Double> numbers = new Stack<>();
     while (!revPolishEntry.isEmpty()) {
       try {
