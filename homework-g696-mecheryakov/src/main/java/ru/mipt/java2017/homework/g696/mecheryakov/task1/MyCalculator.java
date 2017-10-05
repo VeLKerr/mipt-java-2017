@@ -8,50 +8,28 @@ import java.util.Stack;
 
 public class MyCalculator implements Calculator {
 
+  /**
+   * Calculates an expression.
+   *
+   * @param expression the expression to calculate
+   * @return the value of the expression
+   * @throws ParsingException if the expression is invalid
+   */
+
   public double calculate(String expression) throws ParsingException {
-    //    try {
-//      exp[4];
-//      exp = checkAndAddZeroesForUnary(expression);
-//      for (Object s : exp) {
-//        System.out.print(s);
-//      }
-//    } catch (ParsingException e) {
-//      System.out.println(e.toString());
-//    }
     ArrayList<Object> reversePolishNotation = getReversePolishNotation(checkAndAddZeroesForUnary(expression));
     Stack toCalculate = new Stack();
     for (Object s : reversePolishNotation) {
       char symbol = s.toString().charAt(0);
       if (isOperator(symbol)) {
-        double x;
-        double y;
-        Object x1;
-        Object y1;
+        Double x;
+        Double y;
         try {
-          x1 = toCalculate.pop();
-          y1 = toCalculate.pop();
+          x = (Double) toCalculate.pop();
+          y = (Double) toCalculate.pop();
         } catch (EmptyStackException e) {
           throw new ParsingException("not supported unary operator");
         }
-        if (x1 instanceof Integer) {
-          x = (double) ((Integer) x1).intValue();
-        } else {
-          x = (double) x1;
-        }
-        if (y1 instanceof Integer) {
-          y = (double) ((Integer) y1).intValue();
-        } else {
-          y = (double) y1;
-        }
-//        System.out.print("first: ");
-//        System.out.print(y);
-//        System.out.print(" ");
-//        System.out.println(Double.doubleToLongBits(y));
-//        System.out.print("second: ");
-//        System.out.print(y);
-//        System.out.print(" ");
-//        System.out.println(Double.doubleToLongBits(y));
-//        System.out.println();
         if (symbol == '+') {
           toCalculate.push(y + x);
         } else if (symbol == '-') {
@@ -60,12 +38,6 @@ public class MyCalculator implements Calculator {
           } else {
             toCalculate.push(y - x);
           }
-//          if (Double.doubleToLongBits(x) == 0x8000000000000000L) {
-//            System.out.println("Negative zero");
-//          }
-//          if (Double.doubleToLongBits(y) == 0x8000000000000000L) {
-//            System.out.println("another Negative zero");
-//          }
         } else if (symbol == '*') {
           toCalculate.push(x * y);
         } else {
@@ -75,12 +47,17 @@ public class MyCalculator implements Calculator {
         toCalculate.push(s);
       }
     }
-    //Double toBeTruncated = (Double)toCalculate.pop();
-
-    //Double truncatedDouble = BigDecimal.valueOf(toBeTruncated).setScale(2, RoundingMode.HALF_UP).doubleValue();
     return (Double) toCalculate.pop();
   }
 
+  /**
+   * Transforms an expression to Reverse Polish Notation and Checks for some invalid syntax
+   *
+   *
+   * @param exp ArrayList of operators, braces and numbers
+   * @return Reverse Polish Notation
+   * @throws ParsingException if the expression is invalid
+   */
 
   private ArrayList<Object> getReversePolishNotation(ArrayList<Object> exp) throws ParsingException {
     ArrayList<Object> reversePolishNotation = new ArrayList<Object>();
@@ -89,7 +66,7 @@ public class MyCalculator implements Calculator {
     int index = 1;
     while (index < exp.size()) {
       if (exp.get(index) instanceof Integer || exp.get(index) instanceof Double) {
-        reversePolishNotation.add(exp.get(index));
+        reversePolishNotation.add((Double) exp.get(index));
         ++index;
       } else if ((char) operatorsAndBrackets.peek() == 'T') {
         if ((char) exp.get(index) == ')') {
@@ -129,6 +106,14 @@ public class MyCalculator implements Calculator {
     return reversePolishNotation;
   }
 
+  /**
+   * Checks for some invalid syntax and transforms supported unary operators to binary ones.
+   *
+   * @param expression the expression to Check and Transform
+   * @return changed expression
+   * @throws ParsingException if the expression is invalid
+   */
+
   private ArrayList<Object> checkAndAddZeroesForUnary(String expression) throws ParsingException {
     if (expression == null) {
       throw new ParsingException("null");
@@ -137,10 +122,9 @@ public class MyCalculator implements Calculator {
     exp.add('T'); // beginning of expression
     char previous = '\0'; // '0' => number, '_' => unary minus, the rest => exact match { / => /, ( => (, ... }
     int index = 0;
+    boolean onlyBraces = true;
     while (index < expression.length()) {
-      if (index == 14) {
-        int l = 0;
-      }
+      onlyBraces = onlyBraces && (expression.charAt(index) == '(' || expression.charAt(index) == ')');
       //if number get whole number
       int endIndex = index + 1;
       if (isDigit(expression.charAt(index))) {
@@ -152,24 +136,16 @@ public class MyCalculator implements Calculator {
           ++endIndex;
         }
         try {
-          double number = Double.parseDouble(expression.substring(index, endIndex));
+          Double number = (Double) Double.parseDouble(expression.substring(index, endIndex));
           if (previous == '_') {
             exp.add('(');
-            exp.add(0);
+            exp.add(0.0);
             exp.add('-');
-            if (number % 1 == 0.0) {
-              exp.add((int) number);
-            } else {
-              exp.add(number);
-            }
+            exp.add(number);
             exp.add(')');
             previous = ')';
           } else {
-            if (number % 1 == 0.0) {
-              exp.add((int) number);
-            } else {
-              exp.add(number);
-            }
+            exp.add(number);
             previous = '0';
           }
         } catch (NumberFormatException e) {
@@ -191,7 +167,7 @@ public class MyCalculator implements Calculator {
           previous = expression.charAt(index);
         } else if (previous == '\0') { // beginning of expression
           // + 5 ... => 0 + 5 ... or same with -
-          exp.add(0);
+          exp.add(0.0);
           exp.add(expression.charAt(index));
           previous = expression.charAt(index);
         } else if (previous == expression.charAt(index)) { // ++ or --
@@ -199,7 +175,7 @@ public class MyCalculator implements Calculator {
         } else { // { ( or + or * or / before - } or { ( or - or * or / before + }
           //  / - ... => / (0 - ...) ; same with other operators
           exp.add('(');
-          exp.add(0);
+          exp.add(0.0);
           exp.add(expression.charAt(index));
           int toInsertClosingBracket = index + 1;
           for (int bracketsBalance = 0; toInsertClosingBracket < expression.length(); ++toInsertClosingBracket) {
@@ -240,8 +216,8 @@ public class MyCalculator implements Calculator {
       index = endIndex;
     }
     exp.add('T'); // end of expression
-    if (exp.size() == 2) {
-      throw new ParsingException("empty or only space symbols");
+    if (onlyBraces || exp.size() == 2) {
+      throw new ParsingException("empty or only space symbols and braces");
     }
     return exp;
   }
