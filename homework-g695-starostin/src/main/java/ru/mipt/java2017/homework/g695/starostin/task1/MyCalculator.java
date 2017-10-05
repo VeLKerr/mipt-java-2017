@@ -46,8 +46,9 @@ public class MyCalculator implements Calculator {
         return 5;
       case 'p':
         return 5;
+      default:
+        return -1;
     }
-    return -1;
   }
 
   private boolean isDigit(char c) {
@@ -124,7 +125,7 @@ public class MyCalculator implements Calculator {
     return postfixExpression;
   }
 
-  private void ExecuteOperation(Stack<Double> operandStack, char operator) throws ParsingException {
+  private void executeOperation(Stack<Double> operandStack, char operator) throws ParsingException {
     double value = operandStack.pop();
     switch (operator) {
       case 'n':
@@ -167,7 +168,7 @@ public class MyCalculator implements Calculator {
         i = j;
       }
       if (isOperator(currentCharacter) || currentCharacter == 'n' || currentCharacter == 'p') {
-        ExecuteOperation(operandStack, currentCharacter);
+        executeOperation(operandStack, currentCharacter);
       }
     }
     try {
