@@ -54,7 +54,7 @@ public class MyCalculator implements Calculator {
     s = s.replaceAll("--", ""); // Костыль, но тест не д
     Stack<Double> operands = new Stack<>();
     Stack<Character> operators = new Stack<>();
-    for (int i = 0; i < s.length();) {
+    for (int i = 0; i < s.length(); ) {
       if (s.charAt(i) >= 48 && s.charAt(i) <= 57 || (s.charAt(i) == '-' && !isLastOperand)) {
         if (isLastOperand) {
           throw new ParsingException("Invalid expression");
@@ -63,8 +63,9 @@ public class MyCalculator implements Calculator {
           if (s.charAt(i) == '-') {
             ++i;
           }
-          for (; i < s.length() && (s.charAt(i) >= 48 && s.charAt(i) <= 57 || s.charAt(i) == '.');
-              ++i) {
+          for (;
+              i < s.length() && (s.charAt(i) >= 48 && s.charAt(i) <= 57 || s.charAt(i) == '.'); ) {
+            ++i;
           }
           Double operand;
           try {
