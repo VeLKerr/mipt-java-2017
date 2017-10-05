@@ -7,6 +7,13 @@ import java.util.EmptyStackException;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+/**
+ * Calculator based on 2 stacks.
+ *
+ * @author Vorobev Ilya
+ * @link Calculator
+ * @since 04.09.17
+ */
 public class MySimpleCalculator implements Calculator {
   private String text = null;
 
@@ -20,6 +27,15 @@ public class MySimpleCalculator implements Calculator {
 
   }
 
+  /**
+   * Split the string into tokens: numbers, operators and brackets.
+   * Tokens are divided by space symbol, bracket or operator.
+   * Use Dijkstra algorithm on token sequence.
+   *
+   * @param expression string with ariphmetical expression to be calculated
+   * @return result of calculation
+   * @throws ParsingException if expression was invalid
+   */
   @Override
   public double calculate(String expression) throws ParsingException {
     if (expression != null) {
@@ -35,6 +51,7 @@ public class MySimpleCalculator implements Calculator {
     while (st.hasMoreTokens()) {
       String token = st.nextToken();
       if (iSDouble(token)) {
+        //'o' symbol is replaced back to -0.0
         numbers.push(token.contentEquals("o") ? (-0.0) : Double.parseDouble(token));
       } else if (isFunc(token) || token.contentEquals("(")) {
         while (canPop(token.charAt(0), functions)) {
@@ -44,6 +61,7 @@ public class MySimpleCalculator implements Calculator {
         functions.push(token.charAt(0));
       } else if (token.contentEquals(")")) {
         try {
+          //closing bracket pop all functions until opening bracket is found
           while (functions.peek() != '(') {
             popFunction(functions, numbers);
           }
@@ -57,6 +75,7 @@ public class MySimpleCalculator implements Calculator {
       }
     }
 
+    //In the end @functions should be empty and @numbers should contain one number - the result
     if (!functions.empty() || numbers.size() != 1) {
       throw new ParsingException("Wrong number of operators or operands");
     }
@@ -64,7 +83,12 @@ public class MySimpleCalculator implements Calculator {
     return numbers.pop();
   }
 
-  private void precheck() throws ParsingException {
+  /**
+   * Some checks whether the expression is valid
+   *
+   * @throws ParsingException if not
+   */
+  protected void precheck() throws ParsingException {
     if (text == null) {
       throw new ParsingException("Null string");
     }
@@ -82,7 +106,20 @@ public class MySimpleCalculator implements Calculator {
     }
   }
 
-  private void preprocess() throws ParsingException {
+  /**
+   * Preparing expression for calculating by adding '(' in the beggining
+   * and ')' in the end.
+   * This should be done to get the final result in this algoritm -
+   * closnig brackets will pop two remaining numbers and operator between them
+   * and add the final result to numbers stack.
+   * <p>
+   * Function also replaces all '-0' numbers with special symbol - 'o',
+   * then replaces '-a' (unary minus) with "0 - a". This replacements is correct
+   * only if '-0' numbers are not replaces, because (-0) != (0-0).
+   *
+   * @throws ParsingException if letter 'o' was in string - this symbol is required in algorithm.
+   */
+  protected void preprocess() throws ParsingException {
     if (text.indexOf('o') != -1) {
       throw new ParsingException("Unexpected symbol", new Throwable("o"));
     }
@@ -97,7 +134,11 @@ public class MySimpleCalculator implements Calculator {
     text = text.replaceAll("\\(\\s*-", "(0-");
   }
 
-  boolean isFunc(String token) {
+  /**
+   * @param token in expression
+   * @return true if @token is valid operator, false if not
+   */
+  protected boolean isFunc(String token) {
     if (token.contentEquals("+")
         || token.contentEquals("-")
         || token.contentEquals("*")
@@ -108,7 +149,13 @@ public class MySimpleCalculator implements Calculator {
     return false;
   }
 
-  boolean iSDouble(String token) {
+  /**
+   * Symbol 'o' means '-0', so it is a valid number.
+   *
+   * @param token in expression
+   * @return true if @token is valid number, false if not
+   */
+  protected boolean iSDouble(String token) {
     if (token.contentEquals("o")) {
       return true;
     }
@@ -117,11 +164,16 @@ public class MySimpleCalculator implements Calculator {
       || token.matches("^\\d+$"));
   }
 
-  boolean isSpace(String token) {
+  protected boolean isSpace(String token) {
     return token.matches("^\\s+$");
   }
 
-  int getPriority(char ch) throws ParsingException {
+  /**
+   * @param ch symbol that is supposed to be operator
+   * @return priority of @ch in ariphmetic expression
+   * @throws ParsingException if @ch is not valid operator
+   */
+  protected int getPriority(char ch) throws ParsingException {
     switch (ch) {
       case '+':
       case '-':
@@ -136,7 +188,13 @@ public class MySimpleCalculator implements Calculator {
     }
   }
 
-  boolean canPop(char operator, Stack<Character> functions) throws ParsingException {
+  /**
+   * @param operator  current operator
+   * @param functions stack with functions
+   * @return true if @operator and top of @functions have appropriate priority
+   * @throws ParsingException if cannot get priority of @operator or top of @functions
+   */
+  protected boolean canPop(char operator, Stack<Character> functions) throws ParsingException {
     if (functions.empty()) {
       return false;
     }
@@ -146,6 +204,14 @@ public class MySimpleCalculator implements Calculator {
     return operatorPriority >= 0 && nextOperatorPriority >= 0 && operatorPriority >= nextOperatorPriority;
   }
 
+  /**
+   * Pops two numbers from @numbers stack, one operator from @functions stack and
+   * pushes into @numbers stack result of operator applied to two numbers;
+   *
+   * @param functions stack with functions
+   * @param numbers   stack with numbers
+   * @throws ParsingException if @numbers or @functions contain not enough elements
+   */
   void popFunction(Stack<Character> functions, Stack<Double> numbers) throws ParsingException {
     char op = functions.pop();
     Double leftOperand;
