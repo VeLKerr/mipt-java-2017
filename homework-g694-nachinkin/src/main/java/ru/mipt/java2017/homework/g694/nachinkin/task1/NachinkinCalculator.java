@@ -94,7 +94,7 @@ public class NachinkinCalculator implements Calculator {
   @Override
   public double calculate(String expression) throws ParsingException {
     if (expression == null) {
-      throw new ParsingException("Null expression");
+      throw new ParsingException("Expression is empty");
     }
     stringToArray(expression);
     turnToRPN();
@@ -172,12 +172,134 @@ public class NachinkinCalculator implements Calculator {
   }
 
   /**
+   * proccesing symbols during we do RPN string
+   * When we got the brace
+   * @param var is current string ("(" or ")") which is depended on building RPN string
+   * @param stack  is stack for helping building RPN string
+   * @throws ParsingException
+   */
+  private static void  bracesProccesing(String var, Stack<String> stack) throws ParsingException {
+    if (var.equals("(")) {
+      stack.push("(");
+    }
+
+    if (var.equals(")"))  {
+      String ch = "";
+      while (!stack.empty()) {
+        ch = stack.pop();
+        if (!ch.equals("(")) {
+          arrayLexeme.add(ch);
+        } else {
+          break;
+        }
+
+      }
+
+      if (stack.empty() && !ch.equals("(")) { //if bracket balance is wrong
+        arrayLexeme.clear();
+        throw new ParsingException("Wrong bracket balance in the expression");
+      }
+    }
+
+  }
+
+  /**
+   * proccesing symbols during we do RPN string
+   * When we got "+" or "-"
+   * Also check if it's unary operand or not
+   * @param var is current string ("+" or "-") which is depended on building RPN string
+   * @param stack  is stack for helping building RPN string
+   * @param prevLexeme safes previous lexeme to determine operands for unary
+   * @param symbsBeforeUnar is the  set of symbols which can appear before unary sign
+   * @throws ParsingException
+   */
+  private static void additiveOperatorsProccesing(String var,
+                                                  Stack<String> stack,
+                                                  String prevLexeme,
+                                                  String symbsBeforeUnar) throws ParsingException {
+
+    if (prevLexeme.charAt(0) == '+' || prevLexeme.charAt(0) == '-') {
+      throw new ParsingException("incorrect expression");
+    }
+
+    if (symbsBeforeUnar.indexOf(prevLexeme.charAt(0)) >= 0) { //if it is unary sign
+
+      String ch = "";
+
+      while (!stack.empty()) {
+        ch = stack.pop();
+        if (ch.equals("#") || ch.equals("~")) {
+          arrayLexeme.add(ch);
+        } else {
+          break;
+        }
+
+      }
+      if (!ch.equals("#") && !ch.equals("~") && !ch.equals("")) {
+        stack.push(ch);
+      }
+
+      if (var.equals("+")) {
+        stack.push("#"); //sign of unary plus
+      } else {
+        stack.push("~"); //sign of unary minus
+      }
+
+    } else {
+      String ch = "";
+      while (!stack.empty()) {
+        ch = stack.pop();
+        if (!ch.equals("(")) {
+          arrayLexeme.add(ch);
+        } else {
+          break;
+        }
+
+      }
+
+      if (ch.equals("(")) { //return "(" in stack if we need it
+        stack.push(ch);
+      }
+
+      stack.push(var);
+    }
+  }
+
+  /**
+   * proccesing symbols during we do RPN string
+   * When we got "*" or "/"
+   * @param var is current string ("*" or "/") which is depended on building RPN string
+   * @param stack is stack for helping building RPN string
+   */
+  private static void multiplicativeOperatorsProccesing(String var, Stack<String> stack) {
+    String ch = "";
+
+    while (!stack.empty()) {
+      ch = stack.pop();
+      if (!ch.equals("+") && !ch.equals("-") && !ch.equals("(")) {
+        arrayLexeme.add(ch);
+      } else {
+        break;
+      }
+
+    }
+          /*
+           *return suitable symbol if we need it
+           */
+    if (ch.equals("+") || ch.equals("-") || ch.equals(")")) {
+      stack.push(ch);
+    }
+    stack.push(var);
+  }
+
+
+  /**
    * turn the parsed expression into Reverse Polish notation by changing the arrayLexeme
    *
    * @throws ParsingException
    */
   private static void turnToRPN() throws ParsingException {
-    String symbsBeforeUnar = "*/( "; //set of symbols which can appear before unary sign
+    String symbsBeforeUnar =  "*/( "; //set of symbols which can appear before unary sign
     String prevLexeme = " "; //safes previous lexeme to determine operands for unary
 
     Stack<String> stack = new Stack<String>();
@@ -194,102 +316,18 @@ public class NachinkinCalculator implements Calculator {
         arrayLexeme.add(var);
 
       } else {
-        if (var.equals("(")) {
-          stack.push("(");
+        if (var.equals("(") || var.equals(")")) {
+          bracesProccesing(var, stack);
         }
 
-        if (var.equals(")"))  {
-          String ch = "";
-          while (!stack.empty()) {
-            ch = stack.pop();
-            if (!ch.equals("(")) {
-              arrayLexeme.add(ch);
-            } else {
-              break;
-            }
-
-          }
-
-          if (stack.empty() && !ch.equals("(")) { //if bracket balance is wrong
-            arrayLexeme.clear();
-            throw new ParsingException("Wrong bracket balance in the expression");
-          }
-        }
-
-                /*
-                 *здесь надо проверить на унарность операции
-                 */
         if (var.equals("+") || var.equals("-")) {
-
-          if (prevLexeme.charAt(0) == '+' || prevLexeme.charAt(0) == '-') {
-            throw new ParsingException("incorrect expression");
-          }
-
-          if (symbsBeforeUnar.indexOf(prevLexeme.charAt(0)) >= 0) { //if it is unary sign
-
-            String ch = "";
-
-            while (!stack.empty()) {
-              ch = stack.pop();
-              if (ch.equals("#") || ch.equals("~")) {
-                arrayLexeme.add(ch);
-              } else {
-                break;
-              }
-
-            }
-            if (!ch.equals("#") && !ch.equals("~") && !ch.equals("")) {
-              stack.push(ch);
-            }
-
-            if (var.equals("+")) {
-              stack.push("#"); //sign of unary plus
-            } else {
-              stack.push("~"); //sign of unary minus
-            }
-
-          } else {
-            String ch = "";
-            while (!stack.empty()) {
-              ch = stack.pop();
-              if (!ch.equals("(")) {
-                arrayLexeme.add(ch);
-              } else {
-                break;
-              }
-
-            }
-
-            if (ch.equals("(")) { //return "(" in stack if we need it
-              stack.push(ch);
-            }
-
-            stack.push(var);
-          }
+          additiveOperatorsProccesing(var, stack, prevLexeme, symbsBeforeUnar);
         }
 
         if (var.equals("*") || var.equals("/")) {
-          String ch = "";
-
-          while (!stack.empty()) {
-            ch = stack.pop();
-            if (!ch.equals("+") && !ch.equals("-") && !ch.equals("(")) {
-              arrayLexeme.add(ch);
-            } else {
-              break;
-            }
-
-          }
-          /*
-           *return suitable symbol if we need it
-           */
-          if (ch.equals("+") || ch.equals("-") || ch.equals(")")) {
-            stack.push(ch);
-          }
-          stack.push(var);
+          multiplicativeOperatorsProccesing(var, stack);
         }
       }
-
       prevLexeme = var;
     }
 
