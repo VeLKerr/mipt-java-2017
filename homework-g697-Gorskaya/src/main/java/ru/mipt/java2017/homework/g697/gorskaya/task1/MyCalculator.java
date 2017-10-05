@@ -8,15 +8,16 @@ import java.util.Stack;
 
 /**
  * Calculator realisation
+ *
  * @author Gorskaya Elena
  * @since 04.10.17
  */
-
 class MyCalculator implements Calculator {
-  static final Calculator INSTANCE = new MyCalculator();
+
+  //static final Calculator INSTANCE = new MyCalculator();
   private static final char signminus = '#';
-  private static final String Allnumbers = "0123456789.";
-  private static final String Allops = "+-*/";
+  private static final String allnumbers = "0123456789.";
+  private static final String allops = "+-*/";
 
   /**
    * The list of all suitable operators.
@@ -33,17 +34,17 @@ class MyCalculator implements Calculator {
 
   @Override
   public double calculate(String expression) throws ParsingException {
-    if (!isExpressionCorrect(expression)) {
+    if (!correctnessExpr(expression)) {
       throw new ParsingException("Invalid expression");
     }
     return calculatingprefix(strToPostfix(expression));
   }
 
   private enum SymbolType {
-    openingbracket, closingbracket, NUMBER, OPERATOR, NOTHING
+    OPENBRACK, CLOSEBRACK, NUMBER, OPERATOR, NOTHING
   }
 
-  private boolean isExpressionCorrect(String expression) {
+  private boolean correctnessExpr(String expression) {
     if (expression == null) {
       return false;
     }
@@ -54,25 +55,25 @@ class MyCalculator implements Calculator {
       prevSymbol = currSymbol;
       if (currentchar == ' ' || currentchar == '\n' || currentchar == '\t') {
         if (prevSymbol == SymbolType.NUMBER && i != expression.length() - 1
-          && Allnumbers.indexOf(expression.charAt(i + 1)) != -1) {
+          && allnumbers.indexOf(expression.charAt(i + 1)) != -1) {
           return false;
         }
       } else {
-        if (Allnumbers.indexOf(currentchar) != -1) {
+        if (allnumbers.indexOf(currentchar) != -1) {
           currSymbol = SymbolType.NUMBER;
-          if (prevSymbol == SymbolType.closingbracket) {
+          if (prevSymbol == SymbolType.CLOSEBRACK) {
             return false;
           }
-        } else if (Allops.indexOf(currentchar) != -1) {
+        } else if (allops.indexOf(currentchar) != -1) {
           currSymbol = SymbolType.OPERATOR;
         } else if (currentchar == '(') {
-          currSymbol = SymbolType.openingbracket;
-          if (prevSymbol == SymbolType.NUMBER || prevSymbol == SymbolType.closingbracket) {
+          currSymbol = SymbolType.OPENBRACK;
+          if (prevSymbol == SymbolType.NUMBER || prevSymbol == SymbolType.CLOSEBRACK) {
             return false;
           }
         } else if (currentchar == ')') {
-          currSymbol = SymbolType.closingbracket;
-          if (prevSymbol == SymbolType.openingbracket || prevSymbol == SymbolType.OPERATOR) {
+          currSymbol = SymbolType.CLOSEBRACK;
+          if (prevSymbol == SymbolType.OPENBRACK || prevSymbol == SymbolType.OPERATOR) {
             return false;
           }
         }
@@ -85,7 +86,7 @@ class MyCalculator implements Calculator {
    * The function is used to give priorities to operations
    * (the order of calculating depends on the priority of operation).
    */
-  private static int findPriority (char operator) throws ParsingException {
+  private static int findPriority(char operator) throws ParsingException {
     switch (operator) {
       case signminus:
         return 3;
@@ -119,36 +120,35 @@ class MyCalculator implements Calculator {
         return num1 / num2;
       case '*':
         return num1 * num2;
-      default :
+      default:
         throw new ParsingException("Invalid operator");
     }
   }
 
 
   /**
-   *Turns the string into postfix notation
+   * Turns the string into postfix notation
    */
   private String strToPostfix(String expression) throws ParsingException {
-    Character ch; 	// The parameter of class "Charecter"
+    Character ch;  // The parameter of class "Charecter"
     StringBuilder result = new StringBuilder();     // That is our answer output
     Stack<Character> operators = new Stack<>();     // We will write operations here
     boolean numval = true;
-
     for (int i = 0; i < expression.length(); ++i) {
       char currentchar = expression.charAt(i);
       if (currentchar == ' ') {
         continue;
       }
-      if (currentchar == '\n'){
+      if (currentchar == '\n') {
         continue;
       }
-      if (currentchar == '\t'){
+      if (currentchar == '\t') {
         continue;
       }
-      if (Allnumbers.indexOf(currentchar) != -1) {
+      if (allnumbers.indexOf(currentchar) != -1) {
         numval = false;
         result.append(currentchar);
-      } else if (Allops.indexOf(currentchar) != -1) {
+      } else if (allops.indexOf(currentchar) != -1) {
         if (!numval) {
           numval = true;
           while (!operators.empty()) {
@@ -207,7 +207,7 @@ class MyCalculator implements Calculator {
       }
     }
     while (!operators.empty()) {
-      if (Allops.indexOf(operators.lastElement()) != -1 || operators.lastElement().equals(signminus)) {
+      if (allops.indexOf(operators.lastElement()) != -1 || operators.lastElement().equals(signminus)) {
         result.append(' ');
         result.append(operators.pop());
       } else {
@@ -229,7 +229,7 @@ class MyCalculator implements Calculator {
     while (inputstr.hasNext()) {
       String currentinput = inputstr.next();
       if (currentinput.length() == 1) {
-        if (Allops.indexOf(currentinput.charAt(0)) != -1) {
+        if (allops.indexOf(currentinput.charAt(0)) != -1) {
           if (numbers.size() > 1) {
             double numb1 = numbers.pop();
             double numb2 = numbers.pop();
@@ -244,7 +244,7 @@ class MyCalculator implements Calculator {
           } else {
             throw new ParsingException("Invalid operator");
           }
-        } else if (Allnumbers.indexOf(currentinput.charAt(0)) != -1) {
+        } else if (allnumbers.indexOf(currentinput.charAt(0)) != -1) {
           Double currentnum;
           try {
             currentnum = Double.parseDouble(currentinput);
