@@ -89,7 +89,7 @@ public class MyCalculator implements Calculator {
         nextOperatorBinary = true;
         try {
           for (char topOperator = operatorStack.pop(); topOperator != '(';
-            topOperator = operatorStack.pop()) {
+              topOperator = operatorStack.pop()) {
             postfixExpression += topOperator;
             postfixExpression += ' ';
           }
