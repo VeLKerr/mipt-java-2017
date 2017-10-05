@@ -30,7 +30,7 @@ public class Calc implements Calculator {
 
   // Uses in getRPN() to parse +,-,*,/
   private String parseOperations(Stack<Character> stack, char x, String notation)
-    throws ParsingException {
+      throws ParsingException {
     char symb = '!';
     while (!(symb == '#' || x == ' ')) {
       symb = stack.pop();
@@ -115,7 +115,7 @@ public class Calc implements Calculator {
         }
 
         if (symb == '-' && (prevSymb == '(' || prevSymb == '!' || prevSymb == '+'
-          || prevSymb == '/' || prevSymb == '*')) {
+            || prevSymb == '/' || prevSymb == '*')) {
           flaggus = !flaggus;
         } else {
           notation = parseOperations(stack, symb, notation);
