@@ -1,12 +1,10 @@
 package ru.mipt.java2017.homework.g696.sobakina.task1;
 
-  import java.util.ArrayList;
-  import java.util.HashSet;
-  import java.util.Stack;
-  import ru.mipt.java2017.homework.base.task1.Calculator;
-  import ru.mipt.java2017.homework.base.task1.ParsingException;
-  import java.lang.Throwable;
-  import java.util.StringTokenizer;
+
+import java.util.Stack;
+import ru.mipt.java2017.homework.base.task1.Calculator;
+import ru.mipt.java2017.homework.base.task1.ParsingException;
+//import java.util.StringTokenizer;
 
 /**
  * @author Sobakina Olga
@@ -14,32 +12,9 @@ package ru.mipt.java2017.homework.g696.sobakina.task1;
  */
 
 // from valid input string get an answer -- result of calculations
-public class MyJavaCalculator implements Calculator
-{
-  class Pair<String, Integer> {
-    String object1;
-    Integer object2;
+public class MyJavaCalculator implements Calculator {
 
-    Pair(String one, Integer two) {
-      object1 = one;
-      object2 = two;
-    }
-    public String getFirst() {
-      return object1;
-    }
-    public Integer getSecond() {
-      return object2;
-    }
-  }
-
-  Pair<String, Integer> openbracket = new Pair<String, Integer>("(", 1);
-  Pair<String, Integer> closebracket = new Pair<String, Integer>(")", 1);
-  Pair<String, Integer> minus = new Pair<String, Integer>("-", 2);
-  Pair<String, Integer> plus = new Pair<String, Integer>("+", 2);
-  Pair<String, Integer> multiply = new Pair<String, Integer>("*", 3);
-  Pair<String, Integer> divide = new Pair<String, Integer>("/", 3);
-
-  static final String operators = "\\(|\\)|\\*|\\/|\\-|\\+";
+  static final String Operators = "\\(|\\)|\\*|\\/|\\-|\\+";
 
   // check if our input string is a double number
   public static boolean isOperand(String presumablyOperand) {
@@ -53,7 +28,7 @@ public class MyJavaCalculator implements Calculator
 
   // check if our input string is an operator
   public static boolean isOperator(String presumablyOperator) {
-    return presumablyOperator.matches(operators);
+    return presumablyOperator.matches(Operators);
   }
 
   // transform from String to Double if possible
@@ -67,30 +42,26 @@ public class MyJavaCalculator implements Calculator
 
   // compares the priorities of two given operators
   public static boolean firstPriorityIsBigger(String x, String y) throws ParsingException {
-    Integer xPriority = -1, yPriority = -1;
+    Integer xPriority = -1;
+    Integer yPriority = -1;
     if (isOperator(x) && isOperator(y)) {
       if ((x.equals("(")) || (x.equals(")"))) {
         xPriority = 1;
-      }
-      else if ((x.equals("-")) || (x.equals("+"))) {
+      } else if ((x.equals("-")) || (x.equals("+"))) {
         xPriority = 2;
-      }
-      else if ((x.equals("*")) || (x.equals("/"))) {
+      } else if ((x.equals("*")) || (x.equals("/"))) {
         xPriority = 3;
       }
 
       if ((y.equals("(")) || (y.equals(")"))) {
         yPriority = 1;
-      }
-      else if ((y.equals("-")) || (y.equals("+"))) {
+      } else if ((y.equals("-")) || (y.equals("+"))) {
         yPriority = 2;
-      }
-      else if ((y.equals("*")) || (y.equals("/"))) {
+      } else if ((y.equals("*")) || (y.equals("/"))) {
         yPriority = 3;
       }
       return xPriority >= yPriority;
-    }
-    else {
+    } else {
       throw new ParsingException("not operators");
     }
   }
@@ -130,7 +101,7 @@ public class MyJavaCalculator implements Calculator
     // 1) we add brackets
     expression = "(" + expression + ")";
     // 2) if we see some operator, surround it with spaces
-    expression = expression.replaceAll(operators," $0 ");
+    expression = expression.replaceAll(Operators," $0 ");
 
     // 3) if we have unary operations in our input string,
     // we make it binary by adding 0 at the beginning of the string
