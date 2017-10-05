@@ -16,6 +16,14 @@
         <module>homework-tests</module>
         <module>homework-g000-lavrentyev</module>
         <module>homework-g694-chizh</module>
+        <module>homework-g695-kalinochkin</module>
+        <module>homework-g697-IvaninVitaly</module>
+        <module>homework-g694-kalinin</module>
+        <module>homework-g694-cherepkov</module>
+        <module>homework-g695-gazizullin</module>
+        <module>homework-g695-gostkin</module>
+        <module>homework-g696-hromov</module>
+        <module>homework-g697-Inuytin</module>
     </modules>
 
     <build>
