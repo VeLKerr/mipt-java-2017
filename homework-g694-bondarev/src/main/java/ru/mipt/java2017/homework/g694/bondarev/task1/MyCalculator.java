@@ -30,7 +30,8 @@ class MyCalculator implements Calculator {
   }
 
 
-  private static double count(String operator, double op1, double op2) throws InvalidParameterException {
+  private static double count(String operator, double op1, double op2)
+        throws InvalidParameterException {
     switch (operator) {
       case "+":
         return op1 + op2;
@@ -146,35 +147,13 @@ class MyCalculator implements Calculator {
         }
         isPrevDot = true;
       } else if (c.equals('(')) {
-        if (cond == ParsingCondition.ReadingNumber) {
-          throw new ParsingException("Invalid expression: unexpected symbol '('");
-        } else {
+        if (cond != ParsingCondition.ReadingNumber) {
           unary = true;
-          answer.append(' ');
-          operators.push("(");
-
-          cond = ParsingCondition.WaitingToken;
         }
+        processOpenBrace(cond, operators, answer);
         isPrevDot = false;
       } else if (c.equals(')')) {
-        if (cond == ParsingCondition.WaitingToken) {
-          throw new ParsingException("Invalid expression: unexpected ) after operator");
-        } else {
-          boolean hasCorrespondingOpeningBracket = false;
-          while (!(operators.empty())) {
-            String curOperator = operators.pop();
-            if (curOperator.equals("(")) {
-              hasCorrespondingOpeningBracket = true;
-              break;
-            } else {
-              answer.append(' ').append(curOperator).append(' ');
-            }
-          }
-          if (!hasCorrespondingOpeningBracket) {
-            throw new ParsingException("Invalid expression: invalid brackets");
-          }
-
-        }
+        processCloseBrace(cond, operators, answer);
         isPrevDot = false;
       } else if (isOperator(c.toString())) {
         if (unary) {
@@ -201,13 +180,52 @@ class MyCalculator implements Calculator {
           }
           operators.push(c.toString());
         }
-
         cond = ParsingCondition.WaitingToken;
       } else {
         throw new ParsingException(
           String.format("Invalid expression: unexpected %s", c.toString()));
       }
     }
+    return formAnswer(operators, answer);
+  }
+
+
+  private void processCloseBrace(ParsingCondition cond, Stack<String> operators, StringBuilder ans)
+        throws ParsingException {
+    if (cond == ParsingCondition.WaitingToken) {
+      throw new ParsingException("Invalid expression: unexpected ) after operator");
+    } else {
+      boolean hasCorrespondingOpeningBracket = false;
+      while (!(operators.empty())) {
+        String curOperator = operators.pop();
+        if (curOperator.equals("(")) {
+          hasCorrespondingOpeningBracket = true;
+          break;
+        } else {
+          ans.append(' ').append(curOperator).append(' ');
+        }
+      }
+      if (!hasCorrespondingOpeningBracket) {
+        throw new ParsingException("Invalid expression: invalid brackets");
+      }
+
+    }
+
+  }
+
+  private void processOpenBrace(ParsingCondition cond, Stack<String> operators, StringBuilder answer)
+        throws ParsingException {
+    if (cond == ParsingCondition.ReadingNumber) {
+      throw new ParsingException("Invalid expression: unexpected symbol '('");
+    } else {
+      answer.append(' ');
+      operators.push("(");
+      cond = ParsingCondition.WaitingToken;
+    }
+
+  }
+
+  private String formAnswer(Stack<String> operators, StringBuilder answer) throws ParsingException {
     while (!operators.empty()) {
       String curOperator = operators.pop();
       if (OPERATORS.contains(curOperator) || curOperator.equals(UNARY_MINUS)) {
