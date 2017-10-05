@@ -5,8 +5,9 @@ import ru.mipt.java2017.homework.base.task1.ParsingException;
 import ru.mipt.java2017.homework.base.task1.Calculator;
 
 /**
- * Class of a simple calculator which supports +,-,*,/ and brackets. Operation priorities
- * are working.
+ * Class of a simple calculator which supports +,-,*,/ and brackets.
+ * Operation priorities are working.
+ *
  * @author Alexey Shevchenko
  */
 
@@ -17,8 +18,8 @@ public class Calc implements Calculator
   private String data;
 
   /**
-   * Deletes tabs, spaces; checks if there are symbols that cannot be interpreted.
-   * Checks the correctness of bracket sequence.
+   * Deletes tabs, spaces, symbols like '\n'. Perfoms checks for the correctness of bracket
+   * sequence and some others. May throw ParsingException.
    * @param str - given string.
    * @return string - simplified string ready for parsing.
    */
@@ -119,8 +120,6 @@ public class Calc implements Calculator
   private void parse(LinkedList<String> expression, LinkedList<Operations> actions,
       int start, int end) throws ParsingException
   {
-    //Debug
-    //System.out.println("debug message: method parse is called");
     boolean last_was_number = false;
     boolean last_was_action = false;
     boolean digits = false; //writing digits at the moment
@@ -128,7 +127,6 @@ public class Calc implements Calculator
     int brackets_count;
     StringBuilder new_number = new StringBuilder();
 
-    //int cp = data.codePointAt(start
     for (int cp = start; cp < end; ++cp)
     {
       if (Character.isDigit(data.charAt(cp)) || data.charAt(cp) == '.')
@@ -147,12 +145,8 @@ public class Calc implements Calculator
         continue;
       }
 
-      if (data.charAt(cp) == right_bracket)
-      {
-        //digits = false;
+      if (data.charAt(cp) == right_bracket) // This never happens
         System.out.println("My mistake - parser sees right brackets where it shouldn't");
-        //continue;
-      }
 
       if (data.charAt(cp) == left_bracket)
       {
@@ -162,7 +156,6 @@ public class Calc implements Calculator
         digits = false;
         last_was_action = false;
         last_was_number = true;
-        //last_was_number = true;
         LinkedList<String> additional = new LinkedList<String>();
         LinkedList<Operations> additional_actions = new LinkedList<Operations>();
         int j = cp + 1;
@@ -188,7 +181,6 @@ public class Calc implements Calculator
         continue;
       }
 
-      //data.charAt(cp) is an operation sign
       if (new_number.length() > 0)
         expression.add(new_number.toString());
       new_number.setLength(0);
@@ -217,7 +209,6 @@ public class Calc implements Calculator
         default:
           throw new ParsingException("Symbol " + data.charAt(cp) + " is not suitable here.");
       }
-
     }
     if (last_was_action)
       throw new ParsingException("Expression cannot end with an operation sign.");
@@ -225,11 +216,15 @@ public class Calc implements Calculator
       expression.add(new_number.toString());
   }
 
+  /**
+   * Method activates parser and calculations.
+   * @param str - given string expression to calculate
+   * @return calculated result
+   * @throws ParsingException if the str is invalid as an expression
+   */
   public double calculate(String str) throws ParsingException
   {
     data = simplify(str);
-    //Debug
-    //System.out.println("debug message: method calculate is called");
     LinkedList<String> expression = new LinkedList<String>();
     LinkedList<Operations> operations = new LinkedList<Operations>();
     parse(expression, operations, 0, data.length());
@@ -245,8 +240,6 @@ public class Calc implements Calculator
    */
   private double calc(LinkedList<String> expr, LinkedList<Operations> actions) throws ParsingException
   {
-    //Debug
-    //System.out.println("debug message: method calc is called");
     //1-st priority operations:
     try {
       for (int i = 0; i < expr.size(); ++i)
