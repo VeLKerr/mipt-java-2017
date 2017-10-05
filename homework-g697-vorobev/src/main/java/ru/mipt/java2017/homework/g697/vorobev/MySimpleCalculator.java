@@ -11,6 +11,12 @@ public class MySimpleCalculator implements Calculator {
   private String text = null;
 
   public static void main(String[] args) {
+    MySimpleCalculator c = new MySimpleCalculator();
+    try {
+      System.out.println(c.calculate("6.0 - 4 * 0.0 + 5/2"));
+    } catch (ParsingException e) {
+      System.out.println("EXCEPTION");
+    }
 
   }
 
@@ -76,9 +82,9 @@ public class MySimpleCalculator implements Calculator {
 
   boolean isFunc(String token) {
     if (token.contentEquals("+")
-        || token.contentEquals("-")
-        || token.contentEquals("*")
-        || token.contentEquals("/")) {
+      || token.contentEquals("-")
+      || token.contentEquals("*")
+      || token.contentEquals("/")) {
       return true;
     }
 
@@ -146,6 +152,7 @@ public class MySimpleCalculator implements Calculator {
         break;
       case '/':
         numbers.push(leftOperand / rightOperand);
+        break;
       default:
         throw new ParsingException("Wrong operator");
     }

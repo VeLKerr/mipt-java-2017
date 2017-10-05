@@ -28,6 +28,21 @@
       <artifactId>homework-base</artifactId>
       <version>1.0.0</version>
     </dependency>
+    <dependency>
+      <groupId>ru.mipt.java2017</groupId>
+      <artifactId>homework-tests</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>RELEASE</version>
+    </dependency>
 
   </dependencies>
 </project>
