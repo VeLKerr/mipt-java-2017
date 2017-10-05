@@ -31,7 +31,7 @@ public class MySimpleCalculator implements Calculator {
       String token = st.nextToken();
       if (iSDouble(token)) {
         numbers.push(token.contentEquals("o") ? (-0.0) : Double.parseDouble(token));
-      } else if (isFunc(token)  ||  token.contentEquals("(")) {
+      } else if (isFunc(token) || token.contentEquals("(")) {
         while (canPop(token.charAt(0), functions)) {
           popFunction(functions, numbers);
         }
@@ -98,7 +98,7 @@ public class MySimpleCalculator implements Calculator {
     return token.matches("^\\s+$");
   }
 
-  int getPriority(char ch) throws ParsingException{
+  int getPriority(char ch) throws ParsingException {
     switch (ch) {
       case '+':
       case '-':
@@ -146,8 +146,8 @@ public class MySimpleCalculator implements Calculator {
         break;
       case '/':
         numbers.push(leftOperand / rightOperand);
-        default:
-          throw new ParsingException("Wrong operator");
+      default:
+        throw new ParsingException("Wrong operator");
     }
   }
 }
