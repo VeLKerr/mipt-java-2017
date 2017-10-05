@@ -14,14 +14,15 @@ public class Calc implements Calculator {
     if (expression.isEmpty()) {
       throw new ParsingException("Empty string");
     }
+    // Deleting unnecessary symbols
     expression = expression.replaceAll(" ", "");
     expression = expression.replaceAll("\t", "");
     expression = expression.replaceAll("\n", "");
 
+    // Catching exceptions caused by incorrect expression
     try {
-      String notation = getRPN(expression);
-      double result = countRPN(notation);
-      System.out.println(result);
+      String notation = getRPN(expression); // Forming Reverse Polish notation
+      double result = countRPN(notation); // Counting it
       return result;
     } catch (Exception e) {
       throw new ParsingException(e.getMessage());
@@ -36,7 +37,7 @@ public class Calc implements Calculator {
       symb = stack.pop();
 
       switch (symb) {
-        case '#':
+        case '#': // # is terminal symbol: #some_expression#
           if (x != '#') {
             stack.push(symb);
             stack.push(x);
@@ -45,6 +46,7 @@ public class Calc implements Calculator {
           break;
         case '+':
         case '-':
+          // All operations are processed according to algorithm
           if (x == '*' || x == '/' || x == '(') {
             stack.push(symb);
             stack.push(x);
@@ -55,6 +57,7 @@ public class Calc implements Calculator {
           break;
         case '*':
         case '/':
+          // All operations are processed according to algorithm
           if (x == '(') {
             stack.push(symb);
             stack.push(x);
@@ -85,8 +88,8 @@ public class Calc implements Calculator {
     exp += '#';
     stack.push('#');
     String notation = "";
-    boolean f = false;
-    boolean flaggus = false;
+    boolean lastSymbIsNumber = false;
+    boolean isNegative = false;
     int n = 0;
     int i = 0;
     char prevSymb = '!';
@@ -95,34 +98,33 @@ public class Calc implements Calculator {
     while (i < exp.length()) {
       symb = exp.charAt(i);
       if (Character.isDigit(symb) || symb == '.') {
-        //if (symb != '+' && symb != '-' && symb != '*' && symb != '/' && symb != '(' && symb != ')' && symb != '#') {
         number = "";
         while (Character.isDigit(symb) || symb == '.') {
           number += symb;
-          f = true;
+          lastSymbIsNumber = true;
           ++i;
           symb = exp.charAt(i);
         }
       } else {
-        if (f) {
+        if (lastSymbIsNumber) {
           notation = notation.concat(number + ' ');
-          if (flaggus) {
+          if (isNegative) {
             notation = notation.concat("@ ");
           }
           n = 0;
-          f = false;
-          flaggus = false;
+          lastSymbIsNumber = false;
+          isNegative = false;
         }
 
         if (symb == '-' && (prevSymb == '(' || prevSymb == '!' || prevSymb == '+'
             || prevSymb == '/' || prevSymb == '*')) {
-          flaggus = !flaggus;
+          isNegative = !isNegative;
         } else {
           notation = parseOperations(stack, symb, notation);
         }
       }
 
-      if (!f) {
+      if (!lastSymbIsNumber) {
         prevSymb = symb;
         ++i;
       } else {
@@ -145,8 +147,6 @@ public class Calc implements Calculator {
       for (int j = i; notation.charAt(j) != ' ' && j < len; ++j) {
         element += notation.charAt(j);
       }
-
-      //System.out.println("<" + element + ">");
 
       double x1 = .0;
       double x2 = .0;
