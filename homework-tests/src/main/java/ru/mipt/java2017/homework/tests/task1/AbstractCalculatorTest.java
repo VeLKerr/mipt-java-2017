@@ -144,7 +144,6 @@ public abstract class AbstractCalculatorTest {
 
   @Test(expected = ParsingException.class)
   public void testPlusPlus() throws ParsingException {
-    System.out.print(calc().calculate("++1"));
     tryFail("++1");
   }
 
