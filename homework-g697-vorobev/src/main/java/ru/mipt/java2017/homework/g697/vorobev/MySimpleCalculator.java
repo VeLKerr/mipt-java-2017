@@ -10,6 +10,10 @@ import java.util.StringTokenizer;
 public class MySimpleCalculator implements Calculator {
   private String text = null;
 
+  public static void main(String[] args) {
+
+  }
+
   @Override
   public double calculate(String str) throws ParsingException {
     if (str != null) {
@@ -27,7 +31,7 @@ public class MySimpleCalculator implements Calculator {
       String token = st.nextToken();
       if (iSDouble(token)) {
         numbers.push(token.contentEquals("o") ? (-0.0) : Double.parseDouble(token));
-      } else if (isFunc(token) || token.contentEquals("(")) {
+      } else if (isFunc(token)  ||  token.contentEquals("(")) {
         while (canPop(token.charAt(0), functions)) {
           popFunction(functions, numbers);
         }
@@ -43,8 +47,7 @@ public class MySimpleCalculator implements Calculator {
         } catch (EmptyStackException e) {
           throw new ParsingException("Wrong brackets sequence");
         }
-      } else if (isSpace(token)) {
-      } else {
+      } else if (!isSpace(token)) {
         throw new ParsingException("Unexpected symbol", new Throwable(token));
       }
     }
@@ -95,7 +98,7 @@ public class MySimpleCalculator implements Calculator {
     return token.matches("^\\s+$");
   }
 
-  int getPriority(char ch) {
+  int getPriority(char ch) throws ParsingException{
     switch (ch) {
       case '+':
       case '-':
@@ -105,12 +108,12 @@ public class MySimpleCalculator implements Calculator {
         return 1;
       case '(':
         return -1;
+      default:
+        throw new ParsingException("Wrong operator");
     }
-
-    return 0;
   }
 
-  boolean canPop(char operator, Stack<Character> functions) {
+  boolean canPop(char operator, Stack<Character> functions) throws ParsingException {
     if (functions.empty()) {
       return false;
     }
@@ -143,6 +146,8 @@ public class MySimpleCalculator implements Calculator {
         break;
       case '/':
         numbers.push(leftOperand / rightOperand);
+        default:
+          throw new ParsingException("Wrong operator");
     }
   }
 }
