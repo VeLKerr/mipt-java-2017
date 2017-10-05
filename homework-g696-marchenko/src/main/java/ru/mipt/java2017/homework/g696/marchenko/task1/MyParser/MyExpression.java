@@ -5,16 +5,15 @@ import static ru.mipt.java2017.homework.g696.marchenko.task1.MyParser.MyToken.To
 import static ru.mipt.java2017.homework.g696.marchenko.task1.MyParser.MyToken.TokenType.OPERATION;
 import static ru.mipt.java2017.homework.g696.marchenko.task1.MyParser.MyToken.TokenType.RIGHTB;
 
-import ru.mipt.java2017.homework.base.task1.ParsingException;
-
 import java.util.ArrayList;
 import java.util.ListIterator;
+import ru.mipt.java2017.homework.base.task1.ParsingException;
 
 public abstract class MyExpression {
 
   public static MyExpression parse(String expression) throws ParsingException {
-    ArrayList<MyToken> MyTokenList = toTokenList(expression);
-    return fromTokenList(MyTokenList);
+    ArrayList<MyToken> myTokenList = toTokenList(expression);
+    return fromTokenList(myTokenList);
   }
 
   private static ArrayList<MyToken> toTokenList(String expression) throws ParsingException {
@@ -66,7 +65,8 @@ public abstract class MyExpression {
     return expression;
   }
 
-  private static MyExpression parseExpression(ListIterator<MyToken> iterator) throws ParsingException {
+  private static MyExpression parseExpression(ListIterator<MyToken> iterator)
+      throws ParsingException {
     ArrayList<MyExpression> myTerms = new ArrayList<>();
     ArrayList<MyToken> operations = new ArrayList<>();
 
@@ -75,7 +75,7 @@ public abstract class MyExpression {
       if (iterator.hasNext()) {
         MyToken operation = iterator.next();
         if (operation.getType() == OPERATION && ("+".equals(operation.getValue()) ||
-          "-".equals(operation.getValue()))) {
+            "-".equals(operation.getValue()))) {
           operations.add(operation);
         } else {
           iterator.previous();
@@ -89,7 +89,7 @@ public abstract class MyExpression {
 
     MyExpression expression = myTerms.get(0);
     for (int i = 1; i < myTerms.size(); ++i) {
-      if("+".equals(operations.get(i - 1).getValue())) {
+      if ("+".equals(operations.get(i - 1).getValue())) {
         expression = new PlusNode(expression, myTerms.get(i));
       } else {
         expression = new MinusNode(expression, myTerms.get(i));
@@ -108,7 +108,7 @@ public abstract class MyExpression {
       if (iterator.hasNext()) {
         MyToken operation = iterator.next();
         if (operation.getType() == OPERATION && ("*".equals(operation.getValue()) ||
-          "/".equals(operation.getValue()))) {
+            "/".equals(operation.getValue()))) {
           operations.add(operation);
         } else {
           iterator.previous();
@@ -122,7 +122,7 @@ public abstract class MyExpression {
 
     MyExpression expression = myFactors.get(0);
     for (int i = 1; i < myFactors.size(); ++i) {
-      if("*".equals(operations.get(i - 1).getValue())) {
+      if ("*".equals(operations.get(i - 1).getValue())) {
         expression = new MultNode(expression, myFactors.get(i));
       } else {
         expression = new DivNode(expression, myFactors.get(i));
@@ -140,7 +140,7 @@ public abstract class MyExpression {
     MyToken factorStart = iterator.next();
     MyExpression result;
     if (factorStart.getType() == OPERATION) {
-      if("+".equals(factorStart.getValue())) {
+      if ("+".equals(factorStart.getValue())) {
         result = new UnPlusNode(parseUnsignedFactor(iterator));
       } else if ("-".equals(factorStart.getValue())) {
         result = new UnMinusNode(parseUnsignedFactor(iterator));
@@ -154,7 +154,8 @@ public abstract class MyExpression {
     return result;
   }
 
-  private static MyExpression parseUnsignedFactor(ListIterator<MyToken> iterator) throws ParsingException {
+  private static MyExpression parseUnsignedFactor(ListIterator<MyToken> iterator)
+      throws ParsingException {
     if (!iterator.hasNext()) {
       throw new ParsingException("invalid unsigned factor");
     }
