@@ -13,7 +13,7 @@ public class MySimpleCalculator implements Calculator {
   public static void main(String[] args) {
     MySimpleCalculator c = new MySimpleCalculator();
     try {
-      System.out.println(c.calculate("6.0 - 4 * 0.0 + 5/2"));
+      System.out.println(c.calculate("()(1+1)()"));
     } catch (ParsingException e) {
       System.out.println("EXCEPTION");
     }
@@ -21,13 +21,12 @@ public class MySimpleCalculator implements Calculator {
   }
 
   @Override
-  public double calculate(String str) throws ParsingException {
-    if (str != null) {
-      text = str;
-    } else {
-      throw new ParsingException("Null string");
+  public double calculate(String expression) throws ParsingException {
+    if (expression != null) {
+      text = expression;
     }
 
+    precheck();
     preprocess();
     StringTokenizer st = new StringTokenizer(text, "+-/*() \t\r\f\n", true);
     Stack<Double> numbers = new Stack<Double>();
@@ -65,6 +64,24 @@ public class MySimpleCalculator implements Calculator {
     return numbers.pop();
   }
 
+  private void precheck() throws ParsingException {
+    if (text == null) {
+      throw new ParsingException("Null string");
+    }
+
+    if (text.isEmpty()) {
+      throw new ParsingException("Empty string");
+    }
+
+    if (text.charAt(0) == ')' || text.charAt(text.length() - 1) == '(') {
+      throw new ParsingException("Wrong brackets order");
+    }
+
+    if (text.contains("()")) {
+      throw new ParsingException("Empty brackets");
+    }
+  }
+
   private void preprocess() throws ParsingException {
     if (text.indexOf('o') != -1) {
       throw new ParsingException("Unexpected symbol", new Throwable("o"));
@@ -75,7 +92,7 @@ public class MySimpleCalculator implements Calculator {
     sb.append(text);
     sb.append(")");
     text = sb.toString();
-    text = text.replaceAll("([^\\d.])0+.?0+(\\D)", "$10$2");
+    text = text.replaceAll("([^\\d.])0+\\.?0+(\\D)", "$10$2");
     text = text.replaceAll("\\(-\\s*0(\\D)", "(o$1");
     text = text.replaceAll("\\(\\s*-", "(0-");
   }
@@ -96,7 +113,7 @@ public class MySimpleCalculator implements Calculator {
       return true;
     }
 
-    return (token.matches("^\\d+.\\d+$")
+    return (token.matches("^\\d+\\.\\d+$")
       || token.matches("^\\d+$"));
   }
 
