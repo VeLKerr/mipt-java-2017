@@ -11,7 +11,7 @@ public class Calc implements Calculator {
   @Override
   public double calculate(String expression) throws ParsingException {
     if (expression == null) {
-      throw new ParsingException("Null string");
+      throw new ParsingException("Null string!");
     }
     if (expression.isEmpty()) {
       throw new ParsingException("Empty string");
