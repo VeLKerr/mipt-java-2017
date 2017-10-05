@@ -85,7 +85,7 @@ class MyCalculator implements Calculator {
         operations.push(token);
       }
       if (!token.equals(TokenUtils.UNARY_MINUS) &&
-        !operations.empty() && operations.peek().equals(TokenUtils.UNARY_MINUS)) {
+          !operations.empty() && operations.peek().equals(TokenUtils.UNARY_MINUS)) {
         Double last = numbers.peek();
         numbers.pop();
         numbers.push(-last);
@@ -146,7 +146,7 @@ class MyCalculator implements Calculator {
    */
 
   private ArrayList<String> tokenize(String expression) throws ParsingException {
-    for (String op : TokenUtils.controlSymbols) {
+    for (String op : TokenUtils.CONTROL_SYMBOLS) {
       expression = expression.replace(op, " " + op + " ");
     }
     boolean wasUnary = false;
@@ -160,7 +160,7 @@ class MyCalculator implements Calculator {
       }
       if (wasUnary) {
         throwIf(!TokenUtils.isNumber(token) && !token.equals("("),
-          "There must be number or opening bracket after unary operation");
+            "There must be number or opening bracket after unary operation");
         tokens.add(token);
         wasUnary = false;
       } else {
