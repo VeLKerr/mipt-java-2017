@@ -6,19 +6,6 @@ class Lexeme {
   private String value;
   private Integer priority;
 
-  int identifyPriority() {
-    if (type == LexemeType.NUMBER) {
-      return PriorityType.VERY_LOW;
-    }
-    if (type == LexemeType.UNARY_OPERATION) {
-      return PriorityType.HIGH;
-    }
-    if (value.equals("+") || value.equals("-")) {
-      return PriorityType.LOW;
-    }
-    return PriorityType.MEDIUM;
-  }
-
   LexemeType getType() {
     return type;
   }
@@ -35,5 +22,21 @@ class Lexeme {
     type = t;
     value = v;
     priority = identifyPriority();
+  }
+
+  /**
+   * @return вычисляет приоритет данной лексемы.
+   */
+  private int identifyPriority() {
+    if (type == LexemeType.NUMBER || type == LexemeType.LEFT_BRACKET || type == LexemeType.RIGHT_BRACKET) {
+      return PriorityType.VERY_LOW;
+    }
+    if (type == LexemeType.UNARY_OPERATION) {
+      return PriorityType.HIGH;
+    }
+    if (value.equals("+") || value.equals("-")) {
+      return PriorityType.LOW;
+    }
+    return PriorityType.MEDIUM;
   }
 }

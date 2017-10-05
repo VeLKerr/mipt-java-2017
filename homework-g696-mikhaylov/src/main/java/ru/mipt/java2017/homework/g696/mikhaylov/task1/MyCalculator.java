@@ -8,6 +8,14 @@ import java.util.Stack;
 
 class MyCalculator implements Calculator {
 
+  /**
+   * Парсит выражение в обратную польскую запись, а потом вычиляет его значение
+   *
+   * @param expression выражение, значение которого необходимо вычислить
+   * @return значение выражения
+   * @throws ParsingException невозможно выполнить одну из операций или есть некорректное число
+   */
+
   @Override
   public double calculate(String expression) throws ParsingException {
     MyParser parser = new MyParser();
@@ -15,6 +23,7 @@ class MyCalculator implements Calculator {
     Stack<Double> stack = new Stack<>();
     parsedExpression = parser.parse(expression);
     MyCalculatorFunctions functions = new MyCalculatorFunctions();
+
     for (Lexeme item: parsedExpression) {
       switch (item.getType()) {
         case NUMBER:
@@ -30,14 +39,14 @@ class MyCalculator implements Calculator {
           }
           double second = stack.pop();
           double first = stack.pop();
-          stack.push(functions.binaryOperations(item.getValue(), first, second));
+          stack.push(functions.binaryOperations(item, first, second));
           break;
         case UNARY_OPERATION:
           if (stack.empty()) {
             throw new ParsingException("Unary operation fault");
           }
           double value = stack.pop();
-          stack.push(functions.unaryOperations(item.getValue(), value));
+          stack.push(functions.unaryOperations(item, value));
           break;
         default:
           break;

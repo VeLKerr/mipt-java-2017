@@ -9,6 +9,11 @@ class MyParser {
 
   private String expression;
 
+  /**
+   * @param exp выражение для парсинга
+   * @return выражение в обратной польской записи в виде списка лексем
+   * @throws ParsingException если пустое выражение
+   */
   ArrayList<Lexeme> parse(String exp) throws ParsingException {
     TrivialChecker checker = new TrivialChecker();
     expression = checker.check(exp);
@@ -19,19 +24,32 @@ class MyParser {
     return result;
   }
 
+  /**
+   * Evaluates an expression.
+   *
+   * @param c - операция, lastLexeme - последняя лексема в выражении
+   * @return лексему с определенным типом (унарным или бинарным)
+   * @throws ParsingException если обнаружена композиция двух унарных операций или невалидная унарная операция
+   */
   private Lexeme createOperation(char c, LexemeType lastLexeme) throws ParsingException {
     if (lastLexeme == LexemeType.LEFT_BRACKET || lastLexeme == LexemeType.BINARY_OPERATION) {
       if (c != '+' && c != '-') {
-        throw new ParsingException("Invalid unary operation: " + c);
+        throw new ParsingException("No valid unary operation: " + c);
       }
       return new Lexeme("" + c, LexemeType.UNARY_OPERATION);
     } else if (lastLexeme == LexemeType.UNARY_OPERATION) {
-      throw new ParsingException("Multiple unary operations are not allowed");
+      throw new ParsingException("Double unary operation");
     } else {
       return new Lexeme("" + c, LexemeType.BINARY_OPERATION);
     }
   }
 
+  /**
+   * Превращает выражение в список лексем
+   *
+   * @return список лексем
+   * @throws ParsingException если не получилось сделать лексему из операции
+   */
   private ArrayList<Lexeme> parseToLexems() throws ParsingException {
     ArrayList<Lexeme> tokens = new ArrayList<>();
     StringBuilder number = new StringBuilder();
@@ -60,8 +78,14 @@ class MyParser {
     }
     return tokens;
   }
+  /**
+   * Превращает выражение в обратную польскую запись
+   *
+   * @param tokens список лексем
+   * @return the value of the expression
+   */
 
-  private ArrayList<Lexeme> reverseNotation(ArrayList<Lexeme> tokens) throws ParsingException {
+  private ArrayList<Lexeme> reverseNotation(ArrayList<Lexeme> tokens) {
     ArrayList<Lexeme> result = new ArrayList<>();
     Stack<Lexeme> stack = new Stack<>();
     for (Lexeme t : tokens) {

@@ -7,6 +7,13 @@ class TrivialChecker {
   private String expression;
   private static final String ALLOWED_CHARACTERS_REGEX = "[^.()*/0-9+-]";
 
+  /**
+   * Проводит тривиальные тесты, такие как проверка на пустоту, допустимые символы или скобочный баланс
+   *
+   * @param exp для проверки
+   * @return выражение без пробелов, переводов строки и так далее
+   * @throws ParsingException если выражение не проходит проверки
+   */
   String check(String exp) throws ParsingException {
     expression = exp;
     checkExpressionIsNotNull();
