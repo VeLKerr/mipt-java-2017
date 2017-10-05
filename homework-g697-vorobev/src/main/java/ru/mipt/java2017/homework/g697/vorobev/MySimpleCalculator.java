@@ -76,9 +76,9 @@ public class MySimpleCalculator implements Calculator {
 
   boolean isFunc(String token) {
     if (token.contentEquals("+")
-      || token.contentEquals("-")
-      || token.contentEquals("*")
-      || token.contentEquals("/")) {
+        || token.contentEquals("-")
+        || token.contentEquals("*")
+        || token.contentEquals("/")) {
       return true;
     }
 
