@@ -107,7 +107,8 @@ public class SimpleCalculator implements Calculator {
           throw new ParsingException("Extra minus symbol in the end of the string");
         }
       } else {
-        double a, b;
+        double a;
+        double b;
         try {
           a = stack.pop();
           b = stack.pop();
@@ -127,6 +128,9 @@ public class SimpleCalculator implements Calculator {
             break;
           case "-":
             stack.add(b - a);
+            break;
+          default:
+            break;
         }
       }
     }
