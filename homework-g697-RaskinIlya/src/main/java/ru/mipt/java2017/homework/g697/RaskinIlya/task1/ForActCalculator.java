@@ -34,8 +34,8 @@ public class ForActCalculator implements Calculator {
     Stack<Character> st = new Stack<>();
     boolean b = false; //If now we are reading a number.
     boolean b1 = true; //Next symbol can be unary operator.
-    boolean sign = true;//The sign of next number
-    boolean bot = false;//If there has already been a bot in the number,
+    boolean sign = true; //The sign of next number
+    boolean bot = false; //If there has already been a bot in the number,
     String number = "";
     for (int i = 0; i < expression.length(); ++i) {
       char c = expression.charAt(i);
@@ -100,7 +100,7 @@ public class ForActCalculator implements Calculator {
               }
             }
             st.pop();
-          } else if (!Character.isWhitespace(c)){
+          } else if (!Character.isWhitespace(c)) {
             throw new ParsingException("Error. Unknown symbol.");
           }
         }
@@ -123,8 +123,7 @@ public class ForActCalculator implements Calculator {
     while (!revPolishEntry.isEmpty()) {
       try {
         numbers.push(Double.parseDouble(revPolishEntry.get(0)));  //The next object is number.
-      }
-      catch(NumberFormatException exception) {                      //The next object is operation.
+      } catch (NumberFormatException exception) {                      //The next object is operation.
         if (numbers.empty()) {
           throw new ParsingException("Error. Incorrect expression.");
         }
