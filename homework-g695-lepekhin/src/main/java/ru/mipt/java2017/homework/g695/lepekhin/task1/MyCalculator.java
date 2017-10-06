@@ -86,9 +86,9 @@ public class MyCalculator implements Calculator {
     nums.push(result);
   }
 
-  public static void check(String expr) throws ParsingException, NullPointerException {
+  public static void check(String expr) throws ParsingException {
     if (expr == null) {
-      throw new NullPointerException();
+      throw new ParsingException("null string");
     }
 
     int openBalance = 0;
@@ -211,8 +211,6 @@ public class MyCalculator implements Calculator {
       return res;
     } catch (ParsingException parsingExpr) {
       throw parsingExpr;
-    } catch (NullPointerException npexpr) {
-      throw new ParsingException("null string");
     }
   }
 }
