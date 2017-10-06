@@ -16,37 +16,37 @@ public class MyCalculator implements Calculator {
 
   @Override
   public double calculate(String str) throws ParsingException {
-    if (NullExp(str)) {
+    if (nullexp(str)) {
       throw new ParsingException("Expression is null!");
     }
-    str = RemoveSpaces(str);
-    if (Empty(str)) {
+    str = removespaces(str);
+    if (empty(str)) {
       throw new ParsingException("Expression consists only spaces.");
-    } else if (WrongBalance(str)) {
+    } else if (wrongbalance(str)) {
       throw new ParsingException("Wrong bracket balance.");
-    } else if (InvalidSymbols(str)) {
+    } else if (invalidsymbols(str)) {
       throw new ParsingException("There are some invalid symbols in expression.");
-    } else if (IncorrectNum(str)) {
+    } else if (incorrectnum(str)) {
       throw new ParsingException("Expression contains incorrect numbers.");
     }
-    infTopost(str);
+    inftopost(str);
     return docalc();
   }
 
-  private String RemoveSpaces(String str) {
+  private String removespaces(String str) {
     str = str.replaceAll("\\s+", "");
     return str;
   }
 
-  private boolean NullExp(String str) {
+  private boolean nullexp(String str) {
     return str == null;
   }
 
-  private boolean Empty(String str) {
+  private boolean empty(String str) {
     return str.length() == 0 || str == "()";
   }
 
-  private boolean WrongBalance(String str) {
+  private boolean wrongbalance(String str) {
     int count = 0;
     for (int i = 0; i < str.length(); i++) {
       if (str.charAt(i) == '(') {
@@ -61,10 +61,10 @@ public class MyCalculator implements Calculator {
     return count != 0;
   }
 
-  private boolean InvalidSymbols(String str) {
+  private boolean invalidsymbols(String str) {
     for (int i = 0; i < str.length(); i++) {
       char ch = str.charAt(i);
-      if (Operator(ch) || Character.isDigit(ch) || ch == '.' || Delimiter(ch) || Bracket(ch)) {
+      if (operator(ch) || Character.isDigit(ch) || ch == '.' || delimiter(ch) || bracket(ch)) {
         continue;
       }
       return true;
@@ -72,7 +72,7 @@ public class MyCalculator implements Calculator {
     return false;
   }
 
-  private boolean IncorrectNum(String str) {
+  private boolean incorrectnum(String str) {
     boolean hasdot = false;
     String word = "";
     for (int i = 0; i < str.length(); i++) {
@@ -96,20 +96,20 @@ public class MyCalculator implements Calculator {
     return false;
   }
 
-  private boolean Bracket(char ch) {
+  private boolean bracket(char ch) {
     return ch == '(' || ch == ')';
   }
 
 
-  private boolean Delimiter(char ch) {
+  private boolean delimiter(char ch) {
     return ch == ' ';
   }
 
-  private boolean Operator(char ch) {
+  private boolean operator(char ch) {
     return ch == '*' || ch == '/' || ch == '+' || ch == '-';
   }
 
-  private int Priority(char ch) {
+  private int priority(char ch) {
     switch (ch) {
       case '+':
         return 1;
@@ -126,7 +126,7 @@ public class MyCalculator implements Calculator {
     }
   }
 
-  private double Calc(double ln, char ch, double rn) throws ParsingException {
+  private double calc(double ln, char ch, double rn) throws ParsingException {
     switch (ch) {
       case '+':
         return ln + rn;
@@ -142,7 +142,7 @@ public class MyCalculator implements Calculator {
   }
 
 
-  private void Stackcalc() throws ParsingException {
+  private void stackcalc() throws ParsingException {
     char operation = operations.lastElement();
     double r = numbers.lastElement();
     numbers.pop();
@@ -152,15 +152,15 @@ public class MyCalculator implements Calculator {
     }
     double l = numbers.lastElement();
     numbers.pop();
-    numbers.push(Calc(l, operation, r));
+    numbers.push(calc(l, operation, r));
   }
 
 
-  private void infTopost(String str) throws ParsingException {
+  private void inftopost(String str) throws ParsingException {
     boolean unar = true;
     for (int i = 0; i < str.length(); i++) {
       char ch = str.charAt(i);
-      if (Delimiter(ch)) {
+      if (delimiter(ch)) {
         continue;
       }
       if (ch == '(') {
@@ -170,23 +170,23 @@ public class MyCalculator implements Calculator {
       }
       if (ch == ')') {
         while (operations.lastElement() != '(') {
-          Stackcalc();
+          stackcalc();
           operations.removeElementAt(operations.size() - 1);
         }
         operations.removeElementAt(operations.size() - 1);
         unar = false;
         continue;
       }
-      if (Operator(ch)) {
+      if (operator(ch)) {
         if (unar) {
           if (ch == '*' || ch == '/' || ch == '+') {
             throw new ParsingException("Invalid unary operator.");
           }
           ch = 'u';
         }
-        while (!operations.isEmpty() && (ch != 'u' && Priority(operations.lastElement())
-          >= Priority(ch) || ch == 'u' && Priority(operations.lastElement()) > Priority(ch))) {
-          Stackcalc();
+        while (!operations.isEmpty() && (ch != 'u' && priority(operations.lastElement())
+          >= priority(ch) || ch == 'u' && priority(operations.lastElement()) > priority(ch))) {
+          stackcalc();
           operations.removeElementAt(operations.size() - 1);
         }
         operations.add(ch);
@@ -208,7 +208,7 @@ public class MyCalculator implements Calculator {
 
   private double docalc() throws ParsingException {
     while (!operations.isEmpty()) {
-      Stackcalc();
+      stackcalc();
       operations.removeElementAt(operations.size() - 1);
     }
     return numbers.lastElement();
