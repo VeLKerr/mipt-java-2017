@@ -3,7 +3,7 @@ package ru.mipt.java2017.homework.ru.nic11;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
 public class Token {
-  public static enum Type {
+  public enum Type {
     BRACE_OPEN, BRACE_CLOSE,
     UNARY_OPERATOR, BINARY_OPERATOR,
     NUMBER,
@@ -18,7 +18,9 @@ public class Token {
   }
 
   public double parseAsNumber() throws ParsingException {
-    if (type != Type.NUMBER) throw new ParsingException("Not a number");
+    if (type != Type.NUMBER) {
+      throw new ParsingException("Not a number");
+    }
     try {
       return Double.parseDouble(value);
     } catch (NumberFormatException e) {

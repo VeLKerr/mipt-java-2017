@@ -3,7 +3,6 @@ package ru.mipt.java2017.homework.ru.nic11;
 import ru.mipt.java2017.homework.base.task1.Calculator;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -78,12 +77,16 @@ public class CalculatorImplementation implements Calculator {
   }
 
   int getPriority(Token t) {
-    if (t.type == Token.Type.UNARY_OPERATOR) return 3;
-    if (t.type == Token.Type.NUMBER || t.value.equals("*") || t.value.equals("/")) return 2;
+    if (t.type == Token.Type.UNARY_OPERATOR) {
+      return 3;
+    }
+    if (t.type == Token.Type.NUMBER || t.value.equals("*") || t.value.equals("/")) {
+      return 2;
+    }
     return 1;
   }
 
-  ArrayList<Token> toReversePolishNotation(ArrayList<Token> tokens) {
+  ArrayList<Token> toReversePolishNotation(ArrayList<Token> tokens) throws ParsingException {
     ArrayList<Token> ans = new ArrayList<>();
     Stack<Token> s = new Stack<>();
     for (int i = 0; i < tokens.size(); ++i) {
@@ -108,6 +111,8 @@ public class CalculatorImplementation implements Calculator {
           }
           s.push(t);
           break;
+        default:
+          throw new ParsingException("Unknown operator type");
       }
     }
     while (!s.empty()) {
@@ -117,15 +122,25 @@ public class CalculatorImplementation implements Calculator {
   }
 
   double eval(String op, double a) {
-    if (op.equals("-")) return -a;
+    if (op.equals("-")) {
+      return -a;
+    }
     return a;
   }
 
   double eval(double a, String op, double b) throws ParsingException {
-    if (op.equals("-")) return a - b;
-    if (op.equals("*")) return a * b;
-    if (op.equals("/")) return a / b;
-    if (op.equals("+")) return a + b;
+    if (op.equals("-")) {
+      return a - b;
+    }
+    if (op.equals("*")) {
+      return a * b;
+    }
+    if (op.equals("/")) {
+      return a / b;
+    }
+    if (op.equals("+")) {
+      return a + b;
+    }
     throw new ParsingException("Invalid operator");
   }
 
