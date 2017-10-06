@@ -16,7 +16,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="140">
@@ -26,7 +26,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="foo.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="foo.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/foo.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="459">
@@ -482,7 +482,7 @@
       <updated>1507129763114</updated>
       <workItem from="1507129770086" duration="927000" />
       <workItem from="1507217013964" duration="5916000" />
-      <workItem from="1507264651607" duration="4591000" />
+      <workItem from="1507264651607" duration="4801000" />
     </task>
     <servers />
   </component>
@@ -519,7 +519,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11434000" />
+    <option name="totallyTimeSpent" value="11644000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-18" width="960" height="1077" extended-state="0" />
@@ -679,14 +679,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/foo.java" />
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="7" column="10" lean-forward="false" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jrt:///usr/lib/jvm/default-runtime!/java.base/jdk/internal/util/Preconditions.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
@@ -760,6 +752,14 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="7" column="10" lean-forward="false" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
+          <folding />
         </state>
       </provider>
     </entry>
