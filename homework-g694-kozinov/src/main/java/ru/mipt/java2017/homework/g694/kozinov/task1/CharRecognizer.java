@@ -30,7 +30,7 @@ class CharRecognizer {
   }
 
   static CharKind getCharKind(char c) {
-    if (c == ' ') {
+    if (c == ' ' || c == '\t' || c == '\n') {
       return CharKind.IGNORE;
     }
 
