@@ -14,10 +14,8 @@ public class Foo implements Calculator {
   }
 
   private double calculate(String s, int from, int to) throws ParsingException {
-
-    if (from == to) {
+    if (from == to) 
       throw new ParsingException("wrong expression");
-    }
     ArrayList<Double> terms = new ArrayList<>();
     terms.add(0.0);
     Double nextTerm = 1.0;
