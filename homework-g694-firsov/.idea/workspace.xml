@@ -26,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="foo.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/foo.java">
+      <file leaf-file-name="Foo.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Foo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="553">
-              <caret line="168" column="0" lean-forward="true" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
+            <state relative-caret-position="513">
+              <caret line="26" column="20" lean-forward="true" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -41,8 +41,8 @@
       <file leaf-file-name="foo_test.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/foo_test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+            <state relative-caret-position="140">
+              <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#310#311#0" expanded="true" />
@@ -152,8 +152,9 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$MAVEN_REPOSITORY$/ru/mipt/java2017/homework-tests/1.0.0/homework-tests-1.0.0.jar!/ru/mipt/java2017/homework/tests/task1/AbstractCalculatorTest.class" />
-        <option value="$PROJECT_DIR$/src/test/java/foo_test.java" />
         <option value="$PROJECT_DIR$/src/main/java/foo.java" />
+        <option value="$PROJECT_DIR$/src/test/java/foo_test.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Foo.java" />
       </list>
     </option>
   </component>
@@ -228,6 +229,14 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="homeworkg694firsov" type="b2602c69:ProjectViewProjectNode" />
+              <item name="homework-g694-firsov" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="foo_test.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
             </path>
             <path>
               <item name="homeworkg694firsov" type="b2602c69:ProjectViewProjectNode" />
@@ -484,7 +493,7 @@
       <updated>1507129763114</updated>
       <workItem from="1507129770086" duration="927000" />
       <workItem from="1507217013964" duration="5916000" />
-      <workItem from="1507264651607" duration="5654000" />
+      <workItem from="1507264651607" duration="6092000" />
     </task>
     <servers />
   </component>
@@ -521,7 +530,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12497000" />
+    <option name="totallyTimeSpent" value="12935000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-18" width="1920" height="1077" extended-state="0" />
@@ -567,7 +576,7 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/foo.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/Foo.java</url>
           <line>17</line>
           <properties />
           <option name="timeStamp" value="17" />
@@ -653,7 +662,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/foo.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Foo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="320">
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
@@ -671,7 +680,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/foo.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Foo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="3" column="13" lean-forward="false" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
@@ -747,8 +756,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/foo_test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+        <state relative-caret-position="140">
+          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#310#311#0" expanded="true" />
@@ -757,10 +766,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/foo.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Foo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="553">
-          <caret line="168" column="0" lean-forward="true" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
+        <state relative-caret-position="513">
+          <caret line="26" column="20" lean-forward="true" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
