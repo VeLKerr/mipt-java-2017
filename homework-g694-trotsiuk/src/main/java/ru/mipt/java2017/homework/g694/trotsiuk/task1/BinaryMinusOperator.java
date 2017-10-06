@@ -7,19 +7,19 @@ import java.util.Stack;
 
 public final class BinaryMinusOperator extends Operator {
 
-    @Override
-    public int priority() {
-        return 1;
-    }
+  @Override
+  public int priority() {
+    return 1;
+  }
 
-    @Override
-    public void makeOperation(Stack<NumberOperator> results) throws ParsingException {
-        try {
-            NumberOperator second = results.pop();
-            NumberOperator first = results.pop();
-            results.push(new NumberOperator(first.getValue() - second.getValue()));
-        } catch (EmptyStackException e) {
-            throw new ParsingException("Not enough arguments for binary minus operation");
-        }
+  @Override
+  public void makeOperation(Stack<NumberOperator> results) throws ParsingException {
+    try {
+      NumberOperator second = results.pop();
+      NumberOperator first = results.pop();
+      results.push(new NumberOperator(first.getValue() - second.getValue()));
+    } catch (EmptyStackException e) {
+      throw new ParsingException("Not enough arguments for binary minus operation");
     }
+  }
 }

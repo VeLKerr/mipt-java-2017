@@ -7,20 +7,20 @@ import java.util.Stack;
 
 public abstract class Operator {
 
-    protected abstract int priority() throws ParsingException;
+  protected abstract int priority() throws ParsingException;
 
-    protected abstract void makeOperation(Stack<NumberOperator> results) throws ParsingException;
+  protected abstract void makeOperation(Stack<NumberOperator> results) throws ParsingException;
 
-    public void addLexeme(Stack<NumberOperator> results, Stack<Operator> operations) throws ParsingException {
-        try {
-            while (operations.peek().priority() >= this.priority()) {
-                Operator operation = operations.pop();
-                operation.makeOperation(results);
-            }
-            operations.push(this);
-        } catch (EmptyStackException e) {
-            throw new ParsingException("No parenthesis balance");
-        }
+  public void addLexeme(Stack<NumberOperator> results, Stack<Operator> operations) throws ParsingException {
+    try {
+      while (operations.peek().priority() >= this.priority()) {
+        Operator operation = operations.pop();
+        operation.makeOperation(results);
+      }
+      operations.push(this);
+    } catch (EmptyStackException e) {
+      throw new ParsingException("No parenthesis balance");
     }
+  }
 
 }
