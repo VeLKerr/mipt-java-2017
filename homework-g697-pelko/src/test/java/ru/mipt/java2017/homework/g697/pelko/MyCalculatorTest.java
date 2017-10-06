@@ -1,4 +1,4 @@
-package ru.mipt.java2017.homework.g697.pelko.task1;
+package ru.mipt.java2017.homework.g697.pelko;
 /**
  * Created by Pelko Andrew
  * MIPT DIHT student
