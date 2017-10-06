@@ -26,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="foo.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="foo.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/foo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="158" column="6" lean-forward="false" selection-start-line="158" selection-start-column="6" selection-end-line="158" selection-end-column="6" />
+            <state relative-caret-position="553">
+              <caret line="168" column="0" lean-forward="true" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -38,7 +38,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="foo_test.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="foo_test.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/foo_test.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="260">
@@ -152,8 +152,8 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$MAVEN_REPOSITORY$/ru/mipt/java2017/homework-tests/1.0.0/homework-tests-1.0.0.jar!/ru/mipt/java2017/homework/tests/task1/AbstractCalculatorTest.class" />
-        <option value="$PROJECT_DIR$/src/main/java/foo.java" />
         <option value="$PROJECT_DIR$/src/test/java/foo_test.java" />
+        <option value="$PROJECT_DIR$/src/main/java/foo.java" />
       </list>
     </option>
   </component>
@@ -484,7 +484,7 @@
       <updated>1507129763114</updated>
       <workItem from="1507129770086" duration="927000" />
       <workItem from="1507217013964" duration="5916000" />
-      <workItem from="1507264651607" duration="5337000" />
+      <workItem from="1507264651607" duration="5654000" />
     </task>
     <servers />
   </component>
@@ -521,7 +521,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12180000" />
+    <option name="totallyTimeSpent" value="12497000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-18" width="1920" height="1077" extended-state="0" />
@@ -568,7 +568,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/foo.java</url>
-          <line>40</line>
+          <line>17</line>
           <properties />
           <option name="timeStamp" value="17" />
         </line-breakpoint>
@@ -745,16 +745,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/foo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="158" column="6" lean-forward="false" selection-start-line="158" selection-start-column="6" selection-end-line="158" selection-end-column="6" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/foo_test.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
@@ -763,6 +753,16 @@
             <element signature="imports" expanded="true" />
             <element signature="e#310#311#0" expanded="true" />
             <element signature="e#336#337#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/foo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="553">
+          <caret line="168" column="0" lean-forward="true" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

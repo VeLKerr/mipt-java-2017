@@ -14,30 +14,7 @@ public class foo implements Calculator {
   }
 
   private double calculate(String s, int from, int to) throws ParsingException {
-        /*
-            x=(' '+'\n'+'\t')*
 
-            S->x+xEx
-            S->x-xEx
-            S->xEx
-
-            E->(xEx)x
-            E->Ex+xEx
-            E->Ex-xEx
-            E->Ex*xEx
-            E->Ex/xEx
-            E->Nx
-
-            N->Dx
-            N->Dx.xDx
-            N->Dx.x
-            N->.xDx
-
-            D->DxDx
-            D->[0-9]
-
-            E=(+-e)xNx(axNx)^*
-         */
     if (from == to) {
       throw new ParsingException("wrong expression");
     }
@@ -47,37 +24,29 @@ public class foo implements Calculator {
     Double next_number = 0.0;
     Boolean is_last_mult = true;
     Boolean no_number = false;
-    //parsin S
-    //first x
     while (((s.charAt(from) == ' ') || (s.charAt(from) == '\t') || (s.charAt(from) == '\n'))) {
       from++;
       if (from == to) {
         throw new ParsingException("wrong expression");
       }
     }
-    //parsing + - or e
     if (s.charAt(from) == '+') {
       from++;
     } else if (s.charAt(from) == '-') {
       next_term = -1.0;
       from++;
     }
-    //parsing x
     while (((s.charAt(from) == ' ') || (s.charAt(from) == '\t') || (s.charAt(from) == '\n'))) {
       from++;
       if (from == to) {
         throw new ParsingException("wrong expression");
       }
     }
-
-    //parsing (Nxax)^*
     while (from < to) {
-      //parsing N
       if (s.charAt(from) == '-') {
         next_term = -1.0;
         from++;
       }
-      //parsing x
       while (((s.charAt(from) == ' ') || (s.charAt(from) == '\t') || (s.charAt(from) == '\n'))) {
         from++;
         if (from == to) {
@@ -157,26 +126,17 @@ public class foo implements Calculator {
       } else {
         throw new ParsingException("wrong expression");
       }
-      //nuber parsed. moving to term
       if (is_last_mult) {
         next_term = next_term * next_number;
       } else
-      //if(next_number!=0)
-      {
         next_term = next_term / next_number;
-      }
-      //else
-      //    throw new ParsingException("division on zero");
       next_number = 0.0;
-      //here we can end
       if (from == to) {
         for (int i = 0; i < terms.size(); i++) {
           next_term = next_term + terms.get(i);
         }
         return next_term;
       }
-
-      //parsing action
       switch (s.charAt(from)) {
         case '+':
           terms.add(next_term);
@@ -198,15 +158,11 @@ public class foo implements Calculator {
           throw new ParsingException("wrong expression");
       }
       from++;
-
-      //parsing x
       while (((s.charAt(from) == ' ') || (s.charAt(from) == '\t') || (s.charAt(from) == '\n'))) {
         from++;
       }
-
     }
     throw new ParsingException("wrong expression");
   }
-
 }
 
