@@ -3,6 +3,7 @@ package ru.mipt.java2017.homework.g695.scherbakov.task1;
 import ru.mipt.java2017.homework.base.task1.Calculator;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.LinkedList;
@@ -139,9 +140,10 @@ public class SimpleCalculator implements Calculator {
         }
 
       } while (symbol != -1);
-
-    } catch (Exception exception) {
-      throw new ParsingException(exception.getMessage());
+    } catch (IOException exception) {
+      throw new ParsingException("Something went wrong");
+    } catch (NullPointerException exception) {
+      throw new ParsingException("Nullptr exception");
     }
 
     // Expression must be not empty and end with number or ')'
