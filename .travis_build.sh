@@ -1,18 +1,32 @@
-#!/bin/bash
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>mipt-java-2017</artifactId>
+    <groupId>ru.mipt.java2017</groupId>
+    <version>1.0.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
 
-set -e
+  <artifactId>homework-g696-Serov</artifactId>
+  <version>1.0.0</version>
 
-if [ -z "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
-    echo "Building push"
-    mvn test -B
-else
-    echo "Building pull request ${TRAVIS_PULL_REQUEST}"
-    PROJECTS=$(git diff origin/master..HEAD --name-only | grep 'homework-g' | sed -e 's/^\([^\/]*\)\/.*$/\1/' | sort | uniq | awk 'BEGIN{ORS=","}; {print $1}')
-    if [ -n "$PROJECTS" ]; then
-        echo "Modified modules: ${PROJECTS}"  
-mvn test -B -amd -am -pl ${PROJECTS}
-else
-        echo "Cannot detect modified modules; running full test"
-        mvn test -B
-    fi
-fi
+  <dependencies>
+
+    <dependency>
+      <groupId>ru.mipt.java2017</groupId>
+      <artifactId>homework-base</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ru.mipt.java2017</groupId>
+      <artifactId>homework-tests</artifactId>
+      <version>1.0.0</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+</project>
