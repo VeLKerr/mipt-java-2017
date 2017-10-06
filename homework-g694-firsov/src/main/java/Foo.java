@@ -14,10 +14,10 @@ public class Foo implements Calculator {
   }
 
   private double calculate(String s, int from, int to) throws ParsingException {
-    if (from == to) 
+    if (from == to) {
       throw new ParsingException("wrong expression");
+    }
     ArrayList<Double> terms = new ArrayList<>();
-    terms.add(0.0);
     Double nextTerm = 1.0;
     Double nextNumber = 0.0;
     Boolean isLastMult = true;
@@ -98,7 +98,6 @@ public class Foo implements Calculator {
                 == '\n'))) {
               from++;
             }
-
             while (
                 (((s.charAt(from) >= '0') && (s.charAt(from) <= '9')) || ((
                     (s.charAt(from) == ' ')

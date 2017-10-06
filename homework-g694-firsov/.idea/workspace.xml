@@ -29,8 +29,8 @@
       <file leaf-file-name="Foo.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Foo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="313">
-              <caret line="16" column="20" lean-forward="true" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+            <state relative-caret-position="253">
+              <caret line="107" column="33" lean-forward="false" selection-start-line="107" selection-start-column="33" selection-end-line="107" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -494,8 +494,8 @@
     <history-entry file="Foo_test - 2017.10.06 at 10h 38m 42s.xml">
       <configuration name="Foo_test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="foo_test - 2017.10.06 at 09h 45m 58s.xml">
-      <configuration name="foo_test" configurationId="JUnit" />
+    <history-entry file="Foo_test - 2017.10.06 at 10h 43m 17s.xml">
+      <configuration name="Foo_test" configurationId="JUnit" />
     </history-entry>
     <history-entry file="foo_test - 2017.10.06 at 09h 46m 44s.xml">
       <configuration name="foo_test" configurationId="JUnit" />
@@ -520,7 +520,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13161000" />
+    <option name="totallyTimeSpent" value="13436000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-18" width="1920" height="1077" extended-state="0" />
@@ -927,8 +927,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Foo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="16" column="20" lean-forward="true" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+        <state relative-caret-position="253">
+          <caret line="107" column="33" lean-forward="false" selection-start-line="107" selection-start-column="33" selection-end-line="107" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
