@@ -34,6 +34,7 @@
         <module>homework-g695-gostkin</module>
         <module>homework-g696-hromov</module>
         <module>homework-g697-Inuytin</module>
+        <module>homework-g697-nguyen</module>
     </modules>
 
     <build>
