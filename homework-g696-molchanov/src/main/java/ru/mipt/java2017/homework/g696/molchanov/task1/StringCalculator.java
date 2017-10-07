@@ -9,7 +9,7 @@ import java.util.Stack;
 /**
  * Created by mike on 10/6/17.
  */
-public class StringCalculator implements Calculator{
+public class StringCalculator implements Calculator {
   private Stack<Double> numbers;
   private Stack<Character> operations;
 
@@ -172,9 +172,9 @@ public class StringCalculator implements Calculator{
         the first place is not binary operations
         in the last place either a digit or ')' */
     if (expression.length() == 0 || expression.charAt(0) == '*'
-      || expression.charAt(0) == '/' || expression.charAt(0) == '+'
-        || !(Character.isDigit(expression.charAt(expression.length() - 1))
-          || expression.charAt(expression.length() - 1) == ')')) {
+        || expression.charAt(0) == '/' || expression.charAt(0) == '+'
+          || !(Character.isDigit(expression.charAt(expression.length() - 1))
+            || expression.charAt(expression.length() - 1) == ')')) {
       return false;
     }
 
@@ -188,18 +188,18 @@ public class StringCalculator implements Calculator{
 
       /** after the operator there is no binary operator (that is, not *, /, +) */
       if (expression.charAt(i) == '-' || expression.charAt(i) == '+'
-        || expression.charAt(i) == '/' || expression.charAt(i) == '*') {
-        if (i + 1 >= expression.length() || expression.charAt(i + 1) == '+'
-          || expression.charAt(i + 1) == '/' || expression.charAt(i + 1) == '*') {
+          || expression.charAt(i) == '/' || expression.charAt(i) == '*') {
+          if (i + 1 >= expression.length() || expression.charAt(i + 1) == '+'
+            || expression.charAt(i + 1) == '/' || expression.charAt(i + 1) == '*') {
           return false;
         }
       }
 
       /** check for invalid characters */
       if (!(Character.isDigit(expression.charAt(i)) || expression.charAt(i) == '.'
-        || expression.charAt(i) == '(' || expression.charAt(i) == ')'
-          || expression.charAt(i) == '+' || expression.charAt(i) == '-'
-            || expression.charAt(i) == '*' || expression.charAt(i) == '/')) {
+          || expression.charAt(i) == '(' || expression.charAt(i) == ')'
+            || expression.charAt(i) == '+' || expression.charAt(i) == '-'
+              || expression.charAt(i) == '*' || expression.charAt(i) == '/')) {
         return false;
       }
 
@@ -212,8 +212,8 @@ public class StringCalculator implements Calculator{
           also the empty brackets are considered to be a non-explicit expression */
       if (expression.charAt(i) == '(') {
         if (i + 1 >= expression.length() || (expression.charAt(i + 1) == '+'
-          || expression.charAt(i + 1) == '*' ||
-          expression.charAt(i + 1) == '/' || expression.charAt(i + 1) == ')')) {
+            || expression.charAt(i + 1) == '*' ||
+              expression.charAt(i + 1) == '/' || expression.charAt(i + 1) == ')')) {
           return false;
         }
       }
@@ -227,8 +227,8 @@ public class StringCalculator implements Calculator{
     int i = 0;
     while (i < expression.length() && dot < 2) {
       if (expression.charAt(i) == '+' || expression.charAt(i) == '-'
-        || expression.charAt(i) == '/' || expression.charAt(i) == '*') {
-        dot  = 0;
+          || expression.charAt(i) == '/' || expression.charAt(i) == '*') {
+            dot  = 0;
       }
       if (expression.charAt(i) == '.') {
         dot += 1;
