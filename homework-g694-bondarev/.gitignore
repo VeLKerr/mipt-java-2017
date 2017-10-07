@@ -1,0 +1,34 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# From mipt-java-2017/.gitignore
+.idea/
+*.iml
+*.ipr
+
+out/
+target/
+*~
+temp/
+tmp/
+build/
+jar/
+
+*.DS_Store
