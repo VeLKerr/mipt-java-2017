@@ -10,7 +10,6 @@ import java.util.Stack;
  * Created by mike on 10/6/17.
  */
 public class StringCalculator implements Calculator{
-
   private Stack<Double> numbers;
   private Stack<Character> operations;
 
@@ -166,41 +165,41 @@ public class StringCalculator implements Calculator{
     return returnExpression;
   }
 
-  private boolean checkIncorrectExpression(String expres) {
+  private boolean checkIncorrectExpression(String expression) {
     int bracketResult = 0;
 
     /** the expression is nonempty
         the first place is not binary operations
         in the last place either a digit or ')' */
-    if (expres.length() == 0 || expres.charAt(0) == '*'
-      || expres.charAt(0) == '/' || expres.charAt(0) == '+'
-      || !(Character.isDigit(expres.charAt(expres.length() - 1))
-      || expres.charAt(expres.length() - 1) == ')')) {
+    if (expression.length() == 0 || expression.charAt(0) == '*'
+      || expression.charAt(0) == '/' || expression.charAt(0) == '+'
+        || !(Character.isDigit(expression.charAt(expression.length() - 1))
+          || expression.charAt(expression.length() - 1) == ')')) {
       return false;
     }
 
-    for (int i = 0; i < expres.length(); ++i) {
-      if (expres.charAt(i) == '(') {
+    for (int i = 0; i < expression.length(); ++i) {
+      if (expression.charAt(i) == '(') {
         bracketResult += 1;
       }
-      if (expres.charAt(i) == ')') {
+      if (expression.charAt(i) == ')') {
         bracketResult -= 1;
       }
 
       /** after the operator there is no binary operator (that is, not *, /, +) */
-      if (expres.charAt(i) == '-' || expres.charAt(i) == '+'
-        || expres.charAt(i) == '/' || expres.charAt(i) == '*') {
-        if (i + 1 >= expres.length() || expres.charAt(i + 1) == '+'
-          || expres.charAt(i + 1) == '/' || expres.charAt(i + 1) == '*') {
+      if (expression.charAt(i) == '-' || expression.charAt(i) == '+'
+        || expression.charAt(i) == '/' || expression.charAt(i) == '*') {
+        if (i + 1 >= expression.length() || expression.charAt(i + 1) == '+'
+          || expression.charAt(i + 1) == '/' || expression.charAt(i + 1) == '*') {
           return false;
         }
       }
 
       /** check for invalid characters */
-      if (!(Character.isDigit(expres.charAt(i)) || expres.charAt(i) == '.'
-        || expres.charAt(i) == '(' || expres.charAt(i) == ')'
-        || expres.charAt(i) == '+' || expres.charAt(i) == '-' ||
-        expres.charAt(i) == '*' || expres.charAt(i) == '/')) {
+      if (!(Character.isDigit(expression.charAt(i)) || expression.charAt(i) == '.'
+        || expression.charAt(i) == '(' || expression.charAt(i) == ')'
+          || expression.charAt(i) == '+' || expression.charAt(i) == '-'
+            || expression.charAt(i) == '*' || expression.charAt(i) == '/')) {
         return false;
       }
 
@@ -211,10 +210,10 @@ public class StringCalculator implements Calculator{
 
       /** *, /, + are not binary operators, that is, they can not stand after '('
           also the empty brackets are considered to be a non-explicit expression */
-      if (expres.charAt(i) == '(') {
-        if (i + 1 >= expres.length() || (expres.charAt(i + 1) == '+'
-          || expres.charAt(i + 1) == '*' ||
-          expres.charAt(i + 1) == '/' || expres.charAt(i + 1) == ')')) {
+      if (expression.charAt(i) == '(') {
+        if (i + 1 >= expression.length() || (expression.charAt(i + 1) == '+'
+          || expression.charAt(i + 1) == '*' ||
+          expression.charAt(i + 1) == '/' || expression.charAt(i + 1) == ')')) {
           return false;
         }
       }
@@ -226,12 +225,12 @@ public class StringCalculator implements Calculator{
     /** check for correctness of the decimal expression (in each number not more than one '.') */
     int dot = 0;
     int i = 0;
-    while (i < expres.length() && dot < 2) {
-      if (expres.charAt(i) == '+' || expres.charAt(i) == '-'
-        || expres.charAt(i) == '/' || expres.charAt(i) == '*') {
+    while (i < expression.length() && dot < 2) {
+      if (expression.charAt(i) == '+' || expression.charAt(i) == '-'
+        || expression.charAt(i) == '/' || expression.charAt(i) == '*') {
         dot  = 0;
       }
-      if (expres.charAt(i) == '.') {
+      if (expression.charAt(i) == '.') {
         dot += 1;
       }
       i++;
