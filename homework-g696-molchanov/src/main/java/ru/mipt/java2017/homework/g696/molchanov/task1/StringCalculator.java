@@ -189,8 +189,8 @@ public class StringCalculator implements Calculator {
       /** after the operator there is no binary operator (that is, not *, /, +) */
       if (expression.charAt(i) == '-' || expression.charAt(i) == '+'
           || expression.charAt(i) == '/' || expression.charAt(i) == '*') {
-          if (i + 1 >= expression.length() || expression.charAt(i + 1) == '+'
-            || expression.charAt(i + 1) == '/' || expression.charAt(i + 1) == '*') {
+        if (i + 1 >= expression.length() || expression.charAt(i + 1) == '+'
+              || expression.charAt(i + 1) == '/' || expression.charAt(i + 1) == '*') {
           return false;
         }
       }
@@ -228,7 +228,7 @@ public class StringCalculator implements Calculator {
     while (i < expression.length() && dot < 2) {
       if (expression.charAt(i) == '+' || expression.charAt(i) == '-'
           || expression.charAt(i) == '/' || expression.charAt(i) == '*') {
-            dot  = 0;
+        dot  = 0;
       }
       if (expression.charAt(i) == '.') {
         dot += 1;
