@@ -101,8 +101,8 @@ public class SimpleCalculator implements Calculator {
     double result;
     result = parseProduct(true);
     while (currentPosition < expression.length() &&
-        (expression.charAt(currentPosition) == '+' ||
-            expression.charAt(currentPosition) == '-')) {
+      (expression.charAt(currentPosition) == '+' ||
+        expression.charAt(currentPosition) == '-')) {
       boolean extract = expression.charAt(currentPosition) == '-';
       ++currentPosition;
       double product = parseProduct(false);
@@ -129,8 +129,8 @@ public class SimpleCalculator implements Calculator {
     double result;
     result = parseToken(unaryOperationAllowed);
     while (currentPosition < expression.length() &&
-        (expression.charAt(currentPosition) == '*' ||
-            expression.charAt(currentPosition) == '/')) {
+      (expression.charAt(currentPosition) == '*' ||
+        expression.charAt(currentPosition) == '/')) {
       boolean divide = expression.charAt(currentPosition) == '/';
       ++currentPosition;
       double token = parseToken(true);
@@ -161,7 +161,7 @@ public class SimpleCalculator implements Calculator {
       result = parseExpression();
       if (currentPosition >= expression.length() || expression.charAt(currentPosition) != ')') {
         throw new ParsingException(
-            "Unexpected end of expression while parsing token: unclosed brace");
+          "Unexpected end of expression while parsing token: unclosed brace");
       }
       ++currentPosition;
       return result;
@@ -173,7 +173,7 @@ public class SimpleCalculator implements Calculator {
     if (expression.charAt(currentPosition) == '+' || expression.charAt(currentPosition) == '-') {
       if (currentPosition + 1 >= expression.length() ||
           (expression.charAt(currentPosition + 1) != '(' &&
-              !Character.isDigit(expression.charAt(currentPosition + 1)))) {
+          !Character.isDigit(expression.charAt(currentPosition + 1)))) {
         throw new ParsingException("Unary operation incorrect usage");
       }
     }
