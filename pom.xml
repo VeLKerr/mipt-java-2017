@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                     http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,17 +14,27 @@
     <modules>
         <module>homework-base</module>
         <module>homework-tests</module>
-	<module>homework-g000-lavrentyev</module>
+	      <module>homework-g000-lavrentyev</module>
+        <module>homework-g695-ogorodnikov</module>
+        <module>homework-g696-shavrina</module>
+        <module>homework-g694-perchuk</module>
+        <module>homework-g694-nachinkin</module>
+        <module>homework-g000-lavrentyev</module>
+        <module>homework-g694-chizh</module>
         <module>homework-g696-mosyagin</module>
         <module>homework-g696-feofanova</module>
         <module>homework-g695-kalinochkin</module>
         <module>homework-g694-kalinin</module>
         <module>homework-g694-yusupov</module>
         <module>homework-g694-cherepkov</module>
+        <module>homework-g694-nikonov</module>
+        <module>homework-g694-parfenova</module>
         <module>homework-g695-gazizullin</module>
+        <module>homework-g697-Ozherelieva</module>
         <module>homework-g695-skakovsky</module>
         <module>homework-g695-lunin</module>
         <module>homework-g695-lepekhin</module>
+        <module>homework-g696-antonova</module>
         <module>homework-g696-nechepurenco</module>
         <module>homework-g696-pak</module>
         <module>homework-g697-kolodin</module>
@@ -33,9 +43,18 @@
         <module>homework-g696-hromov</module>
         <module>homework-g697-Inuytin</module>
         <module>homework-g694-firsov</module>
+        <module>homework-g694-protsenko</module>
+	      <module>homework-g697-pelko</module>
+        <module>homework-g697-kalamina</module>
+        <module>homework-g695-komendantian</module>
+        <module>homework-g695-dyachenko</module>
+        <module>homework-g696-molchanov</module>
+        <module>homework-g696-mecheryakov</module>
+        <module>homework-g694-bondarev</module>
     </modules>
 
     <build>
+        <defaultGoal>test</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
