@@ -13,6 +13,6 @@ import ru.mipt.java2017.homework.tests.task1.AbstractCalculatorTest;
 
 
 public class SimpleCalculatorTest extends AbstractCalculatorTest {
-    @Override
-    protected Calculator calc() { return new SimpleCalculator(); }
+		@Override
+		protected Calculator calc() { return new SimpleCalculator(); }
 }
