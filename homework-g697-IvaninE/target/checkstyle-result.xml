@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="7.1.2">
+<file name="C:\Users\Mvideo\Desktop\repo\mipt-java-2017\homework-g697-IvaninE\src\main\java\ru\mipt\java2017\homework\g697\IvaninE\task1\Calculation.java">
+</file>
+<file name="C:\Users\Mvideo\Desktop\repo\mipt-java-2017\homework-g697-IvaninE\src\main\java\ru\mipt\java2017\homework\g697\IvaninE\task1\Calculator_realization.java">
+</file>
+<file name="C:\Users\Mvideo\Desktop\repo\mipt-java-2017\homework-g697-IvaninE\src\main\java\ru\mipt\java2017\homework\g697\IvaninE\task1\Token.java">
+<error line="16" severity="error" message="&apos;METHOD_DEF&apos; should be separated from previous statement." source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+<error line="19" severity="error" message="&apos;METHOD_DEF&apos; should be separated from previous statement." source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+</file>
+<file name="C:\Users\Mvideo\Desktop\repo\mipt-java-2017\homework-g697-IvaninE\src\main\java\ru\mipt\java2017\homework\g697\IvaninE\task1\TokenStream.java">
+<error line="19" column="31" severity="error" message="Name &apos;arithmetic_symbols&apos; must match pattern &apos;^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck"/>
+</file>
+</checkstyle>
