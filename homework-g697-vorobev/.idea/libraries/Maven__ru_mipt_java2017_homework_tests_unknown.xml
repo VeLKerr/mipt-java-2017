@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: ru.mipt.java2017:homework-tests:unknown">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/ru/mipt/java2017/homework-tests/unknown/homework-tests-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/ru/mipt/java2017/homework-tests/unknown/homework-tests-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/ru/mipt/java2017/homework-tests/unknown/homework-tests-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
