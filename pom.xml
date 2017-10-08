@@ -14,6 +14,7 @@
     <modules>
         <module>homework-base</module>
         <module>homework-tests</module>
+	      <module>homework-g000-lavrentyev</module>
         <module>homework-g695-ogorodnikov</module>
         <module>homework-g696-shavrina</module>
         <module>homework-g694-perchuk</module>
@@ -23,7 +24,6 @@
         <module>homework-g696-mosyagin</module>
         <module>homework-g696-feofanova</module>
         <module>homework-g695-kalinochkin</module>
-        <module>homework-g697-IvaninVitaly</module>
         <module>homework-g694-kalinin</module>
         <module>homework-g694-yusupov</module>
         <module>homework-g694-cherepkov</module>
@@ -42,6 +42,7 @@
         <module>homework-g695-gostkin</module>
         <module>homework-g696-hromov</module>
         <module>homework-g697-Inuytin</module>
+        <module>homework-g694-firsov</module>
         <module>homework-g694-protsenko</module>
 	      <module>homework-g697-pelko</module>
         <module>homework-g697-kalamina</module>
