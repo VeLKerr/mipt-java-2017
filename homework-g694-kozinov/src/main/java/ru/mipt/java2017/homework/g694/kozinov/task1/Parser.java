@@ -1,6 +1,7 @@
 package ru.mipt.java2017.homework.g694.kozinov.task1;
 
 import ru.mipt.java2017.homework.base.task1.ParsingException;
+
 import java.util.Vector;
 
 class Parser {
@@ -64,6 +65,20 @@ class Parser {
 
     if (balance != 0) {
       throw new ParsingException("Number of close and open brackets are different");
+    }
+  }
+
+  void checkLexemes() throws ParsingException {
+    for (int i = 1; i < lexemes.size(); ++i) {
+      CharRecognizer.OperationKind a = CharRecognizer.getOperationKind(lexemes.get(i - 1).charAt(0));
+      CharRecognizer.OperationKind b = CharRecognizer.getOperationKind(lexemes.get(i).charAt(0));
+      if (a.getPriority() < 0 || b.getPriority() < 0) {
+        return;
+      }
+
+      if (a.getPriority() == b.getPriority()) {
+        throw new ParsingException("Double unary operation must separate them with scobe");
+      }
     }
   }
 

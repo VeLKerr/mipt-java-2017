@@ -14,9 +14,32 @@ class CharRecognizer {
     UNKNOWN,
     PLUS,
     MINUS,
+    UNARY_PLUS,
+    UNARY_MINUS,
     MULTI,
-    DIVISION;
+    DIVISION,
+    OPEN,
+    CLOSE;
+
+    public boolean isUnary() {
+      return this == UNARY_PLUS || this == UNARY_MINUS;
+    }
+
+    public OperationKind makeUnary() {
+      if (this == PLUS) {
+        return UNARY_PLUS;
+      }
+      if (this == MINUS) {
+        return UNARY_MINUS;
+      }
+      return this;
+    }
+
     public int getPriority() {
+      if (isUnary()) {
+        return 4;
+      }
+
       if (this == PLUS || this == MINUS) {
         return 1;
       }
@@ -66,6 +89,12 @@ class CharRecognizer {
 
       case '/':
         return OperationKind.DIVISION;
+
+      case '(':
+        return OperationKind.OPEN;
+
+      case ')':
+        return OperationKind.CLOSE;
 
       default:
         return OperationKind.UNKNOWN;

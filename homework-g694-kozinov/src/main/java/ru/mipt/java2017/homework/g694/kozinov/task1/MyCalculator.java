@@ -2,26 +2,47 @@ package ru.mipt.java2017.homework.g694.kozinov.task1;
 
 import ru.mipt.java2017.homework.base.task1.Calculator;
 import ru.mipt.java2017.homework.base.task1.ParsingException;
+
 import java.util.Stack;
 
 public class MyCalculator implements Calculator {
   private Stack<Double> numbers;
-  private Stack<Character> operations;
+  private Stack<CharRecognizer.OperationKind> operations;
 
   MyCalculator() {
     numbers = new Stack<>();
     operations = new Stack<>();
   }
 
-  private void process(char operation) throws ParsingException {
-    if (numbers.size() < 2) {
-      throw new ParsingException("Too much operations");
+  private void process(CharRecognizer.OperationKind operation) throws ParsingException {
+    if (operation.isUnary()) {
+      if (numbers.empty()) {
+        throw new ParsingException("Operation without operand");
+      }
+
+      double a = numbers.pop();
+      switch (operation) {
+        case UNARY_PLUS:
+          numbers.push(a);
+          break;
+        case UNARY_MINUS:
+          numbers.push(-a);
+          break;
+        default:
+          throw new ParsingException("Find unknown operation (Internal error)");
+      }
+      return;
     }
 
-    double a = numbers.pop();
-    double b = numbers.pop();
+    double a;
+    double b;
+    if (numbers.size() < 2) {
+      throw new ParsingException("Operation without operands");
+    }
+    a = numbers.pop();
+    b = numbers.pop();
 
-    switch (CharRecognizer.getOperationKind(operation)) {
+    switch (operation) {
       case PLUS:
         numbers.push(a + b);
         break;
@@ -41,41 +62,60 @@ public class MyCalculator implements Calculator {
 
   @Override
   public double calculate(String expression) throws ParsingException {
+    if (expression == null) {
+      throw new ParsingException("Pass a null string");
+    }
     numbers.clear();
     operations.clear();
+    Boolean mayUnary = true;
     Parser currentParser = new Parser();
     currentParser.parseString(expression);
+    currentParser.checkLexemes();
 
     for (int i = 0; i < currentParser.size(); ++i) {
       String currentLexeme = currentParser.getAt(i);
+      CharRecognizer.OperationKind curop = CharRecognizer.getOperationKind(currentLexeme.charAt(0));
 
       switch (CharRecognizer.getCharKind(currentLexeme.charAt(0))) {
         case UNKNOWN:
           throw new ParsingException("Find unknown word");
 
         case OPEN_BRACKET:
-          operations.push('(');
+          operations.push(curop);
+          mayUnary = true;
           break;
 
         case NUMBER_PART:
-          numbers.push(Double.parseDouble(currentLexeme));
+          try {
+            numbers.push(Double.parseDouble(currentLexeme));
+          } catch (java.lang.NumberFormatException e) {
+            throw new ParsingException("You write not a number: " + currentLexeme);
+          }
+          mayUnary = false;
           break;
 
         case CLOSE_BRACKET:
-          while (CharRecognizer.getCharKind(operations.peek()) != CharRecognizer.CharKind.OPEN_BRACKET) {
+          while (operations.peek() != CharRecognizer.OperationKind.OPEN) {
             process(operations.pop());
           }
 
           operations.pop();
+          mayUnary = false;
           break;
 
         case OPERATION:
-          CharRecognizer.OperationKind curop = CharRecognizer.getOperationKind(currentLexeme.charAt(0));
-          while (!operations.empty() &&
-            CharRecognizer.getOperationKind(operations.peek()).getPriority() >= curop.getPriority()) {
+          if (mayUnary) {
+            curop = curop.makeUnary();
+          }
+          while (!operations.empty() && (
+               !curop.isUnary() &&
+              operations.peek().getPriority() >= curop.getPriority() ||
+                curop.isUnary() &&
+              operations.peek().getPriority() > curop.getPriority())) {
             process(operations.pop());
           }
-          operations.push(currentLexeme.charAt(0));
+          operations.push(curop);
+          mayUnary = true;
           break;
 
         default:
@@ -86,6 +126,9 @@ public class MyCalculator implements Calculator {
       process(operations.pop());
     }
 
+    if (numbers.isEmpty()) {
+      throw new ParsingException("Pass the expression without numbers");
+    }
     return numbers.peek();
   }
 }
