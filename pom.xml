@@ -14,13 +14,11 @@
     <modules>
         <module>homework-base</module>
         <module>homework-tests</module>
-	      <module>homework-g000-lavrentyev</module>
         <module>homework-g695-ogorodnikov</module>
         <module>homework-g696-shavrina</module>
         <module>homework-g694-perchuk</module>
         <module>homework-g694-nachinkin</module>
         <module>homework-g000-lavrentyev</module>
-        <module>homework-g694-chizh</module>
         <module>homework-g696-mosyagin</module>
         <module>homework-g696-feofanova</module>
         <module>homework-g695-kalinochkin</module>
