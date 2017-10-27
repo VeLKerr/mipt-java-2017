@@ -1,0 +1,1 @@
+CREATE TABLE test_table (test_column TEXT PRIMARY KEY);
