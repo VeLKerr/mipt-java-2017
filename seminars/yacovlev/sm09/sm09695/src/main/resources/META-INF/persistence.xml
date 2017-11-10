@@ -1,0 +1,13 @@
+<persistence version="1.0"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             >
+
+    <persistence-unit name="mydatabase">
+
+    <properties>
+        <property name="hibernate.ejb.cfgfile" value="/hibernate.cfg.xml"/>
+    </properties>
+
+    </persistence-unit>
+</persistence>
