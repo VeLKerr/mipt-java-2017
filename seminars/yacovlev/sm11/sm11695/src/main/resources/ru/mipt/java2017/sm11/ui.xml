@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<JFrame title="Hello!">
+    <JPanel>
+        <JButton text="Button 1"/>
+        <JButton text="Button 1"/>
+        <JLabel text="This is just text"/>
+        <JButton text="Button 1"/>
+    </JPanel>
+</JFrame>
